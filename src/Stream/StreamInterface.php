@@ -1,0 +1,245 @@
+<?php
+
+namespace Bdf\Collection\Stream;
+
+use Bdf\Collection\Stream\Accumulator\AccumulatorInterface;
+use Bdf\Collection\Stream\Collector\CollectorInterface;
+use Bdf\Collection\Util\Functor\Consumer\ConsumerInterface;
+use Bdf\Collection\Util\Functor\Predicate\PredicateInterface;
+use Bdf\Collection\Util\Functor\Transformer\TransformerInterface;
+use Bdf\Collection\Util\OptionalInterface;
+
+/**
+ * Stream apply operations on each elements of a Collection
+ *
+ * A stream instance can only be used once. It has two types of methods :
+ * - Transformation methods which return a new stream for applying transformations on elements. Any methods can be called after a transformation method
+ * - Terminal methods which iterate over the stream and "close" the stream. After calling a terminal method, no more methods can be called
+ *
+ * The transformations will be applied only when a termination method is called. So a stream should be used like :
+ * - Call one or more transformations
+ * - Finish processing with a terminal method
+ *
+ * <code>
+ * $collection->stream() // Create the stream from the collection
+ *     ->map(...) // Apply transformations
+ *     ->filter(...)
+ *     ->forEach(...) // Terminate the stream
+ * ;
+ * </code>
+ */
+interface StreamInterface extends \Traversable
+{
+    /**
+     * Apply $transformer to each values of the stream
+     *
+     * <code>
+     * $stream = new ArrayStream([1, 2, 3]);
+     * $stream
+     *     ->map(function ($element, $key) { return $element * 2; })
+     *     ->toArray() // [2, 4, 6]
+     * ;
+     * </code>
+     *
+     * @param callable $transformer The element transformer.
+     *     Should take the element as first parameter an return the transformed element
+     *     The transformer may have (if relevant) the key as second parameter
+     *
+     * @return StreamInterface
+     *
+     * @see TransformerInterface
+     */
+    public function map(callable $transformer);
+
+    /**
+     * Filter the stream
+     *
+     * <code>
+     * $stream = new ArrayStream([1, 2, 3]);
+     * $stream
+     *     ->filter(function ($element, $key) { return $element % 2 !== 0; })
+     *     ->toArray() // [1, 3]
+     * ;
+     * </code>
+     *
+     * @param callable $predicate The predicate function.
+     *     Take the element as first parameter and should return a boolean (true for keeping element, or false for skipping)
+     *     May take the key as second parameter (if relevant)
+     *
+     * @return StreamInterface
+     *
+     * @see PredicateInterface
+     */
+    public function filter(callable $predicate);
+
+    /**
+     * Filter stream elements to get only distinct elements
+     * Two elements are considered as equals when there hash are equals : `$hashFunction($e1) === $hashFunction($e2)`
+     *
+     * If the hash function is not provided, elements will be compared using :
+     * - If it's an Hashable object, the Hashable::hash() method
+     * - In other case, compare with value AND type
+     *
+     * By default, int(123) and string('123') are not considered as equal, and will be keep into the distinct stream
+     *
+     * <code>
+     * $stream = new ArrayStream([4, 8, 1, 4, 1]);
+     * $stream->distinct(); // [4, 8, 1]
+     *
+     * $stream = new ArrayStream([[1, 2],  [2, 3], [2, 1]]);
+     * $stream->distinct(function ($e) { sort($e); return json_encode($e); }); // [[1, 2], [2, 3]]
+     * </code>
+     *
+     * @param callable $hashFunction The hash function. Take as parameter the element, and return the hash value as string
+     *
+     * @return StreamInterface
+     */
+    public function distinct(callable $hashFunction = null);
+
+    /**
+     * Order stream elements
+     *
+     * <code>
+     * $stream = new ArrayStream([8, 4, 5, 3]);
+     * $stream->sort()->toArray(); // [3, 4, 5, 8]
+     *
+     * $stream
+     *     ->sort(function ($a, $b) { return ([$a % 2, $a] <=> [$b % 2, $b]); })
+     *     ->toArray() // [4, 8, 3, 5]
+     * ;
+     *
+     * // Sort keeping keys
+     * $stream = new ArrayStream([
+     *     'foo' => 3,
+     *     'bar' => 42,
+     *     'baz' => 9
+     * ]);
+     *
+     * $stream->sort(null, true)->toArray();
+     * // [ 'foo' => 3,
+     * //   'baz' => 9,
+     * //   'bar' => 42 ]
+     * </code>
+     *
+     * /!\ Unlike other transformations, the elements are fetched before execution of the terminal method
+     *
+     * Ex :
+     * <code>
+     * $stream = new ArrayStream([1, 2, 3]);
+     *
+     * // Display : map(1) forEach(1) map(2) forEach(2) map(3) forEach(3)
+     * $stream
+     *     ->map(function ($e) { echo "map($e) "; return $e; })
+     *     ->forEach(function ($e) { echo "forEach($e) "; })
+     * ;
+     *
+     * // Display : map(1) map(2) map(3) forEach(1) forEach(2) forEach(3)
+     * $stream
+     *     ->map(function ($e) { echo "map($e) "; return $e; })
+     *     ->sort() // Sort fetch the map stream
+     *     ->forEach(function ($e) { echo "forEach($e) "; })
+     * ;
+     * </code>
+     *
+     * @param callable $comparator The comparator, or null to use default comparison.
+     *                             Take the two values to compare as parameters and should return an integer :
+     *                             - $comparator($a, $b) < 0 => $a < $b
+     *                             - $comparator($a, $b) == 0 => $a == $b
+     *                             - $comparator($a, $b) > 0 => $a > $b
+     *
+     * @param boolean $preserveKeys If true, the keys will be kept, else an the values will be indexed by an increment integer
+     *
+     * @return StreamInterface
+     */
+    public function sort(callable $comparator = null, $preserveKeys = false);
+
+    /**
+     * Iterate over all stream elements.
+     * This method is a terminal method : the stream must not be used after
+     *
+     * <code>
+     * $stream = new ArrayStream([1, 2, 3]);
+     * $stream->forEach(function ($element, $key) {
+     *     $element->doSomething();
+     * });
+     * </code>
+     *
+     * @param callable $consumer
+     *
+     * @return void
+     *
+     * @see ConsumerInterface
+     */
+    public function forEach(callable $consumer);
+
+    /**
+     * Aggregate the stream to an array
+     * This method is a terminal method : the stream must not be used after
+     *
+     * <code>
+     * $stream = new ArrayStream([
+     *     'foo' => 'bar',
+     *     'value' => 42
+     * ]);
+     *
+     * $stream->toArray() === ['foo' => 'bar', 'value' => 42];
+     * $stream->toArray(false) === ['bar', 42];
+     * ];
+     * </code>
+     *
+     * @param bool $preserveKeys True to preserve the keys of the stream, or false for reindex with increment integer.
+     *     This parameter must be set to false when stream contains complex keys (not integer or string)
+     *
+     * @return array
+     */
+    public function toArray($preserveKeys = true);
+
+    /**
+     * Get the first element of the stream
+     * The element will be wrapped into an Optional for handle empty stream
+     *
+     * <code>
+     * $stream = new ArrayStream([1, 2, 3]);
+     * $stream->first(); // Optional(1);
+     * $stream->filter(function () { return false; })->first(); // Empty Optional
+     * </code>
+     *
+     * @return OptionalInterface
+     */
+    public function first();
+
+    /**
+     * Reduce all elements of the stream into a single value
+     * This method is a terminal method : the stream must not be used after
+     *
+     * <code>
+     * $stream = new ArrayStream([1, 2, 3]);
+     * $stream->reduce(function ($carry, $item) { return (int) $carry + $item; }); // 6
+     * $stream->reduce(Accumulators::sum()); // Same as above, but with a functor
+     * </code>
+     *
+     * @param callable|AccumulatorInterface $accumulator The accumulator.
+     *     When a callback is given : takes the reduced value as first parameter and the item to accumulate as second parameter. The function must return the reduced value
+     *     When an AccumulatorInterface is given as only parameter, the initial value will be $accumulator->initial()
+     * @param mixed $initial The initial value
+     *
+     * @return mixed The reduced value, or $initial if the stream is empty
+     *
+     * @see AccumulatorInterface For functor implementation
+     */
+    public function reduce(callable $accumulator, $initial = null);
+
+    /**
+     * Collect all elements into a single value
+     * This method is a terminal method : the stream must not be used after
+     *
+     * The behavior of this method is very similar to reduce() but with some differences :
+     * - The collector is not stateless
+     * - It has a finalisation method whereas reduce perform aggregation on each iterations
+     *
+     * @param CollectorInterface $collector The collector
+     *
+     * @return mixed
+     */
+    public function collect(CollectorInterface $collector);
+}

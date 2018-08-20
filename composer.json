@@ -1,0 +1,26 @@
+{
+    "name": "b2pweb/bdf-collections",
+    "description": "Bdf Collection component",
+    "type": "library",
+    "keywords": [
+        "collections"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vincent Quatrevieux"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Bdf\\Collection\\": "src"
+        }
+    },
+    "require": {
+        "php": ">=7.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~5.7|~6.0",
+        "phpbench/phpbench": "~0.0|~1.0"
+    }
+}

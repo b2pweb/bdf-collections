@@ -1,0 +1,13 @@
+{
+    "bootstrap": "vendor/autoload.php",
+    "path": "bench",
+    "time_unit": "milliseconds",
+    "progress": "dots",
+    "reports": {
+        "bdf": {
+            "extends": "aggregate",
+            "break": ["benchmark", "groups"],
+            "cols": ["subject", "params", "mem_peak", "best", "mean", "worst", "diff"]
+        }
+    }
+}
