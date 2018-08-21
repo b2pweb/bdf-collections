@@ -245,4 +245,70 @@ class MutableArrayStreamTest extends TestCase
 
         $this->assertEquals('4:8:2', $stream->collect(new Joining(':')));
     }
+
+    /**
+     *
+     */
+    public function test_concat_preserve_keys_with_mutableStream()
+    {
+        $stream = new MutableArrayStream([
+            'John'   => 'Doe',
+            'Mickey' => 'Mouse',
+        ]);
+
+        $this->assertSame($stream, $stream->concat(new MutableArrayStream(['Donald' => 'Duck'])));
+
+        $this->assertSame([
+            'John'   => 'Doe',
+            'Mickey' => 'Mouse',
+            'Donald' => 'Duck'
+        ], $stream->toArray());
+    }
+
+    /**
+     *
+     */
+    public function test_concat_no_preserve_keys_with_mutableStream()
+    {
+        $stream = new MutableArrayStream([7, 4, 2]);
+
+        $this->assertSame($stream, $stream->concat(new MutableArrayStream([3, 8, 1]), false));
+
+        $this->assertSame([7, 4, 2, 3, 8, 1], $stream->toArray());
+    }
+
+    /**
+     *
+     */
+    public function test_concat()
+    {
+        $stream = new MutableArrayStream([7, 4, 2]);
+
+        $concat = $stream->concat(new ArrayStream([3, 8, 1]), false);
+
+        $this->assertInstanceOf(ConcatStream::class, $concat);
+        $this->assertSame([7, 4, 2, 3, 8, 1], $concat->toArray());
+    }
+
+    /**
+     *
+     */
+    public function test_matchAll()
+    {
+        $stream = new MutableArrayStream([4, 8, 2]);
+
+        $this->assertTrue($stream->matchAll(function ($e) { return $e % 2 === 0; }));
+        $this->assertFalse($stream->matchAll(function ($e) { return $e % 4 === 0; }));
+    }
+
+    /**
+     *
+     */
+    public function test_matchOne()
+    {
+        $stream = new MutableArrayStream([4, 8, 2]);
+
+        $this->assertTrue($stream->matchOne(function ($e) { return $e % 4 === 0; }));
+        $this->assertFalse($stream->matchOne(function ($e) { return $e % 2 === 1; }));
+    }
 }

@@ -147,4 +147,37 @@ class DistinctStreamTest extends TestCase
 
         $this->assertEquals('4:5:1', $stream->collect(new Joining(':')));
     }
+
+    /**
+     *
+     */
+    public function test_concat()
+    {
+        $stream = new DistinctStream(new ArrayStream([4, 5, 1, 5]), new HashSet());
+
+        $concat = $stream->concat(new ArrayStream([7, 4, 2]), false);
+        $this->assertSame([4, 5, 1, 7, 4, 2], $concat->toArray());
+    }
+
+    /**
+     *
+     */
+    public function test_matchAll()
+    {
+        $stream = new DistinctStream(new ArrayStream([4, 5, 1, 5]), new HashSet());
+
+        $this->assertTrue($stream->matchAll(function ($e) { return $e < 10; }));
+        $this->assertFalse($stream->matchAll(function ($e) { return $e % 2 === 0; }));
+    }
+
+    /**
+     *
+     */
+    public function test_matchOne()
+    {
+        $stream = new DistinctStream(new ArrayStream([4, 5, 1, 5]), new HashSet());
+
+        $this->assertTrue($stream->matchOne(function ($e) { return $e % 2 === 0; }));
+        $this->assertFalse($stream->matchOne(function ($e) { return $e > 10; }));
+    }
 }

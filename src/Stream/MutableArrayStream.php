@@ -95,6 +95,23 @@ class MutableArrayStream implements \Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
+    public function concat(StreamInterface $stream, $preserveKeys = true)
+    {
+        if ($stream instanceof MutableArrayStream) {
+            $this->data = $preserveKeys
+                ? array_replace($this->data, $stream->data)
+                : array_merge(array_values($this->data), array_values($stream->data))
+            ;
+
+            return $this;
+        }
+
+        return new ConcatStream([$this, $stream], $preserveKeys);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function forEach(callable $consumer)
     {
         foreach ($this->data as $k => $v) {
@@ -146,6 +163,34 @@ class MutableArrayStream implements \Iterator, StreamInterface
         }
 
         return $collector->finalize();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function matchAll(callable $predicate)
+    {
+        foreach ($this->data as $key => $item) {
+            if (!$predicate($item, $key)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function matchOne(callable $predicate)
+    {
+        foreach ($this->data as $key => $item) {
+            if ($predicate($item, $key)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

@@ -28,7 +28,7 @@ use Bdf\Collection\Util\OptionalInterface;
  * ;
  * </code>
  */
-interface StreamInterface extends \Traversable
+interface StreamInterface extends \Iterator
 {
     /**
      * Apply $transformer to each values of the stream
@@ -154,6 +154,27 @@ interface StreamInterface extends \Traversable
     public function sort(callable $comparator = null, $preserveKeys = false);
 
     /**
+     * Concatenate a new stream after the current stream
+     * The current stream will be the first executed stream, and the concatenated one will be executed after
+     *
+     * /!\ The current stream must not be an infinite stream
+     *
+     * <code>
+     * $stream = new ArrayStream([1, 2, 3]);
+     * $stream
+     *     ->concat(new ArrayStream([4, 5, 6]), false)
+     *     ->toArray() // [1, 2, 3, 4, 5, 6]
+     * ;
+     * </code>
+     *
+     * @param StreamInterface $stream The stream to concat
+     * @param bool $preserveKeys Preserve the stream keys, or use integer increment index
+     *
+     * @return StreamInterface
+     */
+    public function concat(StreamInterface $stream, $preserveKeys = true);
+
+    /**
      * Iterate over all stream elements.
      * This method is a terminal method : the stream must not be used after
      *
@@ -242,4 +263,52 @@ interface StreamInterface extends \Traversable
      * @return mixed
      */
     public function collect(CollectorInterface $collector);
+
+    /**
+     * Check if all elements of the stream match with the predicate
+     * This method is a terminal method : the stream must not be used after
+     *
+     * Note: An empty stream will always return true
+     *
+     * /!\ One infinite stream, this method may cause an infinite loop
+     *
+     * <code>
+     * $stream = new ArrayStream([1, 2, 3]);
+     *
+     * $stream->allMatch(function ($e) { return $e < 5; }); // true
+     * $stream->allMatch(function ($e) { return $e % 2 === 0; }); // false
+     * </code>
+     *
+     * @param callable $predicate The predicate function.
+     *     Take the element as first parameter and should return a boolean (true if matching)
+     *     May take the key as second parameter (if relevant)
+     *
+     * @return bool
+     *
+     * @see PredicateInterface
+     */
+    public function matchAll(callable $predicate);
+
+    /**
+     * Check if at least one element of the stream match with the predicate
+     * This method is a terminal method : the stream must not be used after
+     *
+     * /!\ One infinite stream, this method may cause an infinite loop
+     *
+     * <code>
+     * $stream = new ArrayStream([1, 2, 3]);
+     *
+     * $stream->allMatch(function ($e) { return $e % 2 === 0; }); // true : 2 % 2 === 0
+     * $stream->allMatch(function ($e) { return $e > 5; }); // false
+     * </code>
+     *
+     * @param callable $predicate The predicate function.
+     *     Take the element as first parameter and should return a boolean (true if matching)
+     *     May take the key as second parameter (if relevant)
+     *
+     * @return bool
+     *
+     * @see PredicateInterface
+     */
+    public function matchOne(callable $predicate);
 }

@@ -155,4 +155,36 @@ class FilterStreamTest extends TestCase
 
         $this->assertEquals('4:5:1:3', $stream->collect(new Joining(':')));
     }
+
+    /**
+     *
+     */
+    public function test_concat()
+    {
+        $stream = new FilterStream(new ArrayStream([4, 5, 1, 8, 3]), function ($e) { return $e < 6; });
+
+        $this->assertSame([4, 5, 1, 3, 4, 3], $stream->concat(new ArrayStream([4, 3]), false)->toArray());
+    }
+
+    /**
+     *
+     */
+    public function test_matchAll()
+    {
+        $stream = new FilterStream(new ArrayStream([4, 5, 1, 8, 3]), function ($e) { return $e < 6; });
+
+        $this->assertTrue($stream->matchAll(function ($e) { return $e < 10; }));
+        $this->assertFalse($stream->matchAll(function ($e) { return $e % 2 === 0; }));
+    }
+
+    /**
+     *
+     */
+    public function test_matchOne()
+    {
+        $stream = new FilterStream(new ArrayStream([4, 5, 1, 8, 3]), function ($e) { return $e < 6; });
+
+        $this->assertTrue($stream->matchOne(function ($e) { return $e % 2 === 0; }));
+        $this->assertFalse($stream->matchOne(function ($e) { return $e > 10; }));
+    }
 }

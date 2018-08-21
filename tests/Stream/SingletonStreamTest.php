@@ -151,4 +151,27 @@ class SingletonStreamTest extends TestCase
 
         $this->assertEquals('[15]', $stream->collect(new Joining(':', '[', ']')));
     }
+
+    /**
+     *
+     */
+    public function test_concat()
+    {
+        $stream = new SingletonStream(15);
+
+        $this->assertEquals([15, 2, 1], $stream->concat(new ArrayStream([2, 1]), false)->toArray());
+    }
+
+    /**
+     *
+     */
+    public function test_match()
+    {
+        $stream = new SingletonStream(15);
+
+        $this->assertTrue($stream->matchOne(function ($e) { return $e % 5 === 0; }));
+        $this->assertFalse($stream->matchOne(function ($e) { return $e % 2 === 0; }));
+        $this->assertTrue($stream->matchAll(function ($e) { return $e % 5 === 0; }));
+        $this->assertFalse($stream->matchAll(function ($e) { return $e % 2 === 0; }));
+    }
 }

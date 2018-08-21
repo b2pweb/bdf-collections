@@ -52,6 +52,14 @@ final class EmptyStream extends \EmptyIterator implements StreamInterface
     /**
      * {@inheritdoc}
      */
+    public function concat(StreamInterface $stream, $preserveKeys = true)
+    {
+        return $preserveKeys ? $stream : new ConcatStream([$stream], false);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function forEach(callable $consumer)
     {
     }
@@ -89,6 +97,22 @@ final class EmptyStream extends \EmptyIterator implements StreamInterface
     public function collect(CollectorInterface $collector)
     {
         return $collector->finalize();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function matchAll(callable $predicate)
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function matchOne(callable $predicate)
+    {
+        return false;
     }
 
     /**

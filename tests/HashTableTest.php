@@ -147,6 +147,18 @@ class HashTableTest extends TestCase
     /**
      *
      */
+    public function test_addAll()
+    {
+        $this->expectException(\BadMethodCallException::class);
+
+        $table = new HashTable();
+
+        $table->addAll([]);
+    }
+
+    /**
+     *
+     */
     public function test_contains()
     {
         $table = new HashTable();
@@ -366,5 +378,47 @@ class HashTableTest extends TestCase
         $table[123][] = 'World';
 
         $this->assertSame(['Hello', 'World'], $table[123]);
+    }
+
+    /**
+     *
+     */
+    public function test_replace()
+    {
+        $table = new HashTable();
+
+        $table[123] = 'Hello';
+        $table[456] = 'World';
+
+        $this->assertTrue($table->replace([
+            'a' => 'b',
+            'c' => 'd'
+        ]));
+
+        $this->assertSame([
+            'a' => 'b',
+            'c' => 'd'
+        ], $table->toArray());
+    }
+
+    /**
+     *
+     */
+    public function test_replace_with_traversable()
+    {
+        $table = new HashTable();
+
+        $table[123] = 'Hello';
+        $table[456] = 'World';
+
+        $this->assertTrue($table->replace(new ArrayCollection([
+            'a' => 'b',
+            'c' => 'd'
+        ])));
+
+        $this->assertSame([
+            'a' => 'b',
+            'c' => 'd'
+        ], $table->toArray());
     }
 }

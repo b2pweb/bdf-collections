@@ -56,6 +56,8 @@ use Bdf\Collection\Util\Hash;
  */
 class HashSet implements SetInterface
 {
+    use CollectionTrait;
+
     /**
      * @var array
      */

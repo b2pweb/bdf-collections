@@ -22,6 +22,30 @@ interface CollectionInterface extends \IteratorAggregate, \Countable, Streamable
     public function add($element);
 
     /**
+     * Add all elements to the collection
+     *
+     * @param array|\Traversable $elements Elements to add. Can be an array or any traversable object
+     *
+     * @return boolean True on success, or false is at least one elements failed to add
+     */
+    public function addAll($elements);
+
+    /**
+     * Clear the collections and replace all elements with new elements
+     * This method is equivalent to :
+     *
+     * <code>
+     * $collection->clear();
+     * $collection->addAll($elements);
+     * </code>
+     *
+     * @param array|\Traversable $elements The elements to add
+     *
+     * @return boolean True on success, or false is at least one elements failed to add
+     */
+    public function replace($elements);
+
+    /**
      * Check if the collection contains the given element
      *
      * @param mixed $element Element to check

@@ -2,10 +2,10 @@
 
 namespace Bdf\Collection\Stream\Collector;
 
-use Bdf\Collection\ArrayCollection;
 use Bdf\Collection\HashTable;
 use Bdf\Collection\Stream\ArrayStream;
 use Bdf\Collection\Util\Functor\Transformer\Getter;
+use Person;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -27,13 +27,12 @@ class IndexingByTest extends TestCase
 
         $table = $stream->collect(new IndexingBy(new Getter('firstName')));
 
-        $this->assertInstanceOf(ArrayCollection::class, $table);
         $this->assertCount(3, $table);
         $this->assertEquals([
             'Donald' => new Person('Donald', 'Duck'),
             'Mickey' => new Person('Mickey', 'Mouse'),
             'John'   => new Person('John', 'Smith'),
-        ], $table->toArray());
+        ], $table);
     }
 
     /**
@@ -76,13 +75,12 @@ class IndexingByTest extends TestCase
 
         $table = $stream->collect(IndexingBy::scalar('firstName'));
 
-        $this->assertInstanceOf(ArrayCollection::class, $table);
         $this->assertCount(3, $table);
         $this->assertEquals([
             'Donald' => new Person('Donald', 'Duck'),
             'Mickey' => new Person('Mickey', 'Mouse'),
             'John'   => new Person('John', 'Smith'),
-        ], $table->toArray());
+        ], $table);
 
         $this->assertEquals(IndexingBy::scalar('firstName'), IndexingBy::scalar(new Getter('firstName')));
     }
@@ -108,27 +106,5 @@ class IndexingByTest extends TestCase
         $this->assertEquals(new Person('Mickey', 'Mouse'), $table[['Mickey', 'Mouse']]);
         $this->assertEquals(new Person('John', 'Doe'), $table[['John', 'Doe']]);
         $this->assertEquals(new Person('John', 'Smith'), $table[['John', 'Smith']]);
-    }
-}
-
-class Person
-{
-    public $firstName;
-    public $lastName;
-
-    public function __construct($firstName, $lastName)
-    {
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-    }
-
-    public function firstName()
-    {
-        return $this->firstName;
-    }
-
-    public function lastName()
-    {
-        return $this->lastName;
     }
 }

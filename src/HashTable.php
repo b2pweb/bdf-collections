@@ -125,6 +125,30 @@ class HashTable implements TableInterface
     /**
      * {@inheritdoc}
      */
+    public function addAll($elements)
+    {
+        throw new \BadMethodCallException('HashTable do not supports adding an elements without specify a key');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function replace($elements)
+    {
+        $this->clear();
+
+        $b = true;
+
+        foreach ($elements as $key => $value) {
+            $b = $this->set($key, $value) && $b;
+        }
+
+        return $b;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function unset($key)
     {
         $hash = ($this->hashFunction)($key);
@@ -187,7 +211,6 @@ class HashTable implements TableInterface
     {
         return empty($this->keys);
     }
-
 
     /**
      * {@inheritdoc}

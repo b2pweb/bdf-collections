@@ -161,4 +161,36 @@ class MapStreamTest extends TestCase
 
         $this->assertEquals('8:10:2', $stream->collect(new Joining(':')));
     }
+
+    /**
+     *
+     */
+    public function test_concat()
+    {
+        $stream = new MapStream(new ArrayStream([4, 5, 1]), function ($e) { return $e * 2; });
+
+        $this->assertEquals([8, 10, 2, 5, 3], $stream->concat(new ArrayStream([5, 3]), false)->toArray());
+    }
+
+    /**
+     *
+     */
+    public function test_matchAll()
+    {
+        $stream = new MapStream(new ArrayStream([4, 5, 1]), function ($e) { return $e * 2; });
+
+        $this->assertTrue($stream->matchAll(function ($e) { return $e < 20; }));
+        $this->assertFalse($stream->matchAll(function ($e) { return $e % 4 === 0; }));
+    }
+
+    /**
+     *
+     */
+    public function test_matchOne()
+    {
+        $stream = new MapStream(new ArrayStream([4, 5, 1]), function ($e) { return $e * 2; });
+
+        $this->assertTrue($stream->matchOne(function ($e) { return $e % 4 === 0; }));
+        $this->assertFalse($stream->matchOne(function ($e) { return $e > 20; }));
+    }
 }

@@ -11,7 +11,7 @@ use Bdf\Collection\Util\Optional;
  *
  * Unlike other streams, for optimisation reasons, the transformation methods will be called directly, before the terminal call
  */
-final class SingletonStream implements \Iterator, StreamInterface
+final class SingletonStream implements StreamInterface
 {
     /**
      * @var mixed
@@ -79,6 +79,14 @@ final class SingletonStream implements \Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
+    public function concat(StreamInterface $stream, $preserveKeys = true)
+    {
+        return new ConcatStream([$this, $stream], $preserveKeys);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function forEach(callable $consumer)
     {
         $consumer($this->value, $this->key);
@@ -121,6 +129,22 @@ final class SingletonStream implements \Iterator, StreamInterface
         $collector->aggregate($this->value, $this->key);
 
         return $collector->finalize();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function matchAll(callable $predicate)
+    {
+        return $predicate($this->value, $this->key);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function matchOne(callable $predicate)
+    {
+        return $predicate($this->value, $this->key);
     }
 
     /**

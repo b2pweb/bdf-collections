@@ -2,7 +2,6 @@
 
 namespace Bdf\Collection\Stream\Collector;
 
-use Bdf\Collection\ArrayCollection;
 use Bdf\Collection\HashTable;
 use Bdf\Collection\TableInterface;
 use Bdf\Collection\Util\Functor\Transformer\Getter;
@@ -10,6 +9,7 @@ use Bdf\Collection\Util\Hash;
 
 /**
  * Indexing elements by an extracted key
+ *
  * Only one occurrence can be set for one key. If two elements have the same key, the last one will override the first one
  * It's advisable to perform a StreamInterface::distinct() using the same getter before indexing the elements if there is possible duplicate keys
  *
@@ -21,7 +21,7 @@ use Bdf\Collection\Util\Hash;
  * ]);
  *
  * $stream->collect(new IndexingBy(new Getter('firstName')));
- * // Result : ArrayCollection [
+ * // Result : Array [
  * //     'John'   => Person('John', 'Doe'),
  * //     'Mickey' => Person('Mickey', 'Mouse'),
  * //     'Donald' => Person('Donald', 'Duck'), ]
@@ -35,7 +35,7 @@ final class IndexingBy implements CollectorInterface
     private $getter;
 
     /**
-     * @var TableInterface
+     * @var TableInterface|array
      */
     private $table;
 
@@ -44,12 +44,12 @@ final class IndexingBy implements CollectorInterface
      * GroupingBy constructor.
      *
      * @param callable $getter Extract the group key from element
-     * @param TableInterface $table The result table
+     * @param array|TableInterface $table The result table or array
      */
-    public function __construct(callable $getter, TableInterface $table = null)
+    public function __construct(callable $getter, $table = [])
     {
         $this->getter = $getter;
-        $this->table = $table ?: new ArrayCollection();
+        $this->table = $table;
     }
 
     /**

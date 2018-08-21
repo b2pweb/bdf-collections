@@ -39,4 +39,14 @@ final class DistinctStream extends \FilterIterator implements StreamInterface
     {
         return $this->set->add($this->current());
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rewind()
+    {
+        $this->set->clear();
+
+        parent::rewind();
+    }
 }

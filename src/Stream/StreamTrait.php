@@ -45,6 +45,14 @@ trait StreamTrait
     }
 
     /**
+     * @see StreamInterface::concat()
+     */
+    public function concat(StreamInterface $stream, $preserveKeys = true)
+    {
+        return new ConcatStream([$this, $stream], $preserveKeys);
+    }
+
+    /**
      * @see StreamInterface::forEach()
      */
     public function forEach(callable $consumer)
@@ -101,5 +109,33 @@ trait StreamTrait
         }
 
         return $collector->finalize();
+    }
+
+    /**
+     * @see StreamInterface::matchAll()
+     */
+    public function matchAll(callable $predicate)
+    {
+        foreach ($this as $key => $item) {
+            if (!$predicate($item, $key)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @see StreamInterface::matchOne()
+     */
+    public function matchOne(callable $predicate)
+    {
+        foreach ($this as $key => $item) {
+            if ($predicate($item, $key)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

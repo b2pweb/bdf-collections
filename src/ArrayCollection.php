@@ -176,6 +176,42 @@ class ArrayCollection implements TableInterface
     public function add($element)
     {
         $this->data[] = $element;
+
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addAll($elements)
+    {
+        if ($elements instanceof ArrayCollection) {
+            $elements = $elements->data;
+        } elseif (!is_array($elements)) {
+            $elements = iterator_to_array($elements, false);
+        }
+
+        $this->data = array_merge($this->data, $elements);
+
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function replace($elements)
+    {
+        $this->clear();
+
+        if (is_array($elements)) {
+            $this->data = $elements;
+        } elseif ($elements instanceof ArrayCollection) {
+            $this->data = $elements->data;
+        } else {
+            $this->data = iterator_to_array($elements);
+        }
+
+        return true;
     }
 
     /**

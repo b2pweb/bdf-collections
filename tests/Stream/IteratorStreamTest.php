@@ -146,4 +146,36 @@ class IteratorStreamTest extends TestCase
 
         $this->assertEquals('4:5:1', $stream->collect(new Joining(':')));
     }
+
+    /**
+     *
+     */
+    public function test_concat()
+    {
+        $stream = new IteratorStream(new \ArrayIterator([4, 5, 1]));
+
+        $this->assertSame([4, 5, 1, 2, 7], $stream->concat(new ArrayStream([2, 7]), false)->toArray());
+    }
+
+    /**
+     *
+     */
+    public function test_matchAll()
+    {
+        $stream = new IteratorStream(new \ArrayIterator([4, 5, 1]));
+
+        $this->assertTrue($stream->matchAll(function ($e) { return $e < 10; }));
+        $this->assertFalse($stream->matchAll(function ($e) { return $e % 2 === 0; }));
+    }
+
+    /**
+     *
+     */
+    public function test_matchOne()
+    {
+        $stream = new IteratorStream(new \ArrayIterator([4, 5, 1]));
+
+        $this->assertTrue($stream->matchOne(function ($e) { return $e % 2 === 0; }));
+        $this->assertFalse($stream->matchOne(function ($e) { return $e > 10; }));
+    }
 }

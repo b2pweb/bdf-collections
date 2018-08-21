@@ -36,6 +36,26 @@ class EmptyStreamTest extends TestCase
     /**
      *
      */
+    public function test_concat_preserve_keys()
+    {
+        $stream = new ArrayStream([]);
+
+        $this->assertSame($stream, (new EmptyStream())->concat($stream));
+    }
+
+    /**
+     *
+     */
+    public function test_concat_no_preserve_keys()
+    {
+        $stream = new ArrayStream([]);
+
+        $this->assertEquals(new ConcatStream([$stream], false), (new EmptyStream())->concat($stream, false));
+    }
+
+    /**
+     *
+     */
     public function test_toArray()
     {
         $this->assertEquals([], (new EmptyStream())->toArray());
@@ -80,6 +100,15 @@ class EmptyStreamTest extends TestCase
     public function test_collect()
     {
         $this->assertEquals('[]', (new EmptyStream())->collect(new Joining('', '[', ']')));
+    }
+
+    /**
+     *
+     */
+    public function test_match()
+    {
+        $this->assertTrue((new EmptyStream())->matchAll(function () {}));
+        $this->assertFalse((new EmptyStream())->matchOne(function () {}));
     }
 
     /**

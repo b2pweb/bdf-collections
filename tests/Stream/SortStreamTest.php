@@ -251,4 +251,36 @@ class SortStreamTest extends TestCase
 
         $this->assertEquals('1:4:5', $stream->collect(new Joining(':')));
     }
+
+    /**
+     *
+     */
+    public function test_concat()
+    {
+        $stream = new SortStream(new ArrayStream([4, 5, 1]), null, false);
+
+        $this->assertSame([1, 4, 5, 3, 2], $stream->concat(new ArrayStream([3, 2]), false)->toArray());
+    }
+
+    /**
+     *
+     */
+    public function test_matchAll()
+    {
+        $stream = new SortStream(new ArrayStream([4, 5, 1]));
+
+        $this->assertTrue($stream->matchAll(function ($e) { return $e < 10; }));
+        $this->assertFalse($stream->matchAll(function ($e) { return $e % 2 === 0; }));
+    }
+
+    /**
+     *
+     */
+    public function test_matchOne()
+    {
+        $stream = new SortStream(new ArrayStream([4, 5, 1]));
+
+        $this->assertTrue($stream->matchOne(function ($e) { return $e % 2 === 0; }));
+        $this->assertFalse($stream->matchOne(function ($e) { return $e > 10; }));
+    }
 }

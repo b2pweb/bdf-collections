@@ -162,8 +162,8 @@ class ArrayCollectionTest extends TestCase
     {
         $collection = new ArrayCollection();
 
-        $collection->add(1);
-        $collection->add(2);
+        $this->assertTrue($collection->add(1));
+        $this->assertTrue($collection->add(2));
 
         $this->assertEquals([1, 2], $collection->toArray());
     }
@@ -271,5 +271,77 @@ class ArrayCollectionTest extends TestCase
         $table[123][] = 'World';
 
         $this->assertSame(['Hello', 'World'], $table[123]);
+    }
+
+    /**
+     *
+     */
+    public function test_addAll()
+    {
+        $table = new ArrayCollection([1, 2, 3]);
+
+        $this->assertTrue($table->addAll([7, 8 ,9]));
+
+        $this->assertEquals([1, 2, 3, 7, 8, 9], $table->toArray());
+    }
+
+    /**
+     *
+     */
+    public function test_addAll_with_traversable()
+    {
+        $table = new ArrayCollection([1, 2, 3]);
+
+        $this->assertTrue($table->addAll(new \ArrayIterator([7, 8 ,9])));
+
+        $this->assertEquals([1, 2, 3, 7, 8, 9], $table->toArray());
+    }
+
+    /**
+     *
+     */
+    public function test_addAll_with_self()
+    {
+        $table = new ArrayCollection([1, 2, 3]);
+
+        $this->assertTrue($table->addAll(new ArrayCollection([7, 8 ,9])));
+
+        $this->assertEquals([1, 2, 3, 7, 8, 9], $table->toArray());
+    }
+
+    /**
+     *
+     */
+    public function test_replace()
+    {
+        $table = new ArrayCollection([1, 2, 3]);
+
+        $this->assertTrue($table->replace([7, 8 ,9]));
+
+        $this->assertEquals([7, 8, 9], $table->toArray());
+    }
+
+    /**
+     *
+     */
+    public function test_replace_with_traversable()
+    {
+        $table = new ArrayCollection([1, 2, 3]);
+
+        $this->assertTrue($table->replace(new \ArrayIterator([7, 8 ,9])));
+
+        $this->assertEquals([7, 8, 9], $table->toArray());
+    }
+
+    /**
+     *
+     */
+    public function test_replace_with_self()
+    {
+        $table = new ArrayCollection([1, 2, 3]);
+
+        $this->assertTrue($table->replace(new ArrayCollection([7, 8 ,9])));
+
+        $this->assertEquals([7, 8, 9], $table->toArray());
     }
 }

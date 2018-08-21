@@ -270,4 +270,52 @@ class ArrayCombineStreamTest extends TestCase
 
         $this->assertEquals('123,456', $stream->collect(new Joining(',')));
     }
+
+    /**
+     *
+     */
+    public function test_concat()
+    {
+        $stream = new ArrayCombineStream(
+            ['a', 'b'],
+            [123, 456]
+        );
+
+        $concat = $stream->concat(new ArrayStream([2, 3]));
+
+        $this->assertInstanceOf(ConcatStream::class, $concat);
+        $this->assertSame([
+            'a' => 123,
+            'b' => 456,
+            2, 3
+        ], $concat->toArray());
+    }
+
+    /**
+     *
+     */
+    public function test_matchAll()
+    {
+        $stream = new ArrayCombineStream(
+            ['a', 'b'],
+            [123, 456]
+        );
+
+        $this->assertTrue($stream->matchAll(function ($e) { return $e > 100; }));
+        $this->assertFalse($stream->matchAll(function ($e) { return $e % 2 === 0; }));
+    }
+
+    /**
+     *
+     */
+    public function test_matchOne()
+    {
+        $stream = new ArrayCombineStream(
+            ['a', 'b'],
+            [123, 456]
+        );
+
+        $this->assertTrue($stream->matchOne(function ($e) { return $e % 2 === 0; }));
+        $this->assertFalse($stream->matchAll(function ($e) { return $e < 100; }));
+    }
 }

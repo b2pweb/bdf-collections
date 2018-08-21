@@ -259,4 +259,39 @@ class ArrayStreamTest extends TestCase
 
         $this->assertEquals('4:8:2', $stream->collect(new Joining(':')));
     }
+
+    /**
+     *
+     */
+    public function test_concat()
+    {
+        $stream = new ArrayStream([4, 8, 2]);
+
+        $concat = $stream->concat(new ArrayStream([7, 4]), false);
+
+        $this->assertInstanceOf(ConcatStream::class, $concat);
+        $this->assertEquals([4, 8, 2, 7, 4], $concat->toArray());
+    }
+
+    /**
+     *
+     */
+    public function test_matchAll()
+    {
+        $stream = new ArrayStream([4, 8, 2]);
+
+        $this->assertTrue($stream->matchAll(function ($e) { return $e % 2 === 0; }));
+        $this->assertFalse($stream->matchAll(function ($e) { return $e % 4 === 0; }));
+    }
+
+    /**
+     *
+     */
+    public function test_matchOne()
+    {
+        $stream = new ArrayStream([4, 8, 2]);
+
+        $this->assertTrue($stream->matchOne(function ($e) { return $e % 4 === 0; }));
+        $this->assertFalse($stream->matchOne(function ($e) { return $e % 2 === 1; }));
+    }
 }

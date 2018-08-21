@@ -183,6 +183,96 @@ class HashSetTest extends TestCase
 
         $this->assertEquals([1, 4, 9], $set->stream()->map(function ($e) { return $e * $e; })->toArray());
     }
+
+    /**
+     *
+     */
+    public function test_addAll_with_array()
+    {
+        $set = new HashSet();
+
+        $set->add(1);
+        $set->add(2);
+        $set->add(3);
+
+        $this->assertTrue($set->addAll([4, 5, 6]));
+        $this->assertEquals([1, 2, 3, 4, 5, 6], $set->toArray());
+    }
+
+    /**
+     *
+     */
+    public function test_addAll_with_Traversable()
+    {
+        $set = new HashSet();
+
+        $set->add(1);
+        $set->add(2);
+        $set->add(3);
+
+        $this->assertTrue($set->addAll(new ArrayCollection([4, 5, 6])));
+        $this->assertEquals([1, 2, 3, 4, 5, 6], $set->toArray());
+    }
+
+    /**
+     *
+     */
+    public function test_addAll_with_duplicate()
+    {
+        $set = new HashSet();
+
+        $set->add(1);
+        $set->add(2);
+        $set->add(3);
+
+        $this->assertFalse($set->addAll([4, 2, 6]));
+        $this->assertEquals([1, 2, 3, 4, 6], $set->toArray());
+    }
+
+    /**
+     *
+     */
+    public function test_replace_with_array()
+    {
+        $set = new HashSet();
+
+        $set->add(1);
+        $set->add(2);
+        $set->add(3);
+
+        $this->assertTrue($set->replace([4, 5, 6]));
+        $this->assertEquals([4, 5, 6], $set->toArray());
+    }
+
+    /**
+     *
+     */
+    public function test_replace_with_Traversable()
+    {
+        $set = new HashSet();
+
+        $set->add(1);
+        $set->add(2);
+        $set->add(3);
+
+        $this->assertTrue($set->replace(new ArrayCollection([4, 5, 6])));
+        $this->assertEquals([4, 5, 6], $set->toArray());
+    }
+
+    /**
+     *
+     */
+    public function test_replace_with_duplicate()
+    {
+        $set = new HashSet();
+
+        $set->add(1);
+        $set->add(2);
+        $set->add(3);
+
+        $this->assertFalse($set->replace([4, 4, 6]));
+        $this->assertEquals([4, 6], $set->toArray());
+    }
 }
 
 class CustomHash implements Hashable
