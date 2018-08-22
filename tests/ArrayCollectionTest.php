@@ -186,7 +186,9 @@ class ArrayCollectionTest extends TestCase
     {
         $collection = new ArrayCollection(['foo' => 'bar']);
 
-        $collection->unset('foo');
+        $this->assertFalse($collection->unset('not_found'));
+        $this->assertTrue($collection->unset('foo'));
+
         $this->assertFalse($collection->hasKey('foo'));
         $this->assertEquals([], $collection->toArray());
     }

@@ -227,7 +227,13 @@ class ArrayCollection implements TableInterface
      */
     public function unset($key)
     {
-        unset($this->data[$key]);
+        if (isset($this->data[$key])) {
+            unset($this->data[$key]);
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
