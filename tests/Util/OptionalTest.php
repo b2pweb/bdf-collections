@@ -98,6 +98,10 @@ class OptionalTest extends TestCase
 
         $this->assertEquals(123, $opt->or(456));
         $this->assertEquals(123, $opt->orThrows());
+
+        $called = false;
+        $this->assertEquals(123, $opt->orSupply(function () use(&$called) { $called = true; }));
+        $this->assertFalse($called);
     }
 
     /**

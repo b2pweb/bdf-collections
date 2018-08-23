@@ -273,6 +273,20 @@ class HashSetTest extends TestCase
         $this->assertFalse($set->replace([4, 4, 6]));
         $this->assertEquals([4, 6], $set->toArray());
     }
+
+    /**
+     *
+     */
+    public function test_lookup()
+    {
+        $set = new HashSet();
+
+        $set->add($o = new CustomHash('John', 'Doe'));
+
+        $this->assertSame($o, $set->lookup($o)->get());
+        $this->assertSame($o, $set->lookup(new CustomHash('John', 'Doe'))->get());
+        $this->assertFalse($set->lookup(new CustomHash('Donald', 'Duck'))->present());
+    }
 }
 
 class CustomHash implements Hashable

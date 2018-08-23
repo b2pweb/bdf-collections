@@ -32,7 +32,7 @@ class ArrayCollection implements TableInterface
      */
     public function contains($element, $strict = false)
     {
-        return in_array($element, $this->data, $strict);
+        return in_array($element, $this->data, $strict) !== false;
     }
 
     /**

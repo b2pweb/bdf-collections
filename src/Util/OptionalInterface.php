@@ -88,6 +88,20 @@ interface OptionalInterface extends Streamable
     public function orThrows($exception = \RuntimeException::class);
 
     /**
+     * Get the current value if present, or return the supplier result
+     *
+     * <code>
+     * Optional::of(456)->orSupply('rand'); // Return 456
+     * Optional::empty()->orSupply('rand'); // Return random number
+     * </code>
+     *
+     * @param callable $supplier Generate the default value
+     *
+     * @return mixed
+     */
+    public function orSupply(callable $supplier);
+
+    /**
      * Check if the Optional value is present or not
      *
      * @return boolean

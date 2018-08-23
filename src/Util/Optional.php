@@ -70,6 +70,14 @@ final class Optional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
+    public function orSupply(callable $supplier)
+    {
+        return $this->value;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function orThrows($exception = \RuntimeException::class)
     {
         return $this->value;

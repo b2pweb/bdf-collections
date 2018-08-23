@@ -162,6 +162,16 @@ class DistinctStreamTest extends TestCase
     /**
      *
      */
+    public function test_flatMap()
+    {
+        $stream = new DistinctStream(new ArrayStream([[1, 2], [1, 2], [3, 4]]), new HashSet());
+
+        $this->assertSame([1, 2, 3, 4], $stream->flatMap(function ($e) { return $e; })->toArray());
+    }
+
+    /**
+     *
+     */
     public function test_matchAll()
     {
         $stream = new DistinctStream(new ArrayStream([4, 5, 1, 5]), new HashSet());

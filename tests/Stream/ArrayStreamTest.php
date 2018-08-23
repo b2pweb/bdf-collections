@@ -201,6 +201,57 @@ class ArrayStreamTest extends TestCase
     /**
      *
      */
+    public function test_flatMap_preserve_keys()
+    {
+        $stream = new ArrayStream([
+            [
+                'value' => [
+                    'foo' => 12,
+                    'bar' => 42,
+                ]
+            ],
+            [
+                'value' => [
+                    'oof' => 32,
+                    'baz' => 25,
+                ]
+            ],
+        ]);
+
+        $this->assertSame([
+            'foo' => 12,
+            'bar' => 42,
+            'oof' => 32,
+            'baz' => 25
+        ], $stream->flatMap(function ($e) { return $e['value']; }, true)->toArray());
+    }
+
+    /**
+     *
+     */
+    public function test_flatMap_no_preserve_keys()
+    {
+        $stream = new ArrayStream([
+            [
+                'value' => [
+                    'foo' => 12,
+                    'bar' => 42,
+                ]
+            ],
+            [
+                'value' => [
+                    'oof' => 32,
+                    'baz' => 25,
+                ]
+            ],
+        ]);
+
+        $this->assertSame([12, 42, 32, 25], $stream->flatMap(function ($e) { return $e['value']; })->toArray());
+    }
+
+    /**
+     *
+     */
     public function test_reduce_with_closure()
     {
         $stream = new ArrayStream([4, 5, 1]);

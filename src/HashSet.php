@@ -4,6 +4,8 @@ namespace Bdf\Collection;
 
 use Bdf\Collection\Stream\ArrayStream;
 use Bdf\Collection\Util\Hash;
+use Bdf\Collection\Util\Optional;
+use Bdf\Collection\Util\OptionalInterface;
 
 /**
  * Set implementation using an hash table
@@ -100,6 +102,20 @@ class HashSet implements SetInterface
     public function contains($element, $strict = false)
     {
         return isset($this->data[($this->hashFunction)($element)]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function lookup($element)
+    {
+        $index = ($this->hashFunction)($element);
+
+        if (!isset($this->data[$index])) {
+            return Optional::empty();
+        }
+
+        return Optional::of($this->data[$index]);
     }
 
     /**

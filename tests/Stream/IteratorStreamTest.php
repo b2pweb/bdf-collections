@@ -160,6 +160,16 @@ class IteratorStreamTest extends TestCase
     /**
      *
      */
+    public function test_flatMap()
+    {
+        $stream = new IteratorStream(new \ArrayIterator([[1, 2], [3, 4]]));
+
+        $this->assertSame([1, 2, 3, 4], $stream->flatMap(function ($e) { return $e; })->toArray());
+    }
+
+    /**
+     *
+     */
     public function test_matchAll()
     {
         $stream = new IteratorStream(new \ArrayIterator([4, 5, 1]));

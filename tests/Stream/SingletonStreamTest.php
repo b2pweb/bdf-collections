@@ -155,6 +155,17 @@ class SingletonStreamTest extends TestCase
     /**
      *
      */
+    public function test_flatMap()
+    {
+        $stream = new SingletonStream(['firstName' => 'John', 'lastName' => 'Doe']);
+
+        $this->assertEquals(['John', 'Doe'], $stream->flatMap(function ($e) { return $e; })->toArray());
+        $this->assertEquals(['firstName' => 'John', 'lastName' => 'Doe'], $stream->flatMap(function ($e) { return $e; }, true)->toArray());
+    }
+
+    /**
+     *
+     */
     public function test_concat()
     {
         $stream = new SingletonStream(15);

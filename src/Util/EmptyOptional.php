@@ -54,6 +54,14 @@ final class EmptyOptional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
+    public function orSupply(callable $supplier)
+    {
+        return $supplier();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function orThrows($exception = \RuntimeException::class)
     {
         if (is_string($exception)) {

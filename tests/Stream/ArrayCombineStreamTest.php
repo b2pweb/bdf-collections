@@ -274,6 +274,22 @@ class ArrayCombineStreamTest extends TestCase
     /**
      *
      */
+    public function test_flatMap()
+    {
+        $stream = new ArrayCombineStream(
+            [1, 2],
+            [
+                ['value' => [1, 2]],
+                ['value' => 3]
+            ]
+        );
+
+        $this->assertSame([1, 2, 3], $stream->flatMap(function ($e) { return $e['value']; })->toArray());
+    }
+
+    /**
+     *
+     */
     public function test_concat()
     {
         $stream = new ArrayCombineStream(

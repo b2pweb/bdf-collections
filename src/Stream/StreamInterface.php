@@ -175,6 +175,50 @@ interface StreamInterface extends \Iterator
     public function concat(StreamInterface $stream, $preserveKeys = true);
 
     /**
+     * Create a stream resulting of concatenation of each elements content extracted by $transformer
+     * This method reduce by one the depth of multidimensional stream
+     *
+     * Example:
+     * <code>
+     * $stream = new ArrayStream([
+     *     ['values' => [1, 2]],
+     *     ['values' => 3],
+     *     ['values' => new ArrayStream([4, 5])],
+     * ]);
+     *
+     * $stream->forMap(function ($e) { return $e['values']; })->toArray(); // [1, 2, 3, 4, 5]
+     * </code>
+     *
+     * (i) Each transformed elements will be transformed to a Stream using Streams::wrap()
+     *     Empty array and null will be transformed to an EmptyStream, array to an array stream, etc...
+     *     For ensure that no transformation is applied, the transformer should return a StreamInterface
+     *
+     * This method is equivalent with :
+     * <code>
+     * $stream
+     *     ->map($transformer)
+     *     ->map(function ($e) { return Streams::wrap($e); })
+     *     ->reduce(
+     *         function (StreamInterface $a, StreamInterface $b) { return $a->concat($b); },
+     *         EmptyStream::instance()
+     *     )
+     * ;
+     * </code>
+     *
+     * @param callable|null $transformer The element transformer
+     *     Should take the element as first parameter an return the transformed element
+     *     The transformer may have (if relevant) the key as second parameter
+     *
+     * @param bool $preserveKeys Preserve the sub-streams keys, or use integer increment index
+     *
+     * @return StreamInterface
+     *
+     * @see TransformerInterface
+     * @see Streams::wrap() Used to transform each transformed elements to a Stream
+     */
+    public function flatMap(callable $transformer, $preserveKeys = false);
+
+    /**
      * Iterate over all stream elements.
      * This method is a terminal method : the stream must not be used after
      *

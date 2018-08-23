@@ -219,6 +219,19 @@ class ConcatStreamTest extends TestCase
     /**
      *
      */
+    public function test_flatMap()
+    {
+        $stream = new ConcatStream([
+            new ArrayStream([[5, 2], [3, 4]]),
+            new ArrayStream([[8, 5], [2, 1]])
+        ]);
+
+        $this->assertSame([5, 2, 3, 4, 8, 5, 2, 1], $stream->flatMap(function ($e) { return $e; })->toArray());
+    }
+
+    /**
+     *
+     */
     public function test_forEach()
     {
         $stream = new ConcatStream([

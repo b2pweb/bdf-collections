@@ -27,5 +27,8 @@ class StreamsTest extends TestCase
         $this->assertEquals($collection->stream(), Streams::wrap($collection));
 
         $this->assertEquals(new SingletonStream('hello'), Streams::wrap('hello'));
+
+        $stream = new SingletonStream('hello');
+        $this->assertSame($stream, Streams::wrap($stream));
     }
 }

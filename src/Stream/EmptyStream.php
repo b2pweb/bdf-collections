@@ -60,6 +60,14 @@ final class EmptyStream extends \EmptyIterator implements StreamInterface
     /**
      * {@inheritdoc}
      */
+    public function flatMap(callable $transformer, $preserveKeys = false)
+    {
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function forEach(callable $consumer)
     {
     }

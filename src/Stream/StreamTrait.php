@@ -53,6 +53,14 @@ trait StreamTrait
     }
 
     /**
+     * @see StreamInterface::flatMap()
+     */
+    public function flatMap(callable $transformer, $preserveKeys = false)
+    {
+        return new FlatMapStream($this, $transformer, $preserveKeys);
+    }
+
+    /**
      * @see StreamInterface::forEach()
      */
     public function forEach(callable $consumer)

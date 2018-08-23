@@ -66,6 +66,14 @@ class EmptyOptionalTest extends TestCase
     /**
      *
      */
+    public function test_orSupply()
+    {
+        $this->assertEquals(123, EmptyOptional::instance()->orSupply(function () { return 123; }));
+    }
+
+    /**
+     *
+     */
     public function test_present()
     {
         $this->assertFalse(EmptyOptional::instance()->present());

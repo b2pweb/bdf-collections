@@ -23,6 +23,10 @@ final class Streams
      */
     public static function wrap($value)
     {
+        if ($value instanceof StreamInterface) {
+            return $value;
+        }
+
         if ($value instanceof Streamable) {
             return $value->stream();
         }

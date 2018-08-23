@@ -169,6 +169,16 @@ class FilterStreamTest extends TestCase
     /**
      *
      */
+    public function test_flatMap()
+    {
+        $stream = new FilterStream(new ArrayStream([[1, 2], [3], [4, 5]]), function ($e) { return count($e) > 1; });
+
+        $this->assertSame([1, 2, 4, 5], $stream->flatMap(function ($e) { return $e; })->toArray());
+    }
+
+    /**
+     *
+     */
     public function test_matchAll()
     {
         $stream = new FilterStream(new ArrayStream([4, 5, 1, 8, 3]), function ($e) { return $e < 6; });

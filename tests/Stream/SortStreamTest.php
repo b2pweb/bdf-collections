@@ -265,6 +265,16 @@ class SortStreamTest extends TestCase
     /**
      *
      */
+    public function test_flatMap()
+    {
+        $stream = new SortStream(new ArrayStream([[2, 3], [2, 5], [1, 4]]), null, false);
+
+        $this->assertSame([1, 4, 2, 3, 2, 5], $stream->flatMap(function ($e) { return $e; })->toArray());
+    }
+
+    /**
+     *
+     */
     public function test_matchAll()
     {
         $stream = new SortStream(new ArrayStream([4, 5, 1]));

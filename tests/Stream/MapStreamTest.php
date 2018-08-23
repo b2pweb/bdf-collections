@@ -175,6 +175,16 @@ class MapStreamTest extends TestCase
     /**
      *
      */
+    public function test_flatMap()
+    {
+        $stream = new MapStream(new ArrayStream([[1, 2], [3, 4]]), function ($e) { $e[] = 0; return $e; });
+
+        $this->assertEquals([1, 2, 0, 3, 4, 0], $stream->flatMap(function ($e) { return $e; })->toArray());
+    }
+
+    /**
+     *
+     */
     public function test_matchAll()
     {
         $stream = new MapStream(new ArrayStream([4, 5, 1]), function ($e) { return $e * 2; });

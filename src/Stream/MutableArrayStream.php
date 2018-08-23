@@ -112,6 +112,14 @@ class MutableArrayStream implements \Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
+    public function flatMap(callable $transformer, $preserveKeys = false)
+    {
+        return new FlatMapStream($this, $transformer, $preserveKeys);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function forEach(callable $consumer)
     {
         foreach ($this->data as $k => $v) {

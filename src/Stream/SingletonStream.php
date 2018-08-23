@@ -87,6 +87,18 @@ final class SingletonStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
+    public function flatMap(callable $transformer, $preserveKeys = false)
+    {
+        if ($preserveKeys) {
+            return Streams::wrap($transformer($this->value, $this->key));
+        }
+
+        return new FlatMapStream($this, $transformer, false);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function forEach(callable $consumer)
     {
         $consumer($this->value, $this->key);
