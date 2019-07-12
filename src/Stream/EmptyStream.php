@@ -5,6 +5,7 @@ namespace Bdf\Collection\Stream;
 use Bdf\Collection\Stream\Accumulator\AccumulatorInterface;
 use Bdf\Collection\Stream\Collector\CollectorInterface;
 use Bdf\Collection\Util\Optional;
+use Bdf\Collection\Util\OptionalInterface;
 
 /**
  * Null object for streams
@@ -20,7 +21,7 @@ final class EmptyStream extends \EmptyIterator implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function map(callable $transformer)
+    public function map(callable $transformer): StreamInterface
     {
         return $this;
     }
@@ -28,7 +29,7 @@ final class EmptyStream extends \EmptyIterator implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function filter(callable $predicate)
+    public function filter(callable $predicate): StreamInterface
     {
         return $this;
     }
@@ -36,7 +37,7 @@ final class EmptyStream extends \EmptyIterator implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function distinct(callable $hashFunction = null)
+    public function distinct(callable $hashFunction = null): StreamInterface
     {
         return $this;
     }
@@ -44,7 +45,7 @@ final class EmptyStream extends \EmptyIterator implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function sort(callable $comparator = null, $preserveKeys = false)
+    public function sort(callable $comparator = null, bool $preserveKeys = false): StreamInterface
     {
         return $this;
     }
@@ -52,7 +53,7 @@ final class EmptyStream extends \EmptyIterator implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function concat(StreamInterface $stream, $preserveKeys = true)
+    public function concat(StreamInterface $stream, bool $preserveKeys = true): StreamInterface
     {
         return $preserveKeys ? $stream : new ConcatStream([$stream], false);
     }
@@ -60,7 +61,7 @@ final class EmptyStream extends \EmptyIterator implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function flatMap(callable $transformer, $preserveKeys = false)
+    public function flatMap(callable $transformer, bool $preserveKeys = false): StreamInterface
     {
         return $this;
     }
@@ -68,14 +69,14 @@ final class EmptyStream extends \EmptyIterator implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function forEach(callable $consumer)
+    public function forEach(callable $consumer): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function toArray($preserveKeys = true)
+    public function toArray(bool $preserveKeys = true): array
     {
         return [];
     }
@@ -83,7 +84,7 @@ final class EmptyStream extends \EmptyIterator implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function first()
+    public function first(): OptionalInterface
     {
         return Optional::empty();
     }
@@ -110,7 +111,7 @@ final class EmptyStream extends \EmptyIterator implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function matchAll(callable $predicate)
+    public function matchAll(callable $predicate): bool
     {
         return true;
     }
@@ -118,7 +119,7 @@ final class EmptyStream extends \EmptyIterator implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function matchOne(callable $predicate)
+    public function matchOne(callable $predicate): bool
     {
         return false;
     }
@@ -128,7 +129,7 @@ final class EmptyStream extends \EmptyIterator implements StreamInterface
      *
      * @return EmptyStream
      */
-    public static function instance()
+    public static function instance(): EmptyStream
     {
         if (self::$instance) {
             return self::$instance;

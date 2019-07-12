@@ -22,7 +22,7 @@ class ArrayStream extends \ArrayIterator implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function toArray($preserveKeys = true)
+    public function toArray(bool $preserveKeys = true): array
     {
         $array = $this->getArrayCopy();
 

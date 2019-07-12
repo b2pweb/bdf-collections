@@ -17,7 +17,7 @@ interface TableInterface extends CollectionInterface, \ArrayAccess
      *
      * @return void
      */
-    public function set($key, $value);
+    public function set($key, $value): void;
 
     /**
      * Get a value at the specified index
@@ -36,7 +36,7 @@ interface TableInterface extends CollectionInterface, \ArrayAccess
      * The element will be store at a generated key, like an increment
      * Some implementation may not supports generation of key, and this method will return false, without store the value
      */
-    public function add($element);
+    public function add($element): bool;
 
     /**
      * Check if the table has the given key
@@ -45,7 +45,7 @@ interface TableInterface extends CollectionInterface, \ArrayAccess
      *
      * @return boolean true if the table has the key
      */
-    public function hasKey($key);
+    public function hasKey($key): bool;
 
     /**
      * Remove an element at the given key
@@ -54,21 +54,21 @@ interface TableInterface extends CollectionInterface, \ArrayAccess
      *
      * @return boolean true if the key exists, and the element is successfully removed
      */
-    public function unset($key);
+    public function unset($key): bool;
 
     /**
      * Get all the keys of the table
      *
      * @return array
      */
-    public function keys();
+    public function keys(): array;
 
     /**
      * Get all values (elements) of the table
      *
      * @return array
      */
-    public function values();
+    public function values(): array;
 
     /**
      * {@inheritdoc}
@@ -84,7 +84,7 @@ interface TableInterface extends CollectionInterface, \ArrayAccess
      * });
      * </code>
      */
-    public function forEach(callable $consumer);
+    public function forEach(callable $consumer): void;
 
     /**
      * {@inheritdoc}

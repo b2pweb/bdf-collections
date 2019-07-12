@@ -5,6 +5,7 @@ namespace Bdf\Collection\Stream;
 use Bdf\Collection\Stream\Accumulator\AccumulatorInterface;
 use Bdf\Collection\Stream\Collector\CollectorInterface;
 use Bdf\Collection\Util\Optional;
+use Bdf\Collection\Util\OptionalInterface;
 
 /**
  * Stream for array using native PHP array methods
@@ -39,7 +40,7 @@ class MutableArrayStream implements \Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function map(callable $transformer)
+    public function map(callable $transformer): StreamInterface
     {
         $newData = [];
 
@@ -55,7 +56,7 @@ class MutableArrayStream implements \Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function filter(callable $predicate)
+    public function filter(callable $predicate): StreamInterface
     {
         $this->data = array_filter($this->data, $predicate, ARRAY_FILTER_USE_BOTH);
 
@@ -65,7 +66,7 @@ class MutableArrayStream implements \Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function distinct(callable $hashFunction = null)
+    public function distinct(callable $hashFunction = null): StreamInterface
     {
         $this->data = array_unique($this->data, SORT_REGULAR);
 
@@ -75,7 +76,7 @@ class MutableArrayStream implements \Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function sort(callable $comparator = null, $preserveKeys = false)
+    public function sort(callable $comparator = null, bool $preserveKeys = false): StreamInterface
     {
         if ($comparator) {
             if ($preserveKeys) {
@@ -95,7 +96,7 @@ class MutableArrayStream implements \Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function concat(StreamInterface $stream, $preserveKeys = true)
+    public function concat(StreamInterface $stream, bool $preserveKeys = true): StreamInterface
     {
         if ($stream instanceof MutableArrayStream) {
             $this->data = $preserveKeys
@@ -112,7 +113,7 @@ class MutableArrayStream implements \Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function flatMap(callable $transformer, $preserveKeys = false)
+    public function flatMap(callable $transformer, bool $preserveKeys = false): StreamInterface
     {
         return new FlatMapStream($this, $transformer, $preserveKeys);
     }
@@ -120,7 +121,7 @@ class MutableArrayStream implements \Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function forEach(callable $consumer)
+    public function forEach(callable $consumer): void
     {
         foreach ($this->data as $k => $v) {
             $consumer($v, $k);
@@ -130,7 +131,7 @@ class MutableArrayStream implements \Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function toArray($preserveKeys = true)
+    public function toArray(bool $preserveKeys = true): array
     {
         return $preserveKeys ? $this->data : array_values($this->data);
     }
@@ -138,7 +139,7 @@ class MutableArrayStream implements \Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function first()
+    public function first(): OptionalInterface
     {
         if (empty($this->data)) {
             return Optional::empty();
@@ -176,7 +177,7 @@ class MutableArrayStream implements \Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function matchAll(callable $predicate)
+    public function matchAll(callable $predicate): bool
     {
         foreach ($this->data as $key => $item) {
             if (!$predicate($item, $key)) {
@@ -190,7 +191,7 @@ class MutableArrayStream implements \Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function matchOne(callable $predicate)
+    public function matchOne(callable $predicate): bool
     {
         foreach ($this->data as $key => $item) {
             if ($predicate($item, $key)) {

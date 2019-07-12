@@ -28,7 +28,7 @@ final class Getter implements TransformerInterface
      *
      * @param string $name The method name
      */
-    public function __construct($name)
+    public function __construct(string $name)
     {
         $this->name = $name;
     }

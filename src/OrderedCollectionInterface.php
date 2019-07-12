@@ -15,7 +15,7 @@ interface OrderedCollectionInterface extends CollectionInterface, \ArrayAccess
      *
      * @return false|int The element position, or false if not found
      */
-    public function search($element, $strict = false);
+    public function search($element, bool $strict = false);
 
     /**
      * Get the element at the given position

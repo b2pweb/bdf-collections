@@ -287,6 +287,28 @@ class HashSetTest extends TestCase
         $this->assertSame($o, $set->lookup(new CustomHash('John', 'Doe'))->get());
         $this->assertFalse($set->lookup(new CustomHash('Donald', 'Duck'))->present());
     }
+
+    /**
+     *
+     */
+    public function test_spl()
+    {
+        $this->assertEquals(new HashSet('spl_object_hash'), HashSet::spl());
+
+        $set = HashSet::spl();
+
+        $o1 = new \stdClass();
+        $o2 = new \stdClass();
+
+        $set->add($o1);
+
+        $this->assertTrue($set->contains($o1));
+        $this->assertFalse($set->contains($o2));
+
+        $this->assertTrue($set->add($o2));
+        $this->assertTrue($set->contains($o1));
+        $this->assertTrue($set->contains($o2));
+    }
 }
 
 class CustomHash implements Hashable

@@ -3,6 +3,7 @@
 namespace Bdf\Collection;
 
 use Bdf\Collection\Stream\ArrayStream;
+use Bdf\Collection\Stream\StreamInterface;
 use Bdf\Collection\Util\Hash;
 use Bdf\Collection\Util\Optional;
 use Bdf\Collection\Util\OptionalInterface;
@@ -84,7 +85,7 @@ class HashSet implements SetInterface
     /**
      * {@inheritdoc}
      */
-    public function add($element)
+    public function add($element): bool
     {
         $index = ($this->hashFunction)($element);
 
@@ -99,7 +100,7 @@ class HashSet implements SetInterface
     /**
      * {@inheritdoc}
      */
-    public function contains($element, $strict = false)
+    public function contains($element, bool $strict = false): bool
     {
         return isset($this->data[($this->hashFunction)($element)]);
     }
@@ -107,7 +108,7 @@ class HashSet implements SetInterface
     /**
      * {@inheritdoc}
      */
-    public function lookup($element)
+    public function lookup($element): OptionalInterface
     {
         $index = ($this->hashFunction)($element);
 
@@ -121,7 +122,7 @@ class HashSet implements SetInterface
     /**
      * {@inheritdoc}
      */
-    public function remove($element, $strict = false)
+    public function remove($element, bool $strict = false): bool
     {
         $index = ($this->hashFunction)($element);
 
@@ -136,7 +137,7 @@ class HashSet implements SetInterface
     /**
      * {@inheritdoc}
      */
-    public function clear()
+    public function clear(): void
     {
         $this->data = [];
     }
@@ -144,7 +145,7 @@ class HashSet implements SetInterface
     /**
      * {@inheritdoc}
      */
-    public function empty()
+    public function empty(): bool
     {
         return empty($this->data);
     }
@@ -152,7 +153,7 @@ class HashSet implements SetInterface
     /**
      * {@inheritdoc}
      */
-    public function forEach(callable $consumer)
+    public function forEach(callable $consumer): void
     {
         foreach ($this->data as $value) {
             $consumer($value);
@@ -162,7 +163,7 @@ class HashSet implements SetInterface
     /**
      * {@inheritdoc}
      */
-    public function toArray()
+    public function toArray(): array
     {
         return array_values($this->data);
     }
@@ -186,8 +187,20 @@ class HashSet implements SetInterface
     /**
      * {@inheritdoc}
      */
-    public function stream()
+    public function stream(): StreamInterface
     {
         return new ArrayStream(array_values($this->data));
+    }
+
+    /**
+     * Create an HashSet with spl_object_hash as hash function
+     *
+     * @return HashSet
+     *
+     * @see spl_object_hash()
+     */
+    public static function spl(): HashSet
+    {
+        return new static('spl_object_hash');
     }
 }

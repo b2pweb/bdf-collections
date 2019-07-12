@@ -23,5 +23,5 @@ interface SetInterface extends CollectionInterface
      *
      * @return OptionalInterface The element wrap into an Optional if found, or an empty Optional
      */
-    public function lookup($element);
+    public function lookup($element): OptionalInterface;
 }

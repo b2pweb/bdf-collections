@@ -3,6 +3,7 @@
 namespace Bdf\Collection;
 
 use Bdf\Collection\Stream\ArrayCombineStream;
+use Bdf\Collection\Stream\StreamInterface;
 use Bdf\Collection\Util\Hash;
 
 /**
@@ -73,7 +74,7 @@ class HashTable implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function remove($element, $strict = false)
+    public function remove($element, bool $strict = false): bool
     {
         $key = array_search($element, $this->values, $strict);
 
@@ -90,14 +91,12 @@ class HashTable implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function set($key, $value)
+    public function set($key, $value): void
     {
         $hash = ($this->hashFunction)($key);
 
         $this->values[$hash] = $value;
         $this->keys[$hash] = $key;
-
-        return true;
     }
 
     /**
@@ -117,7 +116,7 @@ class HashTable implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function add($element)
+    public function add($element): bool
     {
         throw new \BadMethodCallException('HashTable do not supports adding an elements without specify a key');
     }
@@ -125,7 +124,7 @@ class HashTable implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function addAll($elements)
+    public function addAll(iterable $elements): bool
     {
         throw new \BadMethodCallException('HashTable do not supports adding an elements without specify a key');
     }
@@ -133,23 +132,21 @@ class HashTable implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function replace($elements)
+    public function replace(iterable $elements): bool
     {
         $this->clear();
 
-        $b = true;
-
         foreach ($elements as $key => $value) {
-            $b = $this->set($key, $value) && $b;
+            $this->set($key, $value);
         }
 
-        return $b;
+        return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function unset($key)
+    public function unset($key): bool
     {
         $hash = ($this->hashFunction)($key);
 
@@ -166,7 +163,7 @@ class HashTable implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function contains($element, $strict = false)
+    public function contains($element, bool $strict = false): bool
     {
         return array_search($element, $this->values, $strict) !== false;
     }
@@ -174,7 +171,7 @@ class HashTable implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function hasKey($key)
+    public function hasKey($key): bool
     {
         return isset($this->values[($this->hashFunction)($key)]);
     }
@@ -182,7 +179,7 @@ class HashTable implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function keys()
+    public function keys(): array
     {
         return array_values($this->keys);
     }
@@ -190,7 +187,7 @@ class HashTable implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function values()
+    public function values(): array
     {
         return array_values($this->values);
     }
@@ -198,7 +195,7 @@ class HashTable implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function clear()
+    public function clear(): void
     {
         $this->values = [];
         $this->keys = [];
@@ -207,7 +204,7 @@ class HashTable implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function empty()
+    public function empty(): bool
     {
         return empty($this->keys);
     }
@@ -234,7 +231,7 @@ class HashTable implements TableInterface
      *
      * @param boolean $assoc If set to true will make associative array, or false to return array in form [ [Key, Value], ... ]
      */
-    public function toArray($assoc = true)
+    public function toArray(bool $assoc = true): array
     {
         if ($assoc) {
             return array_combine($this->keys, $this->values);
@@ -252,7 +249,7 @@ class HashTable implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function stream()
+    public function stream(): StreamInterface
     {
         return new ArrayCombineStream($this->keys, $this->values);
     }
@@ -260,7 +257,7 @@ class HashTable implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function forEach(callable $consumer)
+    public function forEach(callable $consumer): void
     {
         foreach ($this->keys as $hash => $key) {
             $consumer($this->values[$hash], $key);

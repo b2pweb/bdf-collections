@@ -21,7 +21,7 @@ final class Streams
      *
      * @return StreamInterface
      */
-    public static function wrap($value)
+    public static function wrap($value): StreamInterface
     {
         if ($value instanceof StreamInterface) {
             return $value;

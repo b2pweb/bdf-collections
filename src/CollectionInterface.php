@@ -19,16 +19,16 @@ interface CollectionInterface extends \IteratorAggregate, \Countable, Streamable
      *
      * @return boolean True on success, or false is failed with implementation constraints
      */
-    public function add($element);
+    public function add($element): bool;
 
     /**
      * Add all elements to the collection
      *
-     * @param array|\Traversable $elements Elements to add. Can be an array or any traversable object
+     * @param iterable $elements Elements to add. Can be an array or any traversable object
      *
      * @return boolean True on success, or false is at least one elements failed to add
      */
-    public function addAll($elements);
+    public function addAll(iterable $elements): bool;
 
     /**
      * Clear the collections and replace all elements with new elements
@@ -39,11 +39,11 @@ interface CollectionInterface extends \IteratorAggregate, \Countable, Streamable
      * $collection->addAll($elements);
      * </code>
      *
-     * @param array|\Traversable $elements The elements to add
+     * @param iterable $elements The elements to add
      *
      * @return boolean True on success, or false is at least one elements failed to add
      */
-    public function replace($elements);
+    public function replace(iterable $elements): bool;
 
     /**
      * Check if the collection contains the given element
@@ -53,7 +53,7 @@ interface CollectionInterface extends \IteratorAggregate, \Countable, Streamable
      *
      * @return boolean True is the element is found into the collection
      */
-    public function contains($element, $strict = false);
+    public function contains($element, bool $strict = false): bool;
 
     /**
      * Remove an element from the collection
@@ -64,7 +64,7 @@ interface CollectionInterface extends \IteratorAggregate, \Countable, Streamable
      *
      * @return boolean True if the element is found and successfully removed
      */
-    public function remove($element, $strict = false);
+    public function remove($element, bool $strict = false): bool;
 
     /**
      * Remove all data from the collection
@@ -72,7 +72,7 @@ interface CollectionInterface extends \IteratorAggregate, \Countable, Streamable
      *
      * @return void
      */
-    public function clear();
+    public function clear(): void;
 
     /**
      * Check if the collection is empty
@@ -82,7 +82,7 @@ interface CollectionInterface extends \IteratorAggregate, \Countable, Streamable
      *
      * @return boolean
      */
-    public function empty();
+    public function empty(): bool;
 
     /**
      * Apply $consumer on each elements of the collection
@@ -100,12 +100,12 @@ interface CollectionInterface extends \IteratorAggregate, \Countable, Streamable
      *
      * @return void
      */
-    public function forEach(callable $consumer);
+    public function forEach(callable $consumer): void;
 
     /**
      * Get the native array value of the collection
      *
      * @return array
      */
-    public function toArray();
+    public function toArray(): array;
 }

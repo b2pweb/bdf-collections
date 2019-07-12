@@ -3,6 +3,7 @@
 namespace Bdf\Collection\Util;
 
 use Bdf\Collection\Stream\SingletonStream;
+use Bdf\Collection\Stream\StreamInterface;
 
 /**
  * Handle null values, and create simple null objects
@@ -34,7 +35,7 @@ final class Optional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
-    public function filter(callable $predicate)
+    public function filter(callable $predicate): OptionalInterface
     {
         if (!$predicate($this->value)) {
             return self::empty();
@@ -46,7 +47,7 @@ final class Optional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
-    public function map(callable $transformer)
+    public function map(callable $transformer): OptionalInterface
     {
         return self::nullable($transformer($this->value));
     }
@@ -54,7 +55,7 @@ final class Optional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
-    public function apply(callable $consumer)
+    public function apply(callable $consumer): void
     {
         $consumer($this->value);
     }
@@ -86,7 +87,7 @@ final class Optional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
-    public function present()
+    public function present(): bool
     {
         return true;
     }
@@ -102,7 +103,7 @@ final class Optional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
-    public function __call($name, array $arguments)
+    public function __call($name, array $arguments): OptionalInterface
     {
         return self::nullable($this->value->$name(...$arguments));
     }
@@ -110,7 +111,7 @@ final class Optional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
-    public function __get($name)
+    public function __get($name): OptionalInterface
     {
         return self::nullable($this->value->$name);
     }
@@ -118,7 +119,7 @@ final class Optional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
-    public function __isset($name)
+    public function __isset($name): bool
     {
         return isset($this->value->$name);
     }
@@ -126,7 +127,7 @@ final class Optional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
-    public function __set($name, $value)
+    public function __set(string $name, $value): void
     {
         $this->value->$name = $value;
     }
@@ -134,7 +135,7 @@ final class Optional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
-    public function stream()
+    public function stream(): StreamInterface
     {
         return new SingletonStream($this->value);
     }
@@ -147,7 +148,7 @@ final class Optional implements OptionalInterface
      *
      * @return OptionalInterface
      */
-    public static function nullable($value)
+    public static function nullable($value): OptionalInterface
     {
         if ($value === null) {
             return self::empty();
@@ -161,7 +162,7 @@ final class Optional implements OptionalInterface
      *
      * @return EmptyOptional
      */
-    public static function empty()
+    public static function empty(): EmptyOptional
     {
         return EmptyOptional::instance();
     }
@@ -175,7 +176,7 @@ final class Optional implements OptionalInterface
      * @return Optional
      * @throws \TypeError If null value is given
      */
-    public static function of($value)
+    public static function of($value): Optional
     {
         if ($value === null) {
             throw new \TypeError('The value should not be null');

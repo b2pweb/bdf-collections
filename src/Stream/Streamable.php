@@ -12,5 +12,5 @@ interface Streamable
      *
      * @return StreamInterface
      */
-    public function stream();
+    public function stream(): StreamInterface;
 }

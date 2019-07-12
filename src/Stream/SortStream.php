@@ -3,6 +3,7 @@
 namespace Bdf\Collection\Stream;
 
 use Bdf\Collection\Util\Optional;
+use Bdf\Collection\Util\OptionalInterface;
 
 /**
  * Implementation of StreamInterface::sort() return value
@@ -41,7 +42,7 @@ final class SortStream implements \Iterator, StreamInterface
      * @param callable $comparator
      * @param bool $preserveKeys
      */
-    public function __construct(StreamInterface $stream, callable $comparator = null, $preserveKeys = true)
+    public function __construct(StreamInterface $stream, callable $comparator = null, bool $preserveKeys = true)
     {
         $this->stream = $stream;
         $this->comparator = $comparator;
@@ -51,7 +52,7 @@ final class SortStream implements \Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function toArray($preserveKeys = true)
+    public function toArray(bool $preserveKeys = true): array
     {
         if ($this->data === null) {
             $preserveKeys &= $this->preserveKeys;
@@ -77,7 +78,7 @@ final class SortStream implements \Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function forEach(callable $consumer)
+    public function forEach(callable $consumer): void
     {
         foreach ($this->toArray() as $k => $v) {
             $consumer($v, $k);
@@ -87,7 +88,7 @@ final class SortStream implements \Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function first()
+    public function first(): OptionalInterface
     {
         $empty = true;
         $min = null;

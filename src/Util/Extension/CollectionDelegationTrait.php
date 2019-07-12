@@ -3,6 +3,7 @@
 namespace Bdf\Collection\Util\Extension;
 
 use Bdf\Collection\CollectionInterface;
+use Bdf\Collection\Stream\StreamInterface;
 
 /**
  * Trait for implements CollectionInterface delegation objects
@@ -44,7 +45,7 @@ trait CollectionDelegationTrait
     /**
      * @see CollectionInterface::add()
      */
-    public function add($element)
+    public function add($element): bool
     {
         return $this->collection->add($element);
     }
@@ -52,7 +53,7 @@ trait CollectionDelegationTrait
     /**
      * @see CollectionInterface::addAll()
      */
-    public function addAll($elements)
+    public function addAll(iterable $elements): bool
     {
         return $this->collection->addAll($elements);
     }
@@ -60,7 +61,7 @@ trait CollectionDelegationTrait
     /**
      * @see CollectionInterface::replace()
      */
-    public function replace($elements)
+    public function replace(iterable $elements): bool
     {
         return $this->collection->replace($elements);
     }
@@ -68,7 +69,7 @@ trait CollectionDelegationTrait
     /**
      * @see CollectionInterface::remove()
      */
-    public function remove($element, $strict = false)
+    public function remove($element, bool $strict = false): bool
     {
         return $this->collection->remove($element, $strict);
     }
@@ -76,7 +77,7 @@ trait CollectionDelegationTrait
     /**
      * @see CollectionInterface::clear()
      */
-    public function clear()
+    public function clear(): void
     {
         $this->collection->clear();
     }
@@ -84,7 +85,7 @@ trait CollectionDelegationTrait
     /**
      * @see CollectionInterface::empty()
      */
-    public function empty()
+    public function empty(): bool
     {
         return $this->collection->empty();
     }
@@ -92,7 +93,7 @@ trait CollectionDelegationTrait
     /**
      * @see CollectionInterface::contains()
      */
-    public function contains($element, $strict = false)
+    public function contains($element, bool $strict = false): bool
     {
         return $this->collection->contains($element, $strict);
     }
@@ -100,7 +101,7 @@ trait CollectionDelegationTrait
     /**
      * @see CollectionInterface::toArray()
      */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->collection->toArray();
     }
@@ -124,7 +125,7 @@ trait CollectionDelegationTrait
     /**
      * @see CollectionInterface::forEach()
      */
-    public function forEach(callable $consumer)
+    public function forEach(callable $consumer): void
     {
         $this->collection->forEach($consumer);
     }
@@ -132,7 +133,7 @@ trait CollectionDelegationTrait
     /**
      * @see CollectionInterface::stream()
      */
-    public function stream()
+    public function stream(): StreamInterface
     {
         return $this->collection->stream();
     }

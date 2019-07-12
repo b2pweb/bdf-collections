@@ -10,7 +10,7 @@ trait CollectionTrait
     /**
      * @see CollectionInterface::addAll()
      */
-    public function addAll($elements)
+    public function addAll(iterable $elements): bool
     {
         $b = true;
 
@@ -24,7 +24,7 @@ trait CollectionTrait
     /**
      * @see CollectionInterface::replace()
      */
-    public function replace($elements)
+    public function replace(iterable $elements): bool
     {
         $this->clear();
 

@@ -24,7 +24,7 @@ interface OptionalInterface extends Streamable
      *
      * @return OptionalInterface
      */
-    public function filter(callable $predicate);
+    public function filter(callable $predicate): OptionalInterface;
 
     /**
      * Transform the element if it's present
@@ -45,7 +45,7 @@ interface OptionalInterface extends Streamable
      *
      * @return OptionalInterface The result wrap into an optional
      */
-    public function map(callable $transformer);
+    public function map(callable $transformer): OptionalInterface;
 
     /**
      * Apply the consumer on the element if it's present
@@ -60,7 +60,7 @@ interface OptionalInterface extends Streamable
      *
      * @return void
      */
-    public function apply(callable $consumer);
+    public function apply(callable $consumer): void;
 
     /**
      * Get the current Optional value if it's present, or the parameter value if not present
@@ -106,7 +106,7 @@ interface OptionalInterface extends Streamable
      *
      * @return boolean
      */
-    public function present();
+    public function present(): bool;
 
     /**
      * Get the current stored value
@@ -123,7 +123,7 @@ interface OptionalInterface extends Streamable
      *
      * @return OptionalInterface
      */
-    public function __call($name, array $arguments);
+    public function __call($name, array $arguments): OptionalInterface;
 
     /**
      * Get a property from the contained object if present, and wrap the value into an Optional
@@ -132,7 +132,7 @@ interface OptionalInterface extends Streamable
      *
      * @return OptionalInterface
      */
-    public function __get($name);
+    public function __get($name): OptionalInterface;
 
     /**
      * Check if the contained object contains the given property
@@ -142,15 +142,15 @@ interface OptionalInterface extends Streamable
      *
      * @return boolean
      */
-    public function __isset($name);
+    public function __isset($name): bool;
 
     /**
      * Set the contains object property value if it's present
      *
      * @param string $name The property name
-     * @param string $value The new value
+     * @param mixed $value The new value
      *
      * @return void
      */
-    public function __set($name, $value);
+    public function __set(string $name, $value): void;
 }

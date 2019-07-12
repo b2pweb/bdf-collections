@@ -49,7 +49,7 @@ interface StreamInterface extends \Iterator
      *
      * @see TransformerInterface
      */
-    public function map(callable $transformer);
+    public function map(callable $transformer): StreamInterface;
 
     /**
      * Filter the stream
@@ -70,7 +70,7 @@ interface StreamInterface extends \Iterator
      *
      * @see PredicateInterface
      */
-    public function filter(callable $predicate);
+    public function filter(callable $predicate): StreamInterface;
 
     /**
      * Filter stream elements to get only distinct elements
@@ -94,7 +94,7 @@ interface StreamInterface extends \Iterator
      *
      * @return StreamInterface
      */
-    public function distinct(callable $hashFunction = null);
+    public function distinct(callable $hashFunction = null): StreamInterface;
 
     /**
      * Order stream elements
@@ -151,7 +151,7 @@ interface StreamInterface extends \Iterator
      *
      * @return StreamInterface
      */
-    public function sort(callable $comparator = null, $preserveKeys = false);
+    public function sort(callable $comparator = null, bool $preserveKeys = false): StreamInterface;
 
     /**
      * Concatenate a new stream after the current stream
@@ -172,7 +172,7 @@ interface StreamInterface extends \Iterator
      *
      * @return StreamInterface
      */
-    public function concat(StreamInterface $stream, $preserveKeys = true);
+    public function concat(StreamInterface $stream, bool $preserveKeys = true): StreamInterface;
 
     /**
      * Create a stream resulting of concatenation of each elements content extracted by $transformer
@@ -216,7 +216,7 @@ interface StreamInterface extends \Iterator
      * @see TransformerInterface
      * @see Streams::wrap() Used to transform each transformed elements to a Stream
      */
-    public function flatMap(callable $transformer, $preserveKeys = false);
+    public function flatMap(callable $transformer, bool $preserveKeys = false): StreamInterface;
 
     /**
      * Iterate over all stream elements.
@@ -235,7 +235,7 @@ interface StreamInterface extends \Iterator
      *
      * @see ConsumerInterface
      */
-    public function forEach(callable $consumer);
+    public function forEach(callable $consumer): void;
 
     /**
      * Aggregate the stream to an array
@@ -257,7 +257,7 @@ interface StreamInterface extends \Iterator
      *
      * @return array
      */
-    public function toArray($preserveKeys = true);
+    public function toArray(bool $preserveKeys = true): array;
 
     /**
      * Get the first element of the stream
@@ -271,7 +271,7 @@ interface StreamInterface extends \Iterator
      *
      * @return OptionalInterface
      */
-    public function first();
+    public function first(): OptionalInterface;
 
     /**
      * Reduce all elements of the stream into a single value
@@ -331,7 +331,7 @@ interface StreamInterface extends \Iterator
      *
      * @see PredicateInterface
      */
-    public function matchAll(callable $predicate);
+    public function matchAll(callable $predicate): bool;
 
     /**
      * Check if at least one element of the stream match with the predicate
@@ -354,5 +354,5 @@ interface StreamInterface extends \Iterator
      *
      * @see PredicateInterface
      */
-    public function matchOne(callable $predicate);
+    public function matchOne(callable $predicate): bool;
 }

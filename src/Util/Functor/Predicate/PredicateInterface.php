@@ -22,5 +22,5 @@ interface PredicateInterface
      *
      * @return boolean true if match, or false
      */
-    public function __invoke($element, $key = null);
+    public function __invoke($element, $key = null): bool;
 }

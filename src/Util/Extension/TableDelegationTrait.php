@@ -38,7 +38,7 @@ trait TableDelegationTrait
      *
      * @return void
      */
-    private function setCollection(TableInterface $collection)
+    private function setCollection(TableInterface $collection): void
     {
         $this->collection = $collection;
     }
@@ -46,7 +46,7 @@ trait TableDelegationTrait
     /**
      * @see TableInterface::set($key, $value)
      */
-    public function set($key, $value)
+    public function set($key, $value): void
     {
         $this->collection->set($key, $value);
     }
@@ -62,7 +62,7 @@ trait TableDelegationTrait
     /**
      * @see TableInterface::hasKey($key)
      */
-    public function hasKey($key)
+    public function hasKey($key): bool
     {
         return $this->collection->hasKey($key);
     }
@@ -70,7 +70,7 @@ trait TableDelegationTrait
     /**
      * @see TableInterface::unset($key)
      */
-    public function unset($key)
+    public function unset($key): bool
     {
         return $this->collection->unset($key);
     }
@@ -78,7 +78,7 @@ trait TableDelegationTrait
     /**
      * @see TableInterface::keys()
      */
-    public function keys()
+    public function keys(): array
     {
         return $this->collection->keys();
     }
@@ -86,7 +86,7 @@ trait TableDelegationTrait
     /**
      * @see TableInterface::values()
      */
-    public function values()
+    public function values(): array
     {
         return $this->collection->values();
     }

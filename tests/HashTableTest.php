@@ -16,7 +16,7 @@ class HashTableTest extends TestCase
     {
         $table = new HashTable();
 
-        $this->assertTrue($table->set('foo', 'bar'));
+        $table->set('foo', 'bar');
         $this->assertTrue($table->hasKey('foo'));
         $this->assertSame('bar', $table->get('foo'));
 
@@ -34,7 +34,7 @@ class HashTableTest extends TestCase
 
         $key = (object) ['id' => 123];
 
-        $this->assertTrue($table->set($key, 'bar'));
+        $table->set($key, 'bar');
         $this->assertTrue($table->hasKey($key));
         $this->assertFalse($table->hasKey((object) ['id' => 456]));
         $this->assertSame('bar', $table->get($key));
@@ -53,7 +53,7 @@ class HashTableTest extends TestCase
 
         $key = ['id' => 123];
 
-        $this->assertTrue($table->set($key, 'bar'));
+        $table->set($key, 'bar');
         $this->assertTrue($table->hasKey($key));
         $this->assertFalse($table->hasKey(['id' => 456]));
         $this->assertSame('bar', $table->get($key));
@@ -70,7 +70,7 @@ class HashTableTest extends TestCase
     {
         $table = new HashTable('strtolower');
 
-        $this->assertTrue($table->set('foo', 'bar'));
+        $table->set('foo', 'bar');
         $this->assertTrue($table->hasKey('FOO'));
         $this->assertSame('bar', $table->get('Foo'));
 
@@ -86,7 +86,7 @@ class HashTableTest extends TestCase
     {
         $table = new HashTable(function ($key) { return (string) $key[0]; });
 
-        $this->assertTrue($table->set([123, 456], 'bar'));
+        $table->set([123, 456], 'bar');
 
         $this->assertTrue($table->hasKey([123, 456]));
         $this->assertTrue($table->hasKey([123, 789]));

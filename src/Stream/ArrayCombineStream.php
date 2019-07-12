@@ -3,6 +3,7 @@
 namespace Bdf\Collection\Stream;
 
 use Bdf\Collection\Util\Optional;
+use Bdf\Collection\Util\OptionalInterface;
 
 /**
  * Make a stream with combine keys and values
@@ -64,7 +65,7 @@ class ArrayCombineStream implements \Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function toArray($preserveKeys = true)
+    public function toArray(bool $preserveKeys = true): array
     {
         return $preserveKeys
             ? array_combine($this->keys, $this->values)
@@ -75,7 +76,7 @@ class ArrayCombineStream implements \Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function first()
+    public function first(): OptionalInterface
     {
         if (empty($this->values)) {
             return Optional::empty();

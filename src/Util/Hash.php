@@ -12,7 +12,7 @@ final class Hash
      *
      * @param mixed $value
      *
-     * @return integer
+     * @return string
      */
     public static function compute($value)
     {

@@ -6,6 +6,7 @@ use Bdf\Collection\HashSet;
 use Bdf\Collection\Stream\Accumulator\AccumulatorInterface;
 use Bdf\Collection\Stream\Collector\CollectorInterface;
 use Bdf\Collection\Util\Optional;
+use Bdf\Collection\Util\OptionalInterface;
 
 /**
  * Implementation of base stream methods
@@ -15,7 +16,7 @@ trait StreamTrait
     /**
      * @see StreamInterface::filter()
      */
-    public function filter(callable $predicate)
+    public function filter(callable $predicate): StreamInterface
     {
         return new FilterStream($this, $predicate);
     }
@@ -23,7 +24,7 @@ trait StreamTrait
     /**
      * @see StreamInterface::map()
      */
-    public function map(callable $transformer)
+    public function map(callable $transformer): StreamInterface
     {
         return new MapStream($this, $transformer);
     }
@@ -31,7 +32,7 @@ trait StreamTrait
     /**
      * @see StreamInterface::distinct()
      */
-    public function distinct(callable $hashFunction = null)
+    public function distinct(callable $hashFunction = null): StreamInterface
     {
         return new DistinctStream($this, new HashSet($hashFunction));
     }
@@ -39,7 +40,7 @@ trait StreamTrait
     /**
      * @see StreamInterface::sort()
      */
-    public function sort(callable $comparator = null, $preserveKeys = false)
+    public function sort(callable $comparator = null, bool $preserveKeys = false): StreamInterface
     {
         return new SortStream($this, $comparator, $preserveKeys);
     }
@@ -47,7 +48,7 @@ trait StreamTrait
     /**
      * @see StreamInterface::concat()
      */
-    public function concat(StreamInterface $stream, $preserveKeys = true)
+    public function concat(StreamInterface $stream, bool $preserveKeys = true): StreamInterface
     {
         return new ConcatStream([$this, $stream], $preserveKeys);
     }
@@ -55,7 +56,7 @@ trait StreamTrait
     /**
      * @see StreamInterface::flatMap()
      */
-    public function flatMap(callable $transformer, $preserveKeys = false)
+    public function flatMap(callable $transformer, bool $preserveKeys = false): StreamInterface
     {
         return new FlatMapStream($this, $transformer, $preserveKeys);
     }
@@ -63,7 +64,7 @@ trait StreamTrait
     /**
      * @see StreamInterface::forEach()
      */
-    public function forEach(callable $consumer)
+    public function forEach(callable $consumer): void
     {
         foreach ($this as $key => $value) {
             $consumer($value, $key);
@@ -73,7 +74,7 @@ trait StreamTrait
     /**
      * @see StreamInterface::toArray()
      */
-    public function toArray($preserveKeys = true)
+    public function toArray(bool $preserveKeys = true): array
     {
         return iterator_to_array($this, $preserveKeys);
     }
@@ -81,7 +82,7 @@ trait StreamTrait
     /**
      * @see StreamInterface::first()
      */
-    public function first()
+    public function first(): OptionalInterface
     {
         foreach ($this as $value) {
             return Optional::nullable($value);
@@ -122,7 +123,7 @@ trait StreamTrait
     /**
      * @see StreamInterface::matchAll()
      */
-    public function matchAll(callable $predicate)
+    public function matchAll(callable $predicate): bool
     {
         foreach ($this as $key => $item) {
             if (!$predicate($item, $key)) {
@@ -136,7 +137,7 @@ trait StreamTrait
     /**
      * @see StreamInterface::matchOne()
      */
-    public function matchOne(callable $predicate)
+    public function matchOne(callable $predicate): bool
     {
         foreach ($this as $key => $item) {
             if ($predicate($item, $key)) {

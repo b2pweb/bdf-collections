@@ -30,7 +30,7 @@ class ArrayCollection implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function contains($element, $strict = false)
+    public function contains($element, bool $strict = false): bool
     {
         return in_array($element, $this->data, $strict) !== false;
     }
@@ -38,7 +38,7 @@ class ArrayCollection implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function remove($element, $strict = false)
+    public function remove($element, bool $strict = false): bool
     {
         $key = array_search($element, $this->data, $strict);
 
@@ -54,7 +54,7 @@ class ArrayCollection implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function clear()
+    public function clear(): void
     {
         $this->data = [];
     }
@@ -62,7 +62,7 @@ class ArrayCollection implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function empty()
+    public function empty(): bool
     {
         return empty($this->data);
     }
@@ -70,7 +70,7 @@ class ArrayCollection implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->data;
     }
@@ -130,7 +130,7 @@ class ArrayCollection implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function stream()
+    public function stream(): StreamInterface
     {
         return new ArrayStream($this->data);
     }
@@ -145,7 +145,7 @@ class ArrayCollection implements TableInterface
      *
      * @see MutableArrayStream
      */
-    public function mutableStream()
+    public function mutableStream(): StreamInterface
     {
         return new MutableArrayStream($this->data);
     }
@@ -153,7 +153,7 @@ class ArrayCollection implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function set($key, $value)
+    public function set($key, $value): void
     {
         $this->data[$key] = $value;
     }
@@ -173,7 +173,7 @@ class ArrayCollection implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function add($element)
+    public function add($element): bool
     {
         $this->data[] = $element;
 
@@ -183,7 +183,7 @@ class ArrayCollection implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function addAll($elements)
+    public function addAll(iterable $elements): bool
     {
         if ($elements instanceof ArrayCollection) {
             $elements = $elements->data;
@@ -199,7 +199,7 @@ class ArrayCollection implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function replace($elements)
+    public function replace(iterable $elements): bool
     {
         $this->clear();
 
@@ -217,7 +217,7 @@ class ArrayCollection implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function hasKey($key)
+    public function hasKey($key): bool
     {
         return array_key_exists($key, $this->data);
     }
@@ -225,7 +225,7 @@ class ArrayCollection implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function unset($key)
+    public function unset($key): bool
     {
         if (isset($this->data[$key])) {
             unset($this->data[$key]);
@@ -239,7 +239,7 @@ class ArrayCollection implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function keys()
+    public function keys(): array
     {
         return array_keys($this->data);
     }
@@ -247,7 +247,7 @@ class ArrayCollection implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function values()
+    public function values(): array
     {
         return array_values($this->data);
     }
@@ -255,7 +255,7 @@ class ArrayCollection implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function forEach(callable $consumer)
+    public function forEach(callable $consumer): void
     {
         foreach ($this->data as $key => $value) {
             $consumer($value, $key);

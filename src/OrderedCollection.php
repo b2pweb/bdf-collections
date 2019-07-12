@@ -3,6 +3,7 @@
 namespace Bdf\Collection;
 
 use Bdf\Collection\Stream\ArrayStream;
+use Bdf\Collection\Stream\StreamInterface;
 
 /**
  * Collection implementation that provides an ordering on its elements
@@ -50,7 +51,7 @@ class OrderedCollection implements OrderedCollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function add($element)
+    public function add($element): bool
     {
         $this->elements[] = $element;
         $this->sorted = count($this->elements) === 1;
@@ -61,7 +62,7 @@ class OrderedCollection implements OrderedCollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function addAll($elements)
+    public function addAll(iterable $elements): bool
     {
         foreach ($elements as $element) {
             $this->elements[] = $element;
@@ -75,7 +76,7 @@ class OrderedCollection implements OrderedCollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function replace($elements)
+    public function replace(iterable $elements): bool
     {
         $this->elements = is_array($elements) ? $elements : iterator_to_array($elements, false);
         $this->sorted = false;
@@ -86,7 +87,7 @@ class OrderedCollection implements OrderedCollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function contains($element, $strict = false)
+    public function contains($element, bool $strict = false): bool
     {
         return $this->search($element, $strict) !== false;
     }
@@ -94,7 +95,7 @@ class OrderedCollection implements OrderedCollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function remove($element, $strict = false)
+    public function remove($element, bool $strict = false): bool
     {
         $key = $this->search($element, $strict);
 
@@ -110,7 +111,7 @@ class OrderedCollection implements OrderedCollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function clear()
+    public function clear(): void
     {
         $this->elements = [];
         $this->sorted = true;
@@ -119,7 +120,7 @@ class OrderedCollection implements OrderedCollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function empty()
+    public function empty(): bool
     {
         return empty($this->elements);
     }
@@ -127,7 +128,7 @@ class OrderedCollection implements OrderedCollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function forEach(callable $consumer)
+    public function forEach(callable $consumer): void
     {
         $this->sortElements();
 
@@ -139,7 +140,7 @@ class OrderedCollection implements OrderedCollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function toArray()
+    public function toArray(): array
     {
         $this->sortElements();
 
@@ -165,7 +166,7 @@ class OrderedCollection implements OrderedCollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function stream()
+    public function stream(): StreamInterface
     {
         return new ArrayStream($this->toArray());
     }
@@ -173,7 +174,7 @@ class OrderedCollection implements OrderedCollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function search($element, $strict = false)
+    public function search($element, bool $strict = false)
     {
         $this->sortElements();
 

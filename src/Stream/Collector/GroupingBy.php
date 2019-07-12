@@ -62,7 +62,7 @@ final class GroupingBy implements CollectorInterface
     /**
      * {@inheritdoc}
      */
-    public function aggregate($element, $key = null)
+    public function aggregate($element, $key = null): void
     {
         $groupKey = ($this->getter)($element);
 

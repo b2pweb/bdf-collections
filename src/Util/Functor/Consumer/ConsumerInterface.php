@@ -24,5 +24,5 @@ interface ConsumerInterface
      *
      * @return void
      */
-    public function __invoke($element, $key = null);
+    public function __invoke($element, $key = null): void;
 }

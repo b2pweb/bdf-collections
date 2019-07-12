@@ -30,7 +30,7 @@ final class ConcatStream extends \AppendIterator implements StreamInterface
      * @param StreamInterface[] $streams
      * @param bool $preserveKeys Preserve the base stream keys
      */
-    public function __construct(array $streams, $preserveKeys = true)
+    public function __construct(array $streams, bool $preserveKeys = true)
     {
         parent::__construct();
 
@@ -44,7 +44,7 @@ final class ConcatStream extends \AppendIterator implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function concat(StreamInterface $stream, $preserveKeys = true)
+    public function concat(StreamInterface $stream, bool $preserveKeys = true): StreamInterface
     {
         // Do not preserve key for previous streams, but keep for new stream
         // => Create a new ContactStream for keeping new stream keys

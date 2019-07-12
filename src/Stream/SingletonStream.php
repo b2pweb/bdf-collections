@@ -5,6 +5,7 @@ namespace Bdf\Collection\Stream;
 use Bdf\Collection\Stream\Accumulator\AccumulatorInterface;
 use Bdf\Collection\Stream\Collector\CollectorInterface;
 use Bdf\Collection\Util\Optional;
+use Bdf\Collection\Util\OptionalInterface;
 
 /**
  * Wrap single value into a stream
@@ -44,7 +45,7 @@ final class SingletonStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function map(callable $transformer)
+    public function map(callable $transformer): StreamInterface
     {
         return new SingletonStream($transformer($this->value, $this->key), $this->key);
     }
@@ -52,7 +53,7 @@ final class SingletonStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function filter(callable $predicate)
+    public function filter(callable $predicate): StreamInterface
     {
         return $predicate($this->value, $this->key)
             ? $this
@@ -63,7 +64,7 @@ final class SingletonStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function distinct(callable $hashFunction = null)
+    public function distinct(callable $hashFunction = null): StreamInterface
     {
         return $this;
     }
@@ -71,7 +72,7 @@ final class SingletonStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function sort(callable $comparator = null, $preserveKeys = false)
+    public function sort(callable $comparator = null, bool $preserveKeys = false): StreamInterface
     {
         return $preserveKeys || $this->key === 0 ? $this : new self($this->value);
     }
@@ -79,7 +80,7 @@ final class SingletonStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function concat(StreamInterface $stream, $preserveKeys = true)
+    public function concat(StreamInterface $stream, bool $preserveKeys = true): StreamInterface
     {
         return new ConcatStream([$this, $stream], $preserveKeys);
     }
@@ -87,7 +88,7 @@ final class SingletonStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function flatMap(callable $transformer, $preserveKeys = false)
+    public function flatMap(callable $transformer, bool $preserveKeys = false): StreamInterface
     {
         if ($preserveKeys) {
             return Streams::wrap($transformer($this->value, $this->key));
@@ -99,7 +100,7 @@ final class SingletonStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function forEach(callable $consumer)
+    public function forEach(callable $consumer): void
     {
         $consumer($this->value, $this->key);
         $this->closed = true;
@@ -108,7 +109,7 @@ final class SingletonStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function toArray($preserveKeys = true)
+    public function toArray(bool $preserveKeys = true): array
     {
         return $preserveKeys ? [$this->key => $this->value] : [$this->value];
     }
@@ -116,7 +117,7 @@ final class SingletonStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function first()
+    public function first(): OptionalInterface
     {
         return Optional::nullable($this->value);
     }
@@ -146,7 +147,7 @@ final class SingletonStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function matchAll(callable $predicate)
+    public function matchAll(callable $predicate): bool
     {
         return $predicate($this->value, $this->key);
     }
@@ -154,7 +155,7 @@ final class SingletonStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function matchOne(callable $predicate)
+    public function matchOne(callable $predicate): bool
     {
         return $predicate($this->value, $this->key);
     }

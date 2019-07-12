@@ -55,7 +55,7 @@ final class IndexingBy implements CollectorInterface
     /**
      * {@inheritdoc}
      */
-    public function aggregate($element, $key = null)
+    public function aggregate($element, $key = null): void
     {
         $this->table[($this->getter)($element)] = $element;
     }

@@ -47,7 +47,7 @@ interface CollectorInterface
      *
      * @return void
      */
-    public function aggregate($element, $key = null);
+    public function aggregate($element, $key = null): void;
 
     /**
      * Finalize the aggregation, and prepare the return value

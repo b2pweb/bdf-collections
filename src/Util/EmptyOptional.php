@@ -3,6 +3,7 @@
 namespace Bdf\Collection\Util;
 
 use Bdf\Collection\Stream\EmptyStream;
+use Bdf\Collection\Stream\StreamInterface;
 
 /**
  * Optional without value
@@ -23,7 +24,7 @@ final class EmptyOptional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
-    public function filter(callable $predicate)
+    public function filter(callable $predicate): OptionalInterface
     {
         return $this;
     }
@@ -31,7 +32,7 @@ final class EmptyOptional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
-    public function map(callable $transformer)
+    public function map(callable $transformer): OptionalInterface
     {
         return $this;
     }
@@ -39,7 +40,7 @@ final class EmptyOptional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
-    public function apply(callable $consumer)
+    public function apply(callable $consumer): void
     {
     }
 
@@ -74,7 +75,7 @@ final class EmptyOptional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
-    public function present()
+    public function present(): bool
     {
         return false;
     }
@@ -90,7 +91,7 @@ final class EmptyOptional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
-    public function __call($name, array $arguments)
+    public function __call($name, array $arguments): OptionalInterface
     {
         return $this;
     }
@@ -98,7 +99,7 @@ final class EmptyOptional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
-    public function __get($name)
+    public function __get($name): OptionalInterface
     {
         return $this;
     }
@@ -106,7 +107,7 @@ final class EmptyOptional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
-    public function __isset($name)
+    public function __isset($name): bool
     {
         return false;
     }
@@ -114,14 +115,14 @@ final class EmptyOptional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
-    public function __set($name, $value)
+    public function __set(string $name, $value): void
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function stream()
+    public function stream(): StreamInterface
     {
         return EmptyStream::instance();
     }
@@ -131,7 +132,7 @@ final class EmptyOptional implements OptionalInterface
      *
      * @return EmptyOptional
      */
-    public static function instance()
+    public static function instance(): EmptyOptional
     {
         if (self::$instance) {
             return self::$instance;

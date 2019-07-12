@@ -28,7 +28,7 @@ interface Hashable
      * /!\ Properties used for compute the hash should be immutable, or memory leaks may occurs
      *     If the hash of an object change, it will no longer be accessible (for find AND for remove) from hash collections
      *
-     * @return string
+     * @return string|integer
      */
     public function hash();
 }
