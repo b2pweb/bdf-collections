@@ -238,6 +238,41 @@ class FlatMapStreamTest extends TestCase
     /**
      *
      */
+    public function test_skip()
+    {
+        $stream = new ArrayStream([
+            ['values' => [4, 7, 8]],
+            ['values' => [1, 5, 2]],
+        ]);
+
+        $flat = new FlatMapStream($stream, function ($e) { return $e['values']; });
+
+        $this->assertInstanceOf(LimitStream::class, $flat->skip(2));
+        $this->assertEquals([8, 1, 5, 2], $flat->skip(2)->toArray(false));
+        $this->assertEmpty($flat->skip(100)->toArray(false));
+    }
+
+    /**
+     *
+     */
+    public function test_limit()
+    {
+        $stream = new ArrayStream([
+            ['values' => [4, 7, 8]],
+            ['values' => [1, 5, 2]],
+        ]);
+
+        $flat = new FlatMapStream($stream, function ($e) { return $e['values']; });
+
+        $this->assertInstanceOf(LimitStream::class, $flat->limit(2));
+        $this->assertEquals([4, 7], $flat->limit(2)->toArray(false));
+        $this->assertEquals([1, 5], $flat->limit(2, 3)->toArray(false));
+        $this->assertEmpty($flat->limit(2, 100)->toArray(false));
+    }
+
+    /**
+     *
+     */
     public function test_matchAll()
     {
         $stream = new ArrayStream([

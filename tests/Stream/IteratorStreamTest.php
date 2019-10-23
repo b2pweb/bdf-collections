@@ -170,6 +170,31 @@ class IteratorStreamTest extends TestCase
     /**
      *
      */
+    public function test_skip()
+    {
+        $stream = new IteratorStream(new \ArrayIterator([4, 8, 5, 7, 1]));
+
+        $this->assertInstanceOf(LimitStream::class, $stream->skip(2));
+        $this->assertEquals([5, 7, 1], $stream->skip(2)->toArray(false));
+        $this->assertEmpty($stream->skip(100)->toArray(false));
+    }
+
+    /**
+     *
+     */
+    public function test_limit()
+    {
+        $stream = new IteratorStream(new \ArrayIterator([4, 8, 5, 7, 1]));
+
+        $this->assertInstanceOf(LimitStream::class, $stream->limit(2));
+        $this->assertEquals([4, 8], $stream->limit(2)->toArray(false));
+        $this->assertEquals([7, 1], $stream->limit(2, 3)->toArray(false));
+        $this->assertEmpty($stream->limit(1, 100)->toArray(false));
+    }
+
+    /**
+     *
+     */
     public function test_matchAll()
     {
         $stream = new IteratorStream(new \ArrayIterator([4, 5, 1]));

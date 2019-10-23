@@ -8,26 +8,23 @@ use Bdf\Collection\Util\Optional;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class ArrayStreamTest
+ * Class LimitStreamTest
  */
-class ArrayStreamTest extends TestCase
+class LimitStreamTest extends TestCase
 {
     /**
      *
      */
     public function test_toArray()
     {
-        $stream = new ArrayStream([
-            'firstName' => 'John',
-            'lastName'  => 'Doe'
-        ]);
+        $stream = new LimitStream(new ArrayStream([1, 2, 3, 4]), 1, 2);
 
         $this->assertSame([
-            'firstName' => 'John',
-            'lastName'  => 'Doe'
+            1 => 2,
+            2 => 3,
         ], $stream->toArray());
 
-        $this->assertSame(['John', 'Doe' ], $stream->toArray(false));
+        $this->assertSame([2, 3], $stream->toArray(false));
     }
 
     /**
@@ -35,10 +32,7 @@ class ArrayStreamTest extends TestCase
      */
     public function test_forEach()
     {
-        $stream = new ArrayStream([
-            'firstName' => 'John',
-            'lastName'  => 'Doe'
-        ]);
+        $stream = new LimitStream(new ArrayStream([1, 2, 3, 4]), 1, 2);
 
         $calls = [];
 
@@ -47,8 +41,8 @@ class ArrayStreamTest extends TestCase
         });
 
         $this->assertEquals([
-            ['John', 'firstName'],
-            ['Doe', 'lastName'],
+            [2, 1],
+            [3, 2],
         ], $calls);
     }
 
@@ -57,15 +51,12 @@ class ArrayStreamTest extends TestCase
      */
     public function test_filter()
     {
-        $stream = new ArrayStream([
-            'firstName' => 'John',
-            'lastName'  => 'Doe'
-        ]);
+        $stream = new LimitStream(new ArrayStream([1, 2, 3, 4]), 1, 2);
 
-        $filterStream = $stream->filter(function ($e) { return strpos($e, 'J') !== false; });
+        $filterStream = $stream->filter(function ($e) { return $e % 2 === 0; });
 
         $this->assertInstanceOf(FilterStream::class, $filterStream);
-        $this->assertEquals(['firstName' => 'John'], $filterStream->toArray());
+        $this->assertEquals([1 => 2], $filterStream->toArray());
     }
 
     /**
@@ -73,16 +64,15 @@ class ArrayStreamTest extends TestCase
      */
     public function test_map()
     {
-        $stream = new ArrayStream([
+        $stream = new LimitStream(new ArrayStream([
             'firstName' => 'John',
             'lastName'  => 'Doe'
-        ]);
+        ]), 1, 1);
 
         $mapStream = $stream->map(function ($e) { return strtoupper($e); });
 
         $this->assertInstanceOf(MapStream::class, $mapStream);
         $this->assertEquals([
-            'firstName' => 'JOHN',
             'lastName'  => 'DOE'
         ], $mapStream->toArray());
     }
@@ -92,14 +82,11 @@ class ArrayStreamTest extends TestCase
      */
     public function test_iterator()
     {
-        $stream = new ArrayStream([
-            'firstName' => 'John',
-            'lastName'  => 'Doe'
-        ]);
+        $stream = new LimitStream(new ArrayStream([1, 2, 3, 4]), 1, 2);
 
         $this->assertSame([
-            'firstName' => 'John',
-            'lastName'  => 'Doe'
+            1 => 2,
+            2 => 3,
         ], iterator_to_array($stream));
     }
 
@@ -108,13 +95,18 @@ class ArrayStreamTest extends TestCase
      */
     public function test_first()
     {
-        $stream = new ArrayStream([
+        $stream = new LimitStream(new ArrayStream([
             'firstName' => 'John',
             'lastName'  => 'Doe'
-        ]);
+        ]), 1);
 
-        $this->assertEquals(Optional::of('John'), $stream->first());
-        $this->assertEquals(Optional::empty(), (new ArrayStream([]))->first());
+        $this->assertEquals(Optional::of('Doe'), $stream->first());
+
+        $stream = new LimitStream(new ArrayStream([
+            'firstName' => 'John',
+            'lastName'  => 'Doe'
+        ]), 10);
+        $this->assertEquals(Optional::empty(), $stream->first());
     }
 
     /**
@@ -122,12 +114,12 @@ class ArrayStreamTest extends TestCase
      */
     public function test_distinct()
     {
-        $stream = new ArrayStream([4, 8, 4, 5, 1, 7, 1]);
+        $stream = new LimitStream(new ArrayStream([4, 8, 4, 5, 1, 7, 1]), 2);
 
         $distinctStream = $stream->distinct();
 
         $this->assertInstanceOf(DistinctStream::class, $distinctStream);
-        $this->assertEquals([4, 8, 5, 1, 7], $distinctStream->toArray(false));
+        $this->assertEquals([4, 5, 1, 7], $distinctStream->toArray(false));
     }
 
     /**
@@ -135,18 +127,20 @@ class ArrayStreamTest extends TestCase
      */
     public function test_distinct_assoc()
     {
-        $stream = new ArrayStream([
-            'foo' => 42,
+        $stream = new LimitStream(new ArrayStream([
             'bar' => 24,
-            'baz' => 42
-        ]);
+            'foo' => 42,
+            'baz' => 42,
+            'aaa' => 14,
+            'bbb' => 15,
+        ]), 1, 3);
 
         $distinctStream = $stream->distinct();
 
         $this->assertInstanceOf(DistinctStream::class, $distinctStream);
         $this->assertEquals([
             'foo' => 42,
-            'bar' => 24
+            'aaa' => 14,
         ], $distinctStream->toArray());
     }
 
@@ -155,12 +149,12 @@ class ArrayStreamTest extends TestCase
      */
     public function test_sort()
     {
-        $stream = new ArrayStream([4, 5, 1, 8, 3]);
+        $stream = new LimitStream(new ArrayStream([4, 5, 1, 8, 3]), 1, 3);
 
         $sortStream = $stream->sort();
 
         $this->assertInstanceOf(SortStream::class, $sortStream);
-        $this->assertEquals([1, 3, 4, 5, 8], $sortStream->toArray(false));
+        $this->assertEquals([1, 5, 8], $sortStream->toArray(false));
     }
 
     /**
@@ -168,19 +162,21 @@ class ArrayStreamTest extends TestCase
      */
     public function test_sort_with_assoc()
     {
-        $stream = new ArrayStream([
+        $stream = new LimitStream(new ArrayStream([
             'foo' => 4,
             'bar' => 6,
             'baz' => 2,
-        ]);
+            'aaa' => 5,
+            'bbb' => 1,
+        ]), 1, 3);
 
         $this->assertSame([
             'baz' => 2,
-            'foo' => 4,
+            'aaa' => 5,
             'bar' => 6,
         ], $stream->sort(null, true)->toArray());
 
-        $this->assertSame([2, 4, 6], $stream->sort()->toArray());
+        $this->assertSame([2, 5, 6], $stream->sort()->toArray());
     }
 
     /**
@@ -188,14 +184,14 @@ class ArrayStreamTest extends TestCase
      */
     public function test_sort_with_comparator()
     {
-        $stream = new ArrayStream([4, 5, 1, 8, 3]);
+        $stream = new LimitStream(new ArrayStream([4, 5, 1, 8, 3]), 1, 3);
 
         $sortStream = $stream->sort(function ($a, $b) {
             return [$a % 2, $a] <=> [$b % 2, $b];
         });
 
         $this->assertInstanceOf(SortStream::class, $sortStream);
-        $this->assertEquals([4, 8, 1, 3, 5], $sortStream->toArray(false));
+        $this->assertEquals([8, 1, 5], $sortStream->toArray(false));
     }
 
     /**
@@ -203,7 +199,7 @@ class ArrayStreamTest extends TestCase
      */
     public function test_flatMap_preserve_keys()
     {
-        $stream = new ArrayStream([
+        $stream = new LimitStream(new ArrayStream([
             [
                 'value' => [
                     'foo' => 12,
@@ -216,11 +212,9 @@ class ArrayStreamTest extends TestCase
                     'baz' => 25,
                 ]
             ],
-        ]);
+        ]), 1, 1);
 
         $this->assertSame([
-            'foo' => 12,
-            'bar' => 42,
             'oof' => 32,
             'baz' => 25
         ], $stream->flatMap(function ($e) { return $e['value']; }, true)->toArray());
@@ -231,7 +225,7 @@ class ArrayStreamTest extends TestCase
      */
     public function test_flatMap_no_preserve_keys()
     {
-        $stream = new ArrayStream([
+        $stream = new LimitStream(new ArrayStream([
             [
                 'value' => [
                     'foo' => 12,
@@ -244,9 +238,9 @@ class ArrayStreamTest extends TestCase
                     'baz' => 25,
                 ]
             ],
-        ]);
+        ]), 1, 1);
 
-        $this->assertSame([12, 42, 32, 25], $stream->flatMap(function ($e) { return $e['value']; })->toArray());
+        $this->assertSame([32, 25], $stream->flatMap(function ($e) { return $e['value']; })->toArray());
     }
 
     /**
@@ -254,9 +248,9 @@ class ArrayStreamTest extends TestCase
      */
     public function test_reduce_with_closure()
     {
-        $stream = new ArrayStream([4, 5, 1]);
+        $stream = new LimitStream(new ArrayStream([4, 5, 1]), 1, 2);
 
-        $this->assertEquals(10, $stream->reduce(function ($a, $b) { return $a + $b; }));
+        $this->assertEquals(6, $stream->reduce(function ($a, $b) { return $a + $b; }));
     }
 
     /**
@@ -264,9 +258,9 @@ class ArrayStreamTest extends TestCase
      */
     public function test_reduce_with_closure_and_initial_value()
     {
-        $stream = new ArrayStream([4, 5, 1]);
+        $stream = new LimitStream(new ArrayStream([4, 5, 1]), 1, 2);
 
-        $this->assertEquals(15, $stream->reduce(function ($a, $b) { return $a + $b; }, 5));
+        $this->assertEquals(11, $stream->reduce(function ($a, $b) { return $a + $b; }, 5));
     }
 
     /**
@@ -274,7 +268,7 @@ class ArrayStreamTest extends TestCase
      */
     public function test_reduce_with_empty_stream()
     {
-        $stream = new ArrayStream([]);
+        $stream = new LimitStream(new ArrayStream([]), 1, 1);
         $called = false;
 
         $this->assertEquals(5, $stream->reduce(function () use(&$called) { $called = true; }, 5));
@@ -286,9 +280,9 @@ class ArrayStreamTest extends TestCase
      */
     public function test_reduce_with_accumulator_functor()
     {
-        $stream = new ArrayStream([4, 8, 2]);
+        $stream = new LimitStream(new ArrayStream([4, 8, 2]), 1, 2);
 
-        $this->assertEquals(14, $stream->reduce(Accumulators::sum()));
+        $this->assertEquals(10, $stream->reduce(Accumulators::sum()));
     }
 
     /**
@@ -296,9 +290,9 @@ class ArrayStreamTest extends TestCase
      */
     public function test_reduce_with_accumulator_functor_and_initial_value()
     {
-        $stream = new ArrayStream([4, 8, 2]);
+        $stream = new LimitStream(new ArrayStream([4, 8, 2]), 1, 2);
 
-        $this->assertEquals(16, $stream->reduce(Accumulators::sum(), 2));
+        $this->assertEquals(12, $stream->reduce(Accumulators::sum(), 2));
     }
 
     /**
@@ -306,9 +300,9 @@ class ArrayStreamTest extends TestCase
      */
     public function test_collector()
     {
-        $stream = new ArrayStream([4, 8, 2]);
+        $stream = new LimitStream(new ArrayStream([4, 8, 2]), 1, 2);
 
-        $this->assertEquals('4:8:2', $stream->collect(new Joining(':')));
+        $this->assertEquals('8:2', $stream->collect(new Joining(':')));
     }
 
     /**
@@ -316,12 +310,12 @@ class ArrayStreamTest extends TestCase
      */
     public function test_concat()
     {
-        $stream = new ArrayStream([4, 8, 2]);
+        $stream = new LimitStream(new ArrayStream([4, 8, 2]), 1, 2);
 
         $concat = $stream->concat(new ArrayStream([7, 4]), false);
 
         $this->assertInstanceOf(ConcatStream::class, $concat);
-        $this->assertEquals([4, 8, 2, 7, 4], $concat->toArray());
+        $this->assertEquals([8, 2, 7, 4], $concat->toArray());
     }
 
     /**
@@ -329,7 +323,7 @@ class ArrayStreamTest extends TestCase
      */
     public function test_matchAll()
     {
-        $stream = new ArrayStream([4, 8, 2]);
+        $stream = new LimitStream(new ArrayStream([4, 8, 2]), 1, 2);
 
         $this->assertTrue($stream->matchAll(function ($e) { return $e % 2 === 0; }));
         $this->assertFalse($stream->matchAll(function ($e) { return $e % 4 === 0; }));
@@ -340,7 +334,7 @@ class ArrayStreamTest extends TestCase
      */
     public function test_matchOne()
     {
-        $stream = new ArrayStream([4, 8, 2]);
+        $stream = new LimitStream(new ArrayStream([4, 8, 2]), 1, 2);
 
         $this->assertTrue($stream->matchOne(function ($e) { return $e % 4 === 0; }));
         $this->assertFalse($stream->matchOne(function ($e) { return $e % 2 === 1; }));
@@ -351,13 +345,13 @@ class ArrayStreamTest extends TestCase
      */
     public function test_skip()
     {
-        $stream = new ArrayStream([4, 8, 2]);
+        $stream = new LimitStream(new ArrayStream([4, 8, 2]), 1, 2);
 
-        $skip = $stream->skip(2);
+        $skip = $stream->skip(1);
 
         $this->assertInstanceOf(LimitStream::class, $skip);
         $this->assertEquals([2], $skip->toArray(false));
-        $this->assertInstanceOf(EmptyStream::class, $stream->skip(100));
+        $this->assertEmpty($stream->skip(100)->toArray());
     }
 
     /**
@@ -365,15 +359,15 @@ class ArrayStreamTest extends TestCase
      */
     public function test_limit()
     {
-        $stream = new ArrayStream([4, 8, 2]);
+        $stream = new LimitStream(new ArrayStream([4, 8, 2]), 1, 2);
 
         $limit = $stream->limit(2);
 
         $this->assertInstanceOf(LimitStream::class, $limit);
-        $this->assertEquals([4, 8], $limit->toArray(false));
-        $this->assertEquals([8, 2], $stream->limit(2, 1)->toArray(false));
+        $this->assertEquals([8, 2], $limit->toArray(false));
+        $this->assertEquals([2], $stream->limit(2, 1)->toArray(false));
 
-        $this->assertInstanceOf(EmptyStream::class, $stream->limit(1, 100));
-        $this->assertInstanceOf(EmptyStream::class, $stream->limit(0));
+        $this->assertEmpty($stream->limit(1, 100)->toArray());
+        $this->assertEmpty($stream->limit(0)->toArray());
     }
 }

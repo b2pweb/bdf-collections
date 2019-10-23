@@ -186,7 +186,7 @@ interface StreamInterface extends \Iterator
      *     ['values' => new ArrayStream([4, 5])],
      * ]);
      *
-     * $stream->forMap(function ($e) { return $e['values']; })->toArray(); // [1, 2, 3, 4, 5]
+     * $stream->flatMap(function ($e) { return $e['values']; })->toArray(); // [1, 2, 3, 4, 5]
      * </code>
      *
      * (i) Each transformed elements will be transformed to a Stream using Streams::wrap()
@@ -217,6 +217,44 @@ interface StreamInterface extends \Iterator
      * @see Streams::wrap() Used to transform each transformed elements to a Stream
      */
     public function flatMap(callable $transformer, bool $preserveKeys = false): StreamInterface;
+
+    /**
+     * Skip the $count first elements of the stream.
+     * Give a count higher than the number of elements of the stream will results of an empty stream.
+     *
+     * Example:
+     * <code>
+     * $stream = new ArrayStream([1, 2, 3, 4]);
+     * $stream->skip(2)->toArray(); // [3, 4]
+     * </code>
+     *
+     * @param int $count Number of elements to skip. Must be a positive number.
+     *
+     * @return StreamInterface
+     *
+     * @see StreamInterface::limit() For limit the number of stream's elements
+     */
+    public function skip(int $count): StreamInterface;
+
+    /**
+     * Limit the number of elements of the stream.
+     * Stop the stream when it reach $count elements.
+     *
+     * Example:
+     * <code>
+     * $stream = new ArrayStream([1, 2, 3, 4]);
+     * $stream->limit(2)->toArray(); // [1, 2]
+     * $stream->limit(2, 1)->toArray(); // [2, 3]
+     * </code>
+     *
+     * @param int $count The maximum number elements
+     * @param int $offset Number of elements to skip at start of the stream
+     *
+     * @return StreamInterface
+     *
+     * @see StreamInterface::skip() For skip firsts elements
+     */
+    public function limit(int $count, int $offset = 0): StreamInterface;
 
     /**
      * Iterate over all stream elements.

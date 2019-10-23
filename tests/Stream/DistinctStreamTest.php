@@ -172,6 +172,31 @@ class DistinctStreamTest extends TestCase
     /**
      *
      */
+    public function test_skip()
+    {
+        $stream = new DistinctStream(new ArrayStream([4, 5, 1, 5]), new HashSet());
+
+        $this->assertInstanceOf(LimitStream::class, $stream->skip(2));
+        $this->assertEquals([1], $stream->skip(2)->toArray(false));
+        $this->assertEmpty($stream->skip(100)->toArray(false));
+    }
+
+    /**
+     *
+     */
+    public function test_limit()
+    {
+        $stream = new DistinctStream(new ArrayStream([4, 5, 1, 5]), new HashSet());
+
+        $this->assertInstanceOf(LimitStream::class, $stream->limit(2));
+        $this->assertEquals([4, 5], $stream->limit(2)->toArray(false));
+        $this->assertEquals([5, 1], $stream->limit(2, 1)->toArray(false));
+        $this->assertEmpty($stream->limit(2, 10)->toArray(false));
+    }
+
+    /**
+     *
+     */
     public function test_matchAll()
     {
         $stream = new DistinctStream(new ArrayStream([4, 5, 1, 5]), new HashSet());

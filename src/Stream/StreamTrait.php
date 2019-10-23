@@ -62,6 +62,22 @@ trait StreamTrait
     }
 
     /**
+     * @see StreamInterface::skip()
+     */
+    public function skip(int $count): StreamInterface
+    {
+        return new LimitStream($this, $count);
+    }
+
+    /**
+     * @see StreamInterface::limit()
+     */
+    public function limit(int $count, int $offset = 0): StreamInterface
+    {
+        return new LimitStream($this, $offset, $count);
+    }
+
+    /**
      * @see StreamInterface::forEach()
      */
     public function forEach(callable $consumer): void

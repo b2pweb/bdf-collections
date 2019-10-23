@@ -176,6 +176,28 @@ class SingletonStreamTest extends TestCase
     /**
      *
      */
+    public function test_skip()
+    {
+        $stream = new SingletonStream(15);
+
+        $this->assertInstanceOf(EmptyStream::class, $stream->skip(1));
+        $this->assertSame($stream, $stream->skip(0));
+    }
+
+    /**
+     *
+     */
+    public function test_limit()
+    {
+        $stream = new SingletonStream(15);
+
+        $this->assertSame($stream, $stream->limit(10));
+        $this->assertInstanceOf(EmptyStream::class, $stream->limit(10, 1));
+    }
+
+    /**
+     *
+     */
     public function test_match()
     {
         $stream = new SingletonStream(15);

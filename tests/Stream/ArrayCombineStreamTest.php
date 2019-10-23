@@ -334,4 +334,48 @@ class ArrayCombineStreamTest extends TestCase
         $this->assertTrue($stream->matchOne(function ($e) { return $e % 2 === 0; }));
         $this->assertFalse($stream->matchAll(function ($e) { return $e < 100; }));
     }
+
+    /**
+     *
+     */
+    public function test_skip()
+    {
+        $stream = new ArrayCombineStream(
+            ['a', 'b', 'c'],
+            [123, 456, 789]
+        );
+
+        $skip = $stream->skip(2);
+
+        $this->assertInstanceOf(LimitStream::class, $skip);
+        $this->assertSame([
+            'c' => 789,
+        ], $skip->toArray());
+
+        $this->assertEmpty($stream->skip(10)->toArray());
+    }
+
+    /**
+     *
+     */
+    public function test_limit()
+    {
+        $stream = new ArrayCombineStream(
+            ['a', 'b', 'c'],
+            [123, 456, 789]
+        );
+
+        $limit = $stream->limit(2);
+
+        $this->assertInstanceOf(LimitStream::class, $limit);
+        $this->assertSame([
+            'a' => 123,
+            'b' => 456,
+        ], $limit->toArray());
+
+        $this->assertSame([
+            'b' => 456,
+            'c' => 789,
+        ], $stream->limit(2, 1)->toArray());
+    }
 }

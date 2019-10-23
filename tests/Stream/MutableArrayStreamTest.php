@@ -344,6 +344,33 @@ class MutableArrayStreamTest extends TestCase
     /**
      *
      */
+    public function test_skip()
+    {
+        $stream = new MutableArrayStream([7, 4, 2]);
+
+        $this->assertSame($stream, $stream->skip(2));
+        $this->assertSame([2], $stream->toArray(false));
+        $this->assertSame([2 => 2], $stream->toArray());
+        $this->assertEmpty($stream->skip(100)->toArray(false));
+    }
+
+    /**
+     *
+     */
+    public function test_limit()
+    {
+        $stream = new MutableArrayStream([7, 4, 2]);
+
+        $this->assertSame($stream, $stream->limit(2));
+        $this->assertSame([7, 4], $stream->toArray(false));
+        $this->assertSame([0 => 7, 1 => 4], $stream->toArray());
+        $this->assertSame([4], $stream->limit(5, 1)->toArray(false));
+        $this->assertEmpty($stream->limit(1, 100)->toArray(false));
+    }
+
+    /**
+     *
+     */
     public function test_matchAll()
     {
         $stream = new MutableArrayStream([4, 8, 2]);

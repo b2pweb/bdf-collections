@@ -28,7 +28,7 @@ final class Call implements ConsumerInterface
      * @param string $method
      * @param array $arguments
      */
-    public function __construct(string $method, array $arguments)
+    public function __construct(string $method, array $arguments = [])
     {
         $this->method = $method;
         $this->arguments = $arguments;

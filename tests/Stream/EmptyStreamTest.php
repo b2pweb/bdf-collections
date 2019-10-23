@@ -32,6 +32,8 @@ class EmptyStreamTest extends TestCase
         $this->assertSame($stream, $stream->distinct());
         $this->assertSame($stream, $stream->sort());
         $this->assertSame($stream, $stream->flatMap(function () {}));
+        $this->assertSame($stream, $stream->skip(10));
+        $this->assertSame($stream, $stream->limit(10));
     }
 
     /**

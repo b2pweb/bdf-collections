@@ -232,6 +232,60 @@ class ConcatStreamTest extends TestCase
     /**
      *
      */
+    public function test_skip()
+    {
+        $stream = new ConcatStream([
+            new ArrayStream([
+                'foo' => 'bar',
+                'value' => 42,
+            ]),
+            new ArrayStream([
+                'baz' => 'foo',
+                'other' => 14
+            ])
+        ]);
+
+        $skip = $stream->skip(2);
+
+        $this->assertInstanceOf(LimitStream::class, $skip);
+        $this->assertSame([
+            'baz' => 'foo',
+            'other' => 14
+        ], $skip->toArray());
+        $this->assertEmpty($stream->skip(100)->toArray());
+    }
+
+    /**
+     *
+     */
+    public function test_limit()
+    {
+        $stream = new ConcatStream([
+            new ArrayStream([
+                'foo' => 'bar',
+                'value' => 42,
+            ]),
+            new ArrayStream([
+                'baz' => 'foo',
+                'other' => 14
+            ])
+        ]);
+
+        $this->assertInstanceOf(LimitStream::class, $stream->limit(1, 1));
+        $this->assertSame([
+            'foo' => 'bar',
+            'value' => 42,
+        ], $stream->limit(2)->toArray());
+        $this->assertSame([
+            'value' => 42,
+            'baz' => 'foo',
+        ], $stream->limit(2, 1)->toArray());
+        $this->assertEmpty($stream->limit(0, 100)->toArray());
+    }
+
+    /**
+     *
+     */
     public function test_forEach()
     {
         $stream = new ConcatStream([

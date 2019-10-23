@@ -185,6 +185,31 @@ class MapStreamTest extends TestCase
     /**
      *
      */
+    public function test_skip()
+    {
+        $stream = new MapStream(new ArrayStream([4, 5, 1]), function ($e) { return $e * 2; });
+
+        $this->assertInstanceOf(LimitStream::class, $stream->skip(2));
+        $this->assertEquals([2], $stream->skip(2)->toArray(false));
+        $this->assertEmpty($stream->skip(100)->toArray(false));
+    }
+
+    /**
+     *
+     */
+    public function test_limit()
+    {
+        $stream = new MapStream(new ArrayStream([4, 5, 1]), function ($e) { return $e * 2; });
+
+        $this->assertInstanceOf(LimitStream::class, $stream->limit(2));
+        $this->assertEquals([8, 10], $stream->limit(2)->toArray(false));
+        $this->assertEquals([10, 2], $stream->limit(2, 1)->toArray(false));
+        $this->assertEmpty($stream->limit(1, 100)->toArray(false));
+    }
+
+    /**
+     *
+     */
     public function test_matchAll()
     {
         $stream = new MapStream(new ArrayStream([4, 5, 1]), function ($e) { return $e * 2; });

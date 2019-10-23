@@ -69,6 +69,22 @@ final class EmptyStream extends \EmptyIterator implements StreamInterface
     /**
      * {@inheritdoc}
      */
+    public function skip(int $count): StreamInterface
+    {
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function limit(int $count, int $offset = 0): StreamInterface
+    {
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function forEach(callable $consumer): void
     {
     }

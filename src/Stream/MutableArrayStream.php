@@ -121,6 +121,26 @@ class MutableArrayStream implements \Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
+    public function skip(int $count): StreamInterface
+    {
+        $this->data = array_slice($this->data, $count, null, true);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function limit(int $count, int $offset = 0): StreamInterface
+    {
+        $this->data = array_slice($this->data, $offset, $count, true);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function forEach(callable $consumer): void
     {
         foreach ($this->data as $k => $v) {

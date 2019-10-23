@@ -275,6 +275,31 @@ class SortStreamTest extends TestCase
     /**
      *
      */
+    public function test_skip()
+    {
+        $stream = new SortStream(new ArrayStream([4, 5, 1]), null, false);
+
+        $this->assertInstanceOf(LimitStream::class, $stream->skip(2));
+        $this->assertSame([5], $stream->skip(2)->toArray(false));
+        $this->assertSame([], $stream->skip(10)->toArray(false));
+    }
+
+    /**
+     *
+     */
+    public function test_limit()
+    {
+        $stream = new SortStream(new ArrayStream([4, 5, 1]), null, false);
+
+        $this->assertInstanceOf(LimitStream::class, $stream->limit(2));
+        $this->assertSame([1, 4], $stream->limit(2)->toArray(false));
+        $this->assertSame([4, 5], $stream->limit(2, 1)->toArray(false));
+        $this->assertSame([], $stream->limit(2, 10)->toArray(false));
+    }
+
+    /**
+     *
+     */
     public function test_matchAll()
     {
         $stream = new SortStream(new ArrayStream([4, 5, 1]));

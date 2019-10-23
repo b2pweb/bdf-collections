@@ -100,6 +100,30 @@ final class SingletonStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
+    public function skip(int $count): StreamInterface
+    {
+        if ($count > 0) {
+            return EmptyStream::instance();
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function limit(int $count, int $offset = 0): StreamInterface
+    {
+        if ($offset > 0 || $count < 1) {
+            return EmptyStream::instance();
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function forEach(callable $consumer): void
     {
         $consumer($this->value, $this->key);
