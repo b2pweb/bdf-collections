@@ -109,6 +109,21 @@ class FlatMapStreamTest extends TestCase
     /**
      *
      */
+    public function test_mapKey()
+    {
+        $stream = new ArrayStream([
+            ['values' => [4, 7, 8]],
+            ['values' => [1, 5, 2]],
+        ]);
+
+        $flat = new FlatMapStream($stream, function ($e) { return $e['values']; });
+
+        $this->assertEquals([6 => 4, 9 => 7, 10 => 8, 3 => 1, 7 => 5, 4 => 2], $flat->mapKey(function ($e) { return $e + 2; })->toArray());
+    }
+
+    /**
+     *
+     */
     public function test_filter()
     {
         $stream = new ArrayStream([

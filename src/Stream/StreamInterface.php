@@ -53,6 +53,39 @@ interface StreamInterface extends Iterator
     public function map(callable $transformer): StreamInterface;
 
     /**
+     * Apply $function to each values of the stream for generates keys
+     *
+     * The return type of the function is not checked, and duplicate keys, or illegal array offset may be generated.
+     * In such cases, toArray(), or other collector methods may have undefined behavior (others stream methods can be used safely).
+     * For remove elements with same result of the function, use distinct(), or IndexingBy collector.
+     *
+     * <code>
+     * $stream = new ArrayStream([1, 2, 3]);
+     * $stream
+     *     ->map(function ($element, $key) { return $element * 2; })
+     *     ->toArray() // [2 => 1, 4 => 2, 6 => 3]
+     * ;
+     *
+     * // Apply transformation to the key (snake_case to PascalCase)
+     * $stream = new ArrayStream(['first_name' => 'John', 'last_name' => 'Doe']);
+     * $stream
+     *     ->mapKey(function ($e, $key) {
+     *         return Streams::wrap(explode('_', $key))->map(function ($k) { return ucfirst($k); })->collect(new Joining());
+     *     })
+     *     ->toArray() // ['FirstName' => 'John', 'LastName' => 'Doe']
+     * ;
+     * </code>
+     *
+     * @param callable $function The key generator.
+     *     Should take the element as first parameter, the key as second parameter, and return the new key
+     *
+     * @return StreamInterface
+     *
+     * @see TransformerInterface
+     */
+    public function mapKey(callable $function): StreamInterface;
+
+    /**
      * Filter the stream
      *
      * <code>

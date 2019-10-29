@@ -90,6 +90,21 @@ class ArrayStreamTest extends TestCase
     /**
      *
      */
+    public function test_mapKey()
+    {
+        $stream = new ArrayStream([
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+        ]);
+
+        $this->assertEquals(['FirstName' => 'John', 'LastName' => 'Doe'], $stream->mapKey(function ($e, $key) {
+            return Streams::wrap(explode('_', $key))->map(function ($k) { return ucfirst($k); })->collect(new Joining());
+        })->toArray());
+    }
+
+    /**
+     *
+     */
     public function test_iterator()
     {
         $stream = new ArrayStream([

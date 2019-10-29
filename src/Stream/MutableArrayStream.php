@@ -32,6 +32,7 @@ use function usort;
  * Some methods have a different behavior :
  * - distinct() : The hash functor or custom class hash are not used for comparison
  * - first()    : Not optimized in sort() context (all the array will be sorted, instead of find the min value)
+ * - mapKey()   : May failed if the function return an invalid key
  */
 final class MutableArrayStream implements Iterator, StreamInterface
 {
@@ -60,6 +61,22 @@ final class MutableArrayStream implements Iterator, StreamInterface
 
         foreach ($this->data as $k => $v) {
             $newData[$k] = $transformer($v, $k);
+        }
+
+        $this->data = $newData;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function mapKey(callable $function): StreamInterface
+    {
+        $newData = [];
+
+        foreach ($this->data as $k => $v) {
+            $newData[$function($v, $k)] = $v;
         }
 
         $this->data = $newData;

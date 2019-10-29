@@ -85,6 +85,23 @@ class MutableArrayStreamTest extends TestCase
     /**
      *
      */
+    public function test_mapKey()
+    {
+        $stream = new MutableArrayStream([
+            'firstName' => 'John',
+            'lastName'  => 'Doe'
+        ]);
+
+        $this->assertSame($stream, $stream->mapKey(function ($e, $k) { return strtoupper($e[0].$k[0]); }));
+        $this->assertEquals([
+            'JF' => 'John',
+            'DL'  => 'Doe'
+        ], $stream->toArray());
+    }
+
+    /**
+     *
+     */
     public function test_iterator()
     {
         $stream = new MutableArrayStream([

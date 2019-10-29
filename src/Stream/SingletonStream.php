@@ -53,6 +53,14 @@ final class SingletonStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
+    public function mapKey(callable $function): StreamInterface
+    {
+        return new SingletonStream($this->value, $function($this->value, $this->key));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function filter(callable $predicate): StreamInterface
     {
         return $predicate($this->value, $this->key)

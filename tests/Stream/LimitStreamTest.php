@@ -80,6 +80,24 @@ class LimitStreamTest extends TestCase
     /**
      *
      */
+    public function test_mapKey()
+    {
+        $stream = new LimitStream(new ArrayStream([
+            'firstName' => 'John',
+            'lastName'  => 'Doe'
+        ]), 1, 1);
+
+        $mapStream = $stream->mapKey(function ($e, $k) { return strtoupper($k); });
+
+        $this->assertInstanceOf(MapKeyStream::class, $mapStream);
+        $this->assertEquals([
+            'LASTNAME'  => 'Doe'
+        ], $mapStream->toArray());
+    }
+
+    /**
+     *
+     */
     public function test_iterator()
     {
         $stream = new LimitStream(new ArrayStream([1, 2, 3, 4]), 1, 2);

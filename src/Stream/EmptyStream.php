@@ -30,6 +30,14 @@ final class EmptyStream extends EmptyIterator implements StreamInterface
     /**
      * {@inheritdoc}
      */
+    public function mapKey(callable $function): StreamInterface
+    {
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function filter(callable $predicate): StreamInterface
     {
         return $this;

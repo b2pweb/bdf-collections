@@ -31,6 +31,14 @@ trait StreamTrait
     }
 
     /**
+     * @see StreamInterface::mapKey()
+     */
+    public function mapKey(callable $transformer): StreamInterface
+    {
+        return new MapKeyStream($this, $transformer);
+    }
+
+    /**
      * @see StreamInterface::distinct()
      */
     public function distinct(callable $hashFunction = null): StreamInterface

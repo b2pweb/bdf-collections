@@ -79,6 +79,22 @@ class FilterStreamTest extends TestCase
     /**
      *
      */
+    public function test_mapKey()
+    {
+        $stream = new FilterStream(new ArrayStream([1, 2, 3]), function ($e) { return $e % 2 === 1; });
+
+        $mapStream = $stream->mapKey(function ($e) { return $e * 2; });
+
+        $this->assertInstanceOf(MapKeyStream::class, $mapStream);
+        $this->assertEquals([
+            2 => 1,
+            6 => 3
+        ], $mapStream->toArray());
+    }
+
+    /**
+     *
+     */
     public function test_iterator()
     {
         $stream = new FilterStream(new ArrayStream([

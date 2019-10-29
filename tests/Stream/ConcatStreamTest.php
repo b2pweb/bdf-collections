@@ -161,6 +161,30 @@ class ConcatStreamTest extends TestCase
     /**
      *
      */
+    public function test_mapKey()
+    {
+        $stream = new ConcatStream([
+            new ArrayStream([
+                'foo' => 'bar',
+                'value' => 42,
+            ]),
+            new ArrayStream([
+                'baz' => 'foo',
+                'other' => 77
+            ])
+        ]);
+
+        $this->assertSame([
+            'FOO' => 'bar',
+            'VALUE' => 42,
+            'BAZ' => 'foo',
+            'OTHER' => 77
+        ], $stream->mapKey(function ($e, $k) { return strtoupper($k); })->toArray());
+    }
+
+    /**
+     *
+     */
     public function test_filter()
     {
         $stream = new ConcatStream([

@@ -51,6 +51,19 @@ class SingletonStreamTest extends TestCase
     /**
      *
      */
+    public function test_mapKey()
+    {
+        $stream = new SingletonStream('bar', 'foo');
+
+        $mappedStream = $stream->mapKey(function ($e, $k) { return strtoupper($k); });
+
+        $this->assertInstanceOf(SingletonStream::class, $mappedStream);
+        $this->assertEquals(['FOO' => 'bar'], $mappedStream->toArray());
+    }
+
+    /**
+     *
+     */
     public function test_filter()
     {
         $stream = new SingletonStream('bar', 'foo');

@@ -88,6 +88,25 @@ class IteratorStreamTest extends TestCase
     /**
      *
      */
+    public function test_mapKey()
+    {
+        $stream = new IteratorStream(new \ArrayIterator([
+            'firstName' => 'John',
+            'lastName'  => 'Doe'
+        ]));
+
+        $mapStream = $stream->mapKey(function ($e, $k) { return strtoupper($k); });
+
+        $this->assertInstanceOf(MapKeyStream::class, $mapStream);
+        $this->assertEquals([
+            'FIRSTNAME' => 'John',
+            'LASTNAME'  => 'Doe'
+        ], $mapStream->toArray());
+    }
+
+    /**
+     *
+     */
     public function test_iterator()
     {
         $stream = new IteratorStream(new \ArrayIterator([

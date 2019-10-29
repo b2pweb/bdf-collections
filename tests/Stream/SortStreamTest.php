@@ -167,6 +167,19 @@ class SortStreamTest extends TestCase
     /**
      *
      */
+    public function test_mapKey()
+    {
+        $stream = new SortStream(new ArrayStream([4, 7, 5, 2, 3]));
+
+        $mapStream = $stream->mapKey(function ($e) { return $e * 2; });
+
+        $this->assertInstanceOf(MapKeyStream::class, $mapStream);
+        $this->assertSame([4 => 2, 6 => 3, 8 => 4, 10 => 5, 14 => 7], $mapStream->toArray());
+    }
+
+    /**
+     *
+     */
     public function test_iterator()
     {
         $stream = new SortStream(new ArrayStream([4, 7, 5, 2, 3]));

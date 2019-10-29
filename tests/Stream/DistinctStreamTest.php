@@ -82,6 +82,19 @@ class DistinctStreamTest extends TestCase
     /**
      *
      */
+    public function test_mapKey()
+    {
+        $stream = new DistinctStream(new ArrayStream([1, 1, 2, 3, 2]), new HashSet());
+
+        $mapStream = $stream->mapKey(function ($e) { return $e * 2; });
+
+        $this->assertInstanceOf(MapKeyStream::class, $mapStream);
+        $this->assertEquals([2 => 1, 4 => 2, 6 => 3], $mapStream->toArray());
+    }
+
+    /**
+     *
+     */
     public function test_iterator()
     {
         $stream = new DistinctStream(new ArrayStream([1, 1, 2, 3, 2]), new HashSet());

@@ -89,6 +89,25 @@ class MapStreamTest extends TestCase
     /**
      *
      */
+    public function test_mapKey()
+    {
+        $stream = new MapStream(new ArrayStream([
+            'firstName' => 'John',
+            'lastName'  => 'Doe'
+        ]), function ($e) { return strtoupper($e); });
+
+        $mapStream = $stream->mapKey(function ($e, $k) { return $k[0]; });
+
+        $this->assertInstanceOf(MapKeyStream::class, $mapStream);
+        $this->assertEquals([
+            'f' => 'JOHN',
+            'l'  => 'DOE'
+        ], $mapStream->toArray());
+    }
+
+    /**
+     *
+     */
     public function test_iterator()
     {
         $stream = new MapStream(new ArrayStream([

@@ -131,6 +131,21 @@ class ArrayCombineStreamTest extends TestCase
     /**
      *
      */
+    public function test_mapKey()
+    {
+        $stream = new ArrayCombineStream(
+            ['first_name', 'last_name'],
+            ['John', 'Doe']
+        );
+
+        $this->assertEquals(['FirstName' => 'John', 'LastName' => 'Doe'], $stream->mapKey(function ($e, $key) {
+            return Streams::wrap(explode('_', $key))->map(function ($k) { return ucfirst($k); })->collect(new Joining());
+        })->toArray());
+    }
+
+    /**
+     *
+     */
     public function test_filter()
     {
         $stream = new ArrayCombineStream(
