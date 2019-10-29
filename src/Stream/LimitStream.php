@@ -2,12 +2,15 @@
 
 namespace Bdf\Collection\Stream;
 
+use LimitIterator;
+use OutOfBoundsException;
+
 /**
  * Implementation of StreamInterface::limit() and StreamInterface::skip() return value
  *
  * @internal
  */
-final class LimitStream extends \LimitIterator implements StreamInterface
+final class LimitStream extends LimitIterator implements StreamInterface
 {
     use StreamTrait;
 
@@ -18,7 +21,7 @@ final class LimitStream extends \LimitIterator implements StreamInterface
     {
         try {
             parent::rewind();
-        } catch (\OutOfBoundsException $e) {
+        } catch (OutOfBoundsException $e) {
             // Ignore OutOfBound exception (raised when offset > count)
         }
     }

@@ -3,13 +3,14 @@
 namespace Bdf\Collection\Stream;
 
 use Bdf\Collection\SetInterface;
+use FilterIterator;
 
 /**
  * Implementation of StreamInterface::distinct() return value
  *
  * @internal
  */
-final class DistinctStream extends \FilterIterator implements StreamInterface
+final class DistinctStream extends FilterIterator implements StreamInterface
 {
     use StreamTrait;
 

@@ -4,6 +4,7 @@ namespace Bdf\Collection\Util;
 
 use Bdf\Collection\Stream\EmptyStream;
 use Bdf\Collection\Stream\StreamInterface;
+use RuntimeException;
 
 /**
  * Optional without value
@@ -63,7 +64,7 @@ final class EmptyOptional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
-    public function orThrows($exception = \RuntimeException::class)
+    public function orThrows($exception = RuntimeException::class)
     {
         if (is_string($exception)) {
             $exception = new $exception;
@@ -91,7 +92,7 @@ final class EmptyOptional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
-    public function __call($name, array $arguments): OptionalInterface
+    public function __call(string $name, array $arguments): OptionalInterface
     {
         return $this;
     }
@@ -99,7 +100,7 @@ final class EmptyOptional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
-    public function __get($name): OptionalInterface
+    public function __get(string $name): OptionalInterface
     {
         return $this;
     }
@@ -107,7 +108,7 @@ final class EmptyOptional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
-    public function __isset($name): bool
+    public function __isset(string $name): bool
     {
         return false;
     }

@@ -2,8 +2,20 @@
 
 namespace Bdf\Collection;
 
+use ArrayIterator;
+use BadMethodCallException;
 use Bdf\Collection\Stream\ArrayStream;
 use Bdf\Collection\Stream\StreamInterface;
+use OutOfBoundsException;
+use function array_merge;
+use function array_search;
+use function array_slice;
+use function count;
+use function intdiv;
+use function is_array;
+use function iterator_to_array;
+use function sort;
+use function usort;
 
 /**
  * Collection implementation that provides an ordering on its elements
@@ -152,7 +164,7 @@ class OrderedCollection implements OrderedCollectionInterface
      */
     public function getIterator()
     {
-        return new \ArrayIterator($this->toArray());
+        return new ArrayIterator($this->toArray());
     }
 
     /**
@@ -208,12 +220,12 @@ class OrderedCollection implements OrderedCollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function at($position)
+    public function at(int $position)
     {
         $this->sortElements();
 
         if (!isset($this->elements[$position])) {
-            throw new \OutOfBoundsException('Invalid position '.$position);
+            throw new OutOfBoundsException('Invalid position '.$position);
         }
 
         return $this->elements[$position];
@@ -258,7 +270,7 @@ class OrderedCollection implements OrderedCollectionInterface
     public function offsetSet($offset, $value)
     {
         if ($offset !== null) {
-            throw new \BadMethodCallException('Cannot set a value into an OrderedCollection');
+            throw new BadMethodCallException('Cannot set a value into an OrderedCollection');
         }
 
         $this->add($value);

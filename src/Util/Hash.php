@@ -2,6 +2,8 @@
 
 namespace Bdf\Collection\Util;
 
+use function serialize;
+
 /**
  * Hash utils class
  */
@@ -14,7 +16,7 @@ final class Hash
      *
      * @return string
      */
-    public static function compute($value)
+    public static function compute($value): string
     {
         if ($value instanceof Hashable) {
             return 'O:'.$value->hash();

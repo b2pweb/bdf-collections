@@ -2,10 +2,12 @@
 
 namespace Bdf\Collection;
 
+use ArrayAccess;
+
 /**
  * An OrderedCollection keeps all its elements in order
  */
-interface OrderedCollectionInterface extends CollectionInterface, \ArrayAccess
+interface OrderedCollectionInterface extends CollectionInterface, ArrayAccess
 {
     /**
      * Search the element position
@@ -25,7 +27,7 @@ interface OrderedCollectionInterface extends CollectionInterface, \ArrayAccess
      * @return mixed
      * @throws \OutOfBoundsException When position is less than zero, or do not exists
      */
-    public function at($position);
+    public function at(int $position);
 
     /**
      * {@inheritdoc}

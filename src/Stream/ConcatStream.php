@@ -2,6 +2,8 @@
 
 namespace Bdf\Collection\Stream;
 
+use AppendIterator;
+
 /**
  * Concatenate two or more Streams into one stream
  *
@@ -9,7 +11,7 @@ namespace Bdf\Collection\Stream;
  *
  * @see StreamInterface::concat()
  */
-final class ConcatStream extends \AppendIterator implements StreamInterface
+final class ConcatStream extends AppendIterator implements StreamInterface
 {
     use StreamTrait;
 

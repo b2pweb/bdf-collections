@@ -6,11 +6,12 @@ use Bdf\Collection\Stream\Accumulator\AccumulatorInterface;
 use Bdf\Collection\Stream\Collector\CollectorInterface;
 use Bdf\Collection\Util\Optional;
 use Bdf\Collection\Util\OptionalInterface;
+use EmptyIterator;
 
 /**
  * Null object for streams
  */
-final class EmptyStream extends \EmptyIterator implements StreamInterface
+final class EmptyStream extends EmptyIterator implements StreamInterface
 {
     /**
      * @var EmptyStream

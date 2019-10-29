@@ -2,12 +2,14 @@
 
 namespace Bdf\Collection;
 
+use ArrayAccess;
+
 /**
  * A table is a key-value collection
  *
  * Each elements of the table will be attached to a key
  */
-interface TableInterface extends CollectionInterface, \ArrayAccess
+interface TableInterface extends CollectionInterface, ArrayAccess
 {
     /**
      * Set a value to the table with a key

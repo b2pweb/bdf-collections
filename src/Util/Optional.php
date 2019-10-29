@@ -4,6 +4,8 @@ namespace Bdf\Collection\Util;
 
 use Bdf\Collection\Stream\SingletonStream;
 use Bdf\Collection\Stream\StreamInterface;
+use RuntimeException;
+use TypeError;
 
 /**
  * Handle null values, and create simple null objects
@@ -79,7 +81,7 @@ final class Optional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
-    public function orThrows($exception = \RuntimeException::class)
+    public function orThrows($exception = RuntimeException::class)
     {
         return $this->value;
     }
@@ -103,7 +105,7 @@ final class Optional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
-    public function __call($name, array $arguments): OptionalInterface
+    public function __call(string $name, array $arguments): OptionalInterface
     {
         return self::nullable($this->value->$name(...$arguments));
     }
@@ -111,7 +113,7 @@ final class Optional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
-    public function __get($name): OptionalInterface
+    public function __get(string $name): OptionalInterface
     {
         return self::nullable($this->value->$name);
     }
@@ -119,7 +121,7 @@ final class Optional implements OptionalInterface
     /**
      * {@inheritdoc}
      */
-    public function __isset($name): bool
+    public function __isset(string $name): bool
     {
         return isset($this->value->$name);
     }
@@ -174,12 +176,12 @@ final class Optional implements OptionalInterface
      * @param mixed $value
      *
      * @return Optional
-     * @throws \TypeError If null value is given
+     * @throws TypeError If null value is given
      */
     public static function of($value): Optional
     {
         if ($value === null) {
-            throw new \TypeError('The value should not be null');
+            throw new TypeError('The value should not be null');
         }
 
         return new Optional($value);

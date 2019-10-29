@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Bdf\Collection\Stream\Collector;
 
 use Bdf\Collection\Stream\StreamInterface;

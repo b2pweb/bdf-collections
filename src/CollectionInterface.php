@@ -3,6 +3,8 @@
 namespace Bdf\Collection;
 
 use Bdf\Collection\Stream\Streamable;
+use Countable;
+use IteratorAggregate;
 
 /**
  * Base collection type
@@ -10,7 +12,7 @@ use Bdf\Collection\Stream\Streamable;
  * A collection is a container of elements.
  * The elements can be added, removed, iterated, and check if its contained
  */
-interface CollectionInterface extends \IteratorAggregate, \Countable, Streamable
+interface CollectionInterface extends IteratorAggregate, Countable, Streamable
 {
     /**
      * Add a new element into the collection

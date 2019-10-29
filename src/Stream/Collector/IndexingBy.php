@@ -46,7 +46,7 @@ final class IndexingBy implements CollectorInterface
      * @param callable $getter Extract the group key from element
      * @param array|TableInterface $table The result table or array
      */
-    public function __construct(callable $getter, $table = [])
+    public function __construct(callable $getter, iterable $table = [])
     {
         $this->getter = $getter;
         $this->table = $table;
@@ -82,7 +82,7 @@ final class IndexingBy implements CollectorInterface
      *
      * @return IndexingBy
      */
-    public static function scalar($getter)
+    public static function scalar($getter): self
     {
         return new IndexingBy(is_callable($getter) ? $getter : new Getter($getter));
     }
@@ -105,7 +105,7 @@ final class IndexingBy implements CollectorInterface
      *
      * @see Hash::compute()
      */
-    public static function hash(callable $getter, callable $hashFunction = null)
+    public static function hash(callable $getter, callable $hashFunction = null): self
     {
         return new IndexingBy($getter, new HashTable($hashFunction));
     }

@@ -7,6 +7,8 @@ use Bdf\Collection\Stream\StreamInterface;
 use Bdf\Collection\Util\Hash;
 use Bdf\Collection\Util\Optional;
 use Bdf\Collection\Util\OptionalInterface;
+use function array_values;
+use function count;
 
 /**
  * Set implementation using an hash table
@@ -179,7 +181,7 @@ class HashSet implements SetInterface
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
         return count($this->data);
     }

@@ -3,6 +3,8 @@
 namespace Bdf\Collection\Util;
 
 use Bdf\Collection\Stream\Streamable;
+use RuntimeException;
+use Throwable;
 
 /**
  * Wrap an optional (nullable) value into an object
@@ -79,13 +81,13 @@ interface OptionalInterface extends Streamable
     /**
      * Get the current value if present, or throws an exception
      *
-     * @param string|\Throwable $exception The exception instance or class
+     * @param string|Throwable $exception The exception instance or class
      *
      * @return mixed The stored value
      *
-     * @throws \Throwable
+     * @throws Throwable
      */
-    public function orThrows($exception = \RuntimeException::class);
+    public function orThrows($exception = RuntimeException::class);
 
     /**
      * Get the current value if present, or return the supplier result
@@ -123,7 +125,7 @@ interface OptionalInterface extends Streamable
      *
      * @return OptionalInterface
      */
-    public function __call($name, array $arguments): OptionalInterface;
+    public function __call(string $name, array $arguments): OptionalInterface;
 
     /**
      * Get a property from the contained object if present, and wrap the value into an Optional
@@ -132,7 +134,7 @@ interface OptionalInterface extends Streamable
      *
      * @return OptionalInterface
      */
-    public function __get($name): OptionalInterface;
+    public function __get(string $name): OptionalInterface;
 
     /**
      * Check if the contained object contains the given property
@@ -142,7 +144,7 @@ interface OptionalInterface extends Streamable
      *
      * @return boolean
      */
-    public function __isset($name): bool;
+    public function __isset(string $name): bool;
 
     /**
      * Set the contains object property value if it's present

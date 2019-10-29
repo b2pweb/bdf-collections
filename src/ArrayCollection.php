@@ -2,9 +2,19 @@
 
 namespace Bdf\Collection;
 
+use ArrayIterator;
 use Bdf\Collection\Stream\ArrayStream;
 use Bdf\Collection\Stream\MutableArrayStream;
 use Bdf\Collection\Stream\StreamInterface;
+use function array_key_exists;
+use function array_keys;
+use function array_merge;
+use function array_search;
+use function array_values;
+use function count;
+use function in_array;
+use function is_array;
+use function iterator_to_array;
 
 /**
  * Collection implementation using native PHP arrays
@@ -80,7 +90,7 @@ class ArrayCollection implements TableInterface
      */
     public function getIterator()
     {
-        return new \ArrayIterator($this->data);
+        return new ArrayIterator($this->data);
     }
 
     /**
@@ -122,7 +132,7 @@ class ArrayCollection implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
         return count($this->data);
     }

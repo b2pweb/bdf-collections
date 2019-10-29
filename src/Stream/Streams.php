@@ -2,6 +2,9 @@
 
 namespace Bdf\Collection\Stream;
 
+use Traversable;
+use function is_array;
+
 /**
  * Utility class for handle streams
  */
@@ -39,7 +42,7 @@ final class Streams
             return new ArrayStream($value);
         }
 
-        if ($value instanceof \Traversable) {
+        if ($value instanceof Traversable) {
             return new IteratorStream($value);
         }
 

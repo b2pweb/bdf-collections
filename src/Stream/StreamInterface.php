@@ -8,6 +8,7 @@ use Bdf\Collection\Util\Functor\Consumer\ConsumerInterface;
 use Bdf\Collection\Util\Functor\Predicate\PredicateInterface;
 use Bdf\Collection\Util\Functor\Transformer\TransformerInterface;
 use Bdf\Collection\Util\OptionalInterface;
+use Iterator;
 
 /**
  * Stream apply operations on each elements of a Collection
@@ -28,7 +29,7 @@ use Bdf\Collection\Util\OptionalInterface;
  * ;
  * </code>
  */
-interface StreamInterface extends \Iterator
+interface StreamInterface extends Iterator
 {
     /**
      * Apply $transformer to each values of the stream

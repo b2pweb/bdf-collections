@@ -42,7 +42,7 @@ final class Joining implements CollectorInterface
      * @param string $prefix The prefix
      * @param string $suffix The suffix
      */
-    public function __construct($separator = '', $prefix = '', $suffix = '')
+    public function __construct(string $separator = '', string $prefix = '', string $suffix = '')
     {
         $this->separator = $separator;
         $this->prefix = $prefix;

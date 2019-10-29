@@ -7,6 +7,7 @@ use Bdf\Collection\Stream\Accumulator\AccumulatorInterface;
 use Bdf\Collection\Stream\Collector\CollectorInterface;
 use Bdf\Collection\Util\Optional;
 use Bdf\Collection\Util\OptionalInterface;
+use function iterator_to_array;
 
 /**
  * Implementation of base stream methods

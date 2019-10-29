@@ -6,6 +6,20 @@ use Bdf\Collection\Stream\Accumulator\AccumulatorInterface;
 use Bdf\Collection\Stream\Collector\CollectorInterface;
 use Bdf\Collection\Util\Optional;
 use Bdf\Collection\Util\OptionalInterface;
+use Iterator;
+use function array_filter;
+use function array_merge;
+use function array_reduce;
+use function array_replace;
+use function array_slice;
+use function array_values;
+use function asort;
+use function current;
+use function key;
+use function reset;
+use function sort;
+use function uasort;
+use function usort;
 
 /**
  * Stream for array using native PHP array methods
@@ -19,7 +33,7 @@ use Bdf\Collection\Util\OptionalInterface;
  * - distinct() : The hash functor or custom class hash are not used for comparison
  * - first()    : Not optimized in sort() context (all the array will be sorted, instead of find the min value)
  */
-class MutableArrayStream implements \Iterator, StreamInterface
+final class MutableArrayStream implements Iterator, StreamInterface
 {
     /**
      * @var array

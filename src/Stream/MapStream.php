@@ -2,12 +2,14 @@
 
 namespace Bdf\Collection\Stream;
 
+use IteratorIterator;
+
 /**
  * Implementation of StreamInterface::filter() return value
  *
  * @internal
  */
-final class MapStream extends \IteratorIterator implements StreamInterface
+final class MapStream extends IteratorIterator implements StreamInterface
 {
     use StreamTrait;
 

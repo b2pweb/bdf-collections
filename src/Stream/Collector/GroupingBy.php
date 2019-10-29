@@ -6,6 +6,7 @@ use Bdf\Collection\HashTable;
 use Bdf\Collection\TableInterface;
 use Bdf\Collection\Util\Functor\Transformer\Getter;
 use Bdf\Collection\Util\Hash;
+use function is_callable;
 
 /**
  * Grouping elements by an extracted key
@@ -52,7 +53,7 @@ final class GroupingBy implements CollectorInterface
      * @param bool $preserveKeys Preserve the keys on group array
      * @param array|TableInterface $table The result table or array
      */
-    public function __construct(callable $getter, $preserveKeys = false, $table = [])
+    public function __construct(callable $getter, bool $preserveKeys = false, iterable $table = [])
     {
         $this->getter = $getter;
         $this->preserveKeys = $preserveKeys;
@@ -99,7 +100,7 @@ final class GroupingBy implements CollectorInterface
      *
      * @return GroupingBy
      */
-    public static function scalar($getter)
+    public static function scalar($getter): self
     {
         return new GroupingBy(is_callable($getter) ? $getter : new Getter($getter));
     }
@@ -123,7 +124,7 @@ final class GroupingBy implements CollectorInterface
      *
      * @see Hash::compute()
      */
-    public static function hash(callable $getter, $preserveKeys = false, callable $hashFunction = null)
+    public static function hash(callable $getter, bool $preserveKeys = false, callable $hashFunction = null): self
     {
         return new GroupingBy($getter, $preserveKeys, new HashTable($hashFunction));
     }

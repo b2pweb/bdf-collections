@@ -4,13 +4,22 @@ namespace Bdf\Collection\Stream;
 
 use Bdf\Collection\Util\Optional;
 use Bdf\Collection\Util\OptionalInterface;
+use Iterator;
+use function asort;
+use function current;
+use function key;
+use function next;
+use function reset;
+use function sort;
+use function uasort;
+use function usort;
 
 /**
  * Implementation of StreamInterface::sort() return value
  *
  * @internal
  */
-final class SortStream implements \Iterator, StreamInterface
+final class SortStream implements Iterator, StreamInterface
 {
     use StreamTrait;
 

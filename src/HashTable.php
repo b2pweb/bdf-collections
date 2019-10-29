@@ -2,9 +2,15 @@
 
 namespace Bdf\Collection;
 
+use BadMethodCallException;
 use Bdf\Collection\Stream\ArrayCombineStream;
 use Bdf\Collection\Stream\StreamInterface;
 use Bdf\Collection\Util\Hash;
+use OutOfBoundsException;
+use function array_combine;
+use function array_search;
+use function array_values;
+use function count;
 
 /**
  * Table implementation using an hash table
@@ -107,7 +113,7 @@ class HashTable implements TableInterface
         $hash = ($this->hashFunction)($key);
 
         if (!isset($this->values[$hash])) {
-            throw new \OutOfBoundsException('The given key cannot be found into the table');
+            throw new OutOfBoundsException('The given key cannot be found into the table');
         }
 
         return $this->values[$hash];
@@ -118,7 +124,7 @@ class HashTable implements TableInterface
      */
     public function add($element): bool
     {
-        throw new \BadMethodCallException('HashTable do not supports adding an elements without specify a key');
+        throw new BadMethodCallException('HashTable do not supports adding an elements without specify a key');
     }
 
     /**
@@ -126,7 +132,7 @@ class HashTable implements TableInterface
      */
     public function addAll(iterable $elements): bool
     {
-        throw new \BadMethodCallException('HashTable do not supports adding an elements without specify a key');
+        throw new BadMethodCallException('HashTable do not supports adding an elements without specify a key');
     }
 
     /**
@@ -311,7 +317,7 @@ class HashTable implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
         return count($this->values);
     }

@@ -4,6 +4,14 @@ namespace Bdf\Collection\Stream;
 
 use Bdf\Collection\Util\Optional;
 use Bdf\Collection\Util\OptionalInterface;
+use InvalidArgumentException;
+use Iterator;
+use function array_combine;
+use function array_values;
+use function current;
+use function key;
+use function next;
+use function reset;
 
 /**
  * Make a stream with combine keys and values
@@ -29,7 +37,7 @@ use Bdf\Collection\Util\OptionalInterface;
  *
  * @see array_combine()
  */
-class ArrayCombineStream implements \Iterator, StreamInterface
+final class ArrayCombineStream implements Iterator, StreamInterface
 {
     use StreamTrait;
 
@@ -55,7 +63,7 @@ class ArrayCombineStream implements \Iterator, StreamInterface
     public function __construct(array $keys, array $values)
     {
         if (count($keys) !== count($values)) {
-            throw new \InvalidArgumentException('The two arrays have different size');
+            throw new InvalidArgumentException('The two arrays have different size');
         }
 
         $this->keys = $keys;

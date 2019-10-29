@@ -5,7 +5,7 @@ namespace Bdf\Collection\Stream;
 /**
  * Create a stream from a native PHP array
  */
-class ArrayStream extends \ArrayIterator implements StreamInterface
+final class ArrayStream extends \ArrayIterator implements StreamInterface
 {
     use StreamTrait;
 
