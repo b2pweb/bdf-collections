@@ -3,7 +3,7 @@
     "description": "Bdf Collection component",
     "type": "library",
     "keywords": [
-        "collections"
+        "collections", "functional"
     ],
     "license": "MIT",
     "authors": [
