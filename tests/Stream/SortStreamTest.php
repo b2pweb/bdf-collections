@@ -196,6 +196,30 @@ class SortStreamTest extends TestCase
     /**
      *
      */
+    public function test_iterator_manual()
+    {
+        $stream = new SortStream(new ArrayStream([4, 7, 5, 2, 3]));
+
+        $this->assertTrue($stream->valid());
+        $this->assertEquals(2, $stream->current());
+        $this->assertEquals(3, $stream->key());
+        $stream->next();
+
+        $this->assertTrue($stream->valid());
+        $this->assertEquals(3, $stream->current());
+        $this->assertEquals(4, $stream->key());
+
+        $stream->next();
+        $stream->next();
+        $stream->next();
+
+        $this->assertTrue($stream->valid());
+        $this->assertEquals(7, $stream->current());
+    }
+
+    /**
+     *
+     */
     public function test_first()
     {
         $stream = new SortStream(new ArrayStream([4, 7, 5, 2, 3]));

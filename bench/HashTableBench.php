@@ -12,7 +12,7 @@ use Bdf\Collection\Util\Hashable;
 class HashTableBench
 {
     /**
-     * @var SimpleObject[]
+     * @var SimpleHashableObject[]
      */
     private $data;
 
@@ -29,7 +29,7 @@ class HashTableBench
         srand(1000);
 
         for ($i = 0; $i < 10000; ++$i) {
-            $this->data[] = $o = new SimpleObject(rand(0, 1000), rand(0, 1000));
+            $this->data[] = $o = new SimpleHashableObject(rand(0, 1000), rand(0, 1000));
 
             $this->table[$o->a] = $o;
             $this->collection[$o->a] = $o;
@@ -109,7 +109,7 @@ class HashTableBench
     }
 }
 
-class SimpleObject implements Hashable
+class SimpleHashableObject implements Hashable
 {
     public $a;
     public $b;

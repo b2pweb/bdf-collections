@@ -104,6 +104,33 @@ class StreamBench
     {
         return (new ArrayStream($this->data))->map(function ($e) { return $e->sub(); })->toArray();
     }
+
+    /**
+     * @Groups({"sort"})
+     */
+    public function bench_sort_array_stream()
+    {
+        return iterator_to_array((new ArrayStream($this->data))->sort());
+    }
+
+    /**
+     * @Groups({"sort"})
+     */
+    public function bench_sort_mutable_array_stream()
+    {
+        return iterator_to_array((new MutableArrayStream($this->data))->sort());
+    }
+
+    /**
+     * @Groups({"sort"})
+     */
+    public function bench_sort_array_iterator()
+    {
+        $data = new \ArrayIterator($this->data);
+        $data->asort();
+
+        return iterator_to_array($data);
+    }
 }
 
 class MyEntity implements \Bdf\Collection\Util\Hashable

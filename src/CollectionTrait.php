@@ -8,6 +8,11 @@ namespace Bdf\Collection;
 trait CollectionTrait
 {
     /**
+     * @see CollectionInterface::add()
+     */
+    abstract public function add($element): bool;
+
+    /**
      * @see CollectionInterface::addAll()
      */
     public function addAll(iterable $elements): bool
@@ -20,6 +25,11 @@ trait CollectionTrait
 
         return $b;
     }
+
+    /**
+     * @see CollectionInterface::clear()
+     */
+    abstract public function clear(): void;
 
     /**
      * @see CollectionInterface::replace()
