@@ -309,17 +309,17 @@ class HashTableTest extends TestCase
                 case 0:
                     $this->assertSame(['id' => 123], $key);
                     $this->assertSame('John', $value);
-                    continue;
+                    break;
 
                 case 1:
                     $this->assertSame(['id' => 456], $key);
                     $this->assertSame('Donald', $value);
-                    continue;
+                    break;
 
                 case 2:
                     $this->assertSame(['id' => 789], $key);
                     $this->assertSame('Mickey', $value);
-                    continue;
+                    break;
 
                 default:
                     $this->fail('Unexpected count');

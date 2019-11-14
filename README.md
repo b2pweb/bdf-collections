@@ -7,10 +7,23 @@ Implementation of commons collections, with java-like stream to apply transforma
 [![Packagist Version](https://img.shields.io/packagist/v/b2pweb/bdf-collections.svg)](https://packagist.org/packages/b2pweb/bdf-collections)
 [![Total Downloads](https://img.shields.io/packagist/dt/b2pweb/bdf-collections.svg)](https://packagist.org/packages/b2pweb/bdf-collections)
 
+- [Installation](#installation-with-composer)
+- [Usage](#usage)
+    - [Collections](#collections-1)
+        - [ArrayCollection](#arraycollection)
+        - [OrderedCollection](#orderedcollection)
+        - [HashSet](#hashset)
+        - [HashTable](#hashtable)
+    - [Streams](#streams)
+        - [Usage](#usage-1)
+        - [MutableArrayStream](#mutablearraystream)
+    - [Optional](#optional)
 
 # Installation with composer
 
-`composer require b2pweb/bdf-collections`
+```
+composer require b2pweb/bdf-collections
+```
 
 # Usage
 
