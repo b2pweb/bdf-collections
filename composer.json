@@ -1,9 +1,9 @@
 {
     "name": "b2pweb/bdf-collections",
-    "description": "Bdf Collection component",
+    "description": "Collections implementations with java 8 stream like api.",
     "type": "library",
     "keywords": [
-        "collections", "functional"
+        "collections", "functional", "java stream", "hashtable", "hashset"
     ],
     "license": "MIT",
     "authors": [
@@ -24,6 +24,7 @@
         "phpbench/phpbench": "~0.0|~1.0"
     },
     "scripts": {
-        "tests": "phpunit"
+        "tests": "phpunit",
+        "tests-with-coverage": "phpunit --coverage-clover coverage.xml"
     }
 }
