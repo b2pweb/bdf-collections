@@ -50,7 +50,7 @@ interface StreamInterface extends Iterator
      *     Should take the element as first parameter an return the transformed element
      *     The transformer may have (if relevant) the key as second parameter
      *
-     * @return StreamInterface<K, R>
+     * @return StreamInterface<R, K>
      *
      * @see TransformerInterface
      */
@@ -129,11 +129,11 @@ interface StreamInterface extends Iterator
      * $stream->distinct(function ($e) { sort($e); return json_encode($e); }); // [[1, 2], [2, 3]]
      * </code>
      *
-     * @param callable $hashFunction The hash function. Take as parameter the element, and return the hash value as string
+     * @param callable(T):array-key|null $hashFunction The hash function. Take as parameter the element, and return the hash value as string
      *
      * @return StreamInterface<T, K>
      */
-    public function distinct(callable $hashFunction = null): StreamInterface;
+    public function distinct(?callable $hashFunction = null): StreamInterface;
 
     /**
      * Order stream elements
@@ -180,7 +180,7 @@ interface StreamInterface extends Iterator
      * ;
      * </code>
      *
-     * @param callable $comparator The comparator, or null to use default comparison.
+     * @param callable(T,T):int|null $comparator The comparator, or null to use default comparison.
      *                             Take the two values to compare as parameters and should return an integer :
      *                             - $comparator($a, $b) < 0 => $a < $b
      *                             - $comparator($a, $b) == 0 => $a == $b
@@ -206,10 +206,10 @@ interface StreamInterface extends Iterator
      * ;
      * </code>
      *
-     * @param StreamInterface $stream The stream to concat
+     * @param StreamInterface<T, mixed> $stream The stream to concat
      * @param bool $preserveKeys Preserve the stream keys, or use integer increment index
      *
-     * @return StreamInterface
+     * @return StreamInterface<T, mixed>
      */
     public function concat(StreamInterface $stream, bool $preserveKeys = true): StreamInterface;
 
@@ -251,7 +251,7 @@ interface StreamInterface extends Iterator
      *
      * @param bool $preserveKeys Preserve the sub-streams keys, or use integer increment index
      *
-     * @return StreamInterface<mixed, R>
+     * @return StreamInterface<R, mixed>
      *
      * @see TransformerInterface
      * @see Streams::wrap() Used to transform each transformed elements to a Stream

@@ -22,7 +22,7 @@ final class Streams
      *
      * @template V
      *
-     * @param V|V[]|Traversable<V, mixed> $value The value to wrap
+     * @param V|V[]|Traversable<mixed, V> $value The value to wrap
      *
      * @return StreamInterface<V, mixed>
      */
