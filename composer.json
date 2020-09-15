@@ -27,6 +27,6 @@
     "scripts": {
         "tests": "phpunit",
         "tests-with-coverage": "phpunit --coverage-clover coverage.xml",
-        "psalm": "psalm"
+        "psalm": "psalm --shepherd"
     }
 }
