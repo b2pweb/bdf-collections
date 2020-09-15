@@ -115,8 +115,10 @@ interface TableInterface extends CollectionInterface, ArrayAccess
      *
      * @param K $offset
      * @param T $value
+     *
+     * @return void
      */
-    public function offsetSet($offset, $value): void;
+    public function offsetSet($offset, $value);
 
     /**
      * {@inheritdoc}
