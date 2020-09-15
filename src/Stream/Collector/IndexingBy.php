@@ -26,16 +26,22 @@ use Bdf\Collection\Util\Hash;
  * //     'Mickey' => Person('Mickey', 'Mouse'),
  * //     'Donald' => Person('Donald', 'Duck'), ]
  * </code>
+ *
+ * @template V
+ * @template RK
+ * @template R of array|TableInterface
+ *
+ * @implements CollectorInterface<V, mixed, R>
  */
 final class IndexingBy implements CollectorInterface
 {
     /**
-     * @var callable
+     * @var callable(V):RK
      */
     private $getter;
 
     /**
-     * @var TableInterface|array
+     * @var R
      */
     private $table;
 
@@ -43,8 +49,8 @@ final class IndexingBy implements CollectorInterface
     /**
      * GroupingBy constructor.
      *
-     * @param callable $getter Extract the group key from element
-     * @param array|TableInterface $table The result table or array
+     * @param callable(V):RK $getter Extract the group key from element
+     * @param array<RK,V>|TableInterface<RK,V> $table The result table or array
      */
     public function __construct(callable $getter, iterable $table = [])
     {
@@ -78,9 +84,12 @@ final class IndexingBy implements CollectorInterface
      * $stream->collection(IndexingBy::scalar('firstName'));
      * </code>
      *
-     * @param string|callable $getter The key getter function or name
+     * @template sV
+     * @template sRK as array-key
      *
-     * @return IndexingBy
+     * @param string|callable(sV):sRK $getter The key getter function or name
+     *
+     * @return IndexingBy<sV, sRK, array<sRK, sV>>
      */
     public static function scalar($getter): self
     {
@@ -98,10 +107,13 @@ final class IndexingBy implements CollectorInterface
      * $stream->collection(IndexingBy::hash(new Getter('embeddedEntity'));
      * </code>
      *
-     * @param callable $getter The key getter
-     * @param callable|null $hashFunction The hash function, which will be applied to the key value. By default use Hash::compute
+     * @template hV
+     * @template hRK
      *
-     * @return IndexingBy
+     * @param callable(hV):hRK $getter The key getter
+     * @param callable(hV):array-key|null $hashFunction The hash function, which will be applied to the key value. By default use Hash::compute
+     *
+     * @return IndexingBy<hV, hRK, TableInterface<hRK, hV>>
      *
      * @see Hash::compute()
      */

@@ -25,7 +25,7 @@ final class FlatMapStream implements StreamInterface
     private $preserveKeys;
 
     /**
-     * @var StreamInterface
+     * @var StreamInterface|null
      */
     private $currentStream;
 
@@ -64,6 +64,8 @@ final class FlatMapStream implements StreamInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @psalm-suppress PossiblyNullReference
      */
     public function next()
     {
@@ -81,6 +83,8 @@ final class FlatMapStream implements StreamInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @psalm-suppress PossiblyNullReference
      */
     public function key()
     {
@@ -106,7 +110,7 @@ final class FlatMapStream implements StreamInterface
         $this->loadNextStream();
     }
 
-    private function loadNextStream()
+    private function loadNextStream(): void
     {
         $this->currentStream = null;
         $this->currentValue = null;

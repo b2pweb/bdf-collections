@@ -27,6 +27,13 @@ use function is_callable;
  * //     'Mickey' => [ Person('Mickey', 'Mouse') ],
  * //     'Donald' => [ Person('Donald', 'Duck') ], ]
  * </code>
+ *
+ * @template V
+ * @template K
+ * @template RK
+ * @template R of array|TableInterface
+ *
+ * @implements CollectorInterface<V, K, R>
  */
 final class GroupingBy implements CollectorInterface
 {
@@ -41,7 +48,7 @@ final class GroupingBy implements CollectorInterface
     private $preserveKeys;
 
     /**
-     * @var TableInterface|array
+     * @var R
      */
     private $table;
 
@@ -49,9 +56,9 @@ final class GroupingBy implements CollectorInterface
     /**
      * GroupingBy constructor.
      *
-     * @param callable $getter Extract the group key from element
+     * @param callable(V):RK $getter Extract the group key from element
      * @param bool $preserveKeys Preserve the keys on group array
-     * @param array|TableInterface $table The result table or array
+     * @param array<RK, V[]>|TableInterface<RK, V[]> $table The result table or array
      */
     public function __construct(callable $getter, bool $preserveKeys = false, iterable $table = [])
     {
@@ -96,9 +103,12 @@ final class GroupingBy implements CollectorInterface
      * $stream->collection(GroupingBy::scalar('firstName'));
      * </code>
      *
-     * @param string|callable $getter The key getter function or name
+     * @template sV
+     * @template sRK of array-key
      *
-     * @return GroupingBy
+     * @param string|callable(sV):sRK $getter The key getter function or name
+     *
+     * @return GroupingBy<sV, mixed, sRK, array<sRK, sV[]>>
      */
     public static function scalar($getter): self
     {
@@ -116,11 +126,14 @@ final class GroupingBy implements CollectorInterface
      * $stream->collection(GroupingBy::hash(new Getter('embeddedEntity'));
      * </code>
      *
-     * @param callable $getter The key getter
-     * @param bool $preserveKeys Preserve the key on the group array
-     * @param callable|null $hashFunction The hash function, which will be applied to the key value. By default use Hash::compute
+     * @template hV
+     * @template hRK
      *
-     * @return GroupingBy
+     * @param callable(hV):hRK $getter The key getter
+     * @param bool $preserveKeys Preserve the key on the group array
+     * @param callable(hRK):array-key|null $hashFunction The hash function, which will be applied to the key value. By default use Hash::compute
+     *
+     * @return GroupingBy<hV, mixed, hRK, TableInterface<hRK, hV[]>>
      *
      * @see Hash::compute()
      */

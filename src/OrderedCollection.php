@@ -276,7 +276,7 @@ class OrderedCollection implements OrderedCollectionInterface
         $this->add($value);
     }
 
-    private function sortElements()
+    private function sortElements(): void
     {
         if ($this->sorted) {
             return;

@@ -6,6 +6,9 @@ use Bdf\Collection\Util\OptionalInterface;
 
 /**
  * A set is a collection with ensuring that contains no duplicate elements
+ *
+ * @template T
+ * @implements CollectionInterface<T>
  */
 interface SetInterface extends CollectionInterface
 {
@@ -19,9 +22,9 @@ interface SetInterface extends CollectionInterface
      * $set->lookup(new Person('John', 'Doe'))->get() === $john; // Get the added object
      * </code>
      *
-     * @param mixed $element The element to find
+     * @param T $element The element to find
      *
-     * @return OptionalInterface The element wrap into an Optional if found, or an empty Optional
+     * @return OptionalInterface<T> The element wrap into an Optional if found, or an empty Optional
      */
     public function lookup($element): OptionalInterface;
 }

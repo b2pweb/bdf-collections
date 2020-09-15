@@ -11,13 +11,16 @@ use IteratorAggregate;
  *
  * A collection is a container of elements.
  * The elements can be added, removed, iterated, and check if its contained
+ *
+ * @template T
+ * @implements Streamable<T, mixed>
  */
 interface CollectionInterface extends IteratorAggregate, Countable, Streamable
 {
     /**
      * Add a new element into the collection
      *
-     * @param mixed $element
+     * @param T $element
      *
      * @return boolean True on success, or false is failed with implementation constraints
      */
@@ -26,7 +29,7 @@ interface CollectionInterface extends IteratorAggregate, Countable, Streamable
     /**
      * Add all elements to the collection
      *
-     * @param iterable $elements Elements to add. Can be an array or any traversable object
+     * @param iterable<T> $elements Elements to add. Can be an array or any traversable object
      *
      * @return boolean True on success, or false is at least one elements failed to add
      */
@@ -41,7 +44,7 @@ interface CollectionInterface extends IteratorAggregate, Countable, Streamable
      * $collection->addAll($elements);
      * </code>
      *
-     * @param iterable $elements The elements to add
+     * @param iterable<T> $elements The elements to add
      *
      * @return boolean True on success, or false is at least one elements failed to add
      */
@@ -61,7 +64,7 @@ interface CollectionInterface extends IteratorAggregate, Countable, Streamable
      * Remove an element from the collection
      * Only the first matching element is removed
      *
-     * @param mixed $element Element to remove
+     * @param T $element Element to remove
      * @param boolean $strict Do a strict comparison
      *
      * @return boolean True if the element is found and successfully removed
@@ -98,7 +101,7 @@ interface CollectionInterface extends IteratorAggregate, Countable, Streamable
      * });
      * </code>
      *
-     * @param callable $consumer Function to apply
+     * @param callable(T):void $consumer Function to apply
      *
      * @return void
      */
@@ -107,7 +110,7 @@ interface CollectionInterface extends IteratorAggregate, Countable, Streamable
     /**
      * Get the native array value of the collection
      *
-     * @return array
+     * @return T[]
      */
     public function toArray(): array;
 }

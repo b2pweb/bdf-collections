@@ -67,6 +67,10 @@ final class ConcatStream extends AppendIterator implements StreamInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @psalm-suppress LessSpecificImplementedReturnType
+     *
+     * @return mixed
      */
     public function key()
     {

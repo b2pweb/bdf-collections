@@ -34,6 +34,10 @@ use Bdf\Collection\Stream\StreamInterface;
  * </code>
  *
  * @see StreamInterface::collect()
+ *
+ * @template V
+ * @template K
+ * @template R
  */
 interface CollectorInterface
 {
@@ -41,8 +45,8 @@ interface CollectorInterface
      * Aggregate the element to collect
      * The collector state will change by this call
      *
-     * @param mixed $element Element to aggregate
-     * @param mixed $key The element key, if applicable
+     * @param V $element Element to aggregate
+     * @param K $key The element key, if applicable
      *
      * @return void
      */
@@ -51,7 +55,7 @@ interface CollectorInterface
     /**
      * Finalize the aggregation, and prepare the return value
      *
-     * @return mixed
+     * @return R
      */
     public function finalize();
 }

@@ -20,9 +20,11 @@ final class Streams
      * - If the value is Traversable, return an IteratorStream
      * - In other cases, return a SingletonStream
      *
-     * @param mixed $value The value to wrap
+     * @template V
      *
-     * @return StreamInterface
+     * @param V|V[]|Traversable<V, mixed> $value The value to wrap
+     *
+     * @return StreamInterface<V, mixed>
      */
     public static function wrap($value): StreamInterface
     {

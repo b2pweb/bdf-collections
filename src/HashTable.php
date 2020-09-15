@@ -48,21 +48,25 @@ use function count;
  *     - The HashTable is about 2 times slower than ArrayCollection with string key
  *     - Using a complex key (like and array or an object) has no significant impact on performance than using string key
  *     - The memory usage is very dependent on the key (custom hash has the lower usage, array or objects has the higher one)
+ *
+ * @template K
+ * @template T
+ * @implements TableInterface<K, T>
  */
 class HashTable implements TableInterface
 {
     /**
-     * @var array
+     * @var K[]
      */
     private $keys = [];
 
     /**
-     * @var array
+     * @var T[]
      */
     private $values = [];
 
     /**
-     * @var callable
+     * @var callable(K):array-key
      */
     private $hashFunction;
 
@@ -70,7 +74,7 @@ class HashTable implements TableInterface
     /**
      * HashTable constructor.
      *
-     * @param callable $hashFunction The the hash function. Takes as parameter the element to hash, and should return a string
+     * @param callable(K):array-key|null $hashFunction The the hash function. Takes as parameter the element to hash, and should return a string
      */
     public function __construct(callable $hashFunction = null)
     {
@@ -297,7 +301,7 @@ class HashTable implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if ($offset === null) {
             $this->add($offset);

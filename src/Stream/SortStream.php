@@ -29,7 +29,7 @@ final class SortStream implements Iterator, StreamInterface
     private $stream;
 
     /**
-     * @var callable
+     * @var callable|null
      */
     private $comparator;
 
@@ -48,10 +48,10 @@ final class SortStream implements Iterator, StreamInterface
      * SortStream constructor.
      *
      * @param StreamInterface $stream
-     * @param callable $comparator
+     * @param callable|null $comparator
      * @param bool $preserveKeys
      */
-    public function __construct(StreamInterface $stream, callable $comparator = null, bool $preserveKeys = true)
+    public function __construct(StreamInterface $stream, ?callable $comparator = null, bool $preserveKeys = true)
     {
         $this->stream = $stream;
         $this->comparator = $comparator;

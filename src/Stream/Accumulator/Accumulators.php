@@ -12,9 +12,13 @@ use Bdf\Collection\Stream\StreamInterface;
  */
 final class Accumulators
 {
+    /** @var AccumulatorInterface|null */
     private static $sum;
+    /** @var AccumulatorInterface|null */
     private static $multiply;
+    /** @var AccumulatorInterface|null */
     private static $min;
+    /** @var AccumulatorInterface|null */
     private static $max;
 
     /** Deny instantiation */
@@ -28,7 +32,9 @@ final class Accumulators
      * $stream->reduce(Accumulators::sum()); // 6
      * </code>
      *
-     * @return AccumulatorInterface
+     * @template V as numeric
+     *
+     * @return AccumulatorInterface<V, V>
      */
     public static function sum()
     {
@@ -50,7 +56,9 @@ final class Accumulators
      * $stream->reduce(Accumulators::multiply()); // 80
      * </code>
      *
-     * @return AccumulatorInterface
+     * @template V as numeric
+     *
+     * @return AccumulatorInterface<V, V>
      */
     public static function multiply()
     {
@@ -72,7 +80,9 @@ final class Accumulators
      * $stream->reduce(Accumulators::min()); // 4
      * </code>
      *
-     * @return AccumulatorInterface
+     * @template V
+     *
+     * @return AccumulatorInterface<V, V>
      */
     public static function min()
     {
@@ -91,10 +101,12 @@ final class Accumulators
      *
      * <code>
      * $stream = new ArrayStream([4, 8, 2]);
-     * $stream->reduce(Accumulators::min()); // 8
+     * $stream->reduce(Accumulators::max()); // 8
      * </code>
      *
-     * @return AccumulatorInterface
+     * @template V as numeric
+     *
+     * @return AccumulatorInterface<V, V>
      */
     public static function max()
     {

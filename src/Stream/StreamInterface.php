@@ -28,6 +28,9 @@ use Iterator;
  *     ->forEach(...) // Terminate the stream
  * ;
  * </code>
+ *
+ * @template T
+ * @template K
  */
 interface StreamInterface extends Iterator
 {
@@ -42,11 +45,12 @@ interface StreamInterface extends Iterator
      * ;
      * </code>
      *
-     * @param callable $transformer The element transformer.
+     * @template R
+     * @param callable(T, K=):R $transformer The element transformer.
      *     Should take the element as first parameter an return the transformed element
      *     The transformer may have (if relevant) the key as second parameter
      *
-     * @return StreamInterface
+     * @return StreamInterface<K, R>
      *
      * @see TransformerInterface
      */
@@ -76,10 +80,11 @@ interface StreamInterface extends Iterator
      * ;
      * </code>
      *
-     * @param callable $function The key generator.
+     * @template R
+     * @param callable(T, K):R $function The key generator.
      *     Should take the element as first parameter, the key as second parameter, and return the new key
      *
-     * @return StreamInterface
+     * @return StreamInterface<T, R>
      *
      * @see TransformerInterface
      */
@@ -96,11 +101,11 @@ interface StreamInterface extends Iterator
      * ;
      * </code>
      *
-     * @param callable $predicate The predicate function.
+     * @param callable(T, K=):bool $predicate The predicate function.
      *     Take the element as first parameter and should return a boolean (true for keeping element, or false for skipping)
      *     May take the key as second parameter (if relevant)
      *
-     * @return StreamInterface
+     * @return StreamInterface<T, K>
      *
      * @see PredicateInterface
      */
@@ -126,7 +131,7 @@ interface StreamInterface extends Iterator
      *
      * @param callable $hashFunction The hash function. Take as parameter the element, and return the hash value as string
      *
-     * @return StreamInterface
+     * @return StreamInterface<T, K>
      */
     public function distinct(callable $hashFunction = null): StreamInterface;
 
@@ -183,7 +188,7 @@ interface StreamInterface extends Iterator
      *
      * @param boolean $preserveKeys If true, the keys will be kept, else an the values will be indexed by an increment integer
      *
-     * @return StreamInterface
+     * @return StreamInterface<T, mixed>
      */
     public function sort(callable $comparator = null, bool $preserveKeys = false): StreamInterface;
 
@@ -239,13 +244,14 @@ interface StreamInterface extends Iterator
      * ;
      * </code>
      *
-     * @param callable|null $transformer The element transformer
+     * @template R
+     * @param callable(T, K):R|callable(T, K):R[]|callable(T, K):StreamInterface<R, mixed> $transformer The element transformer
      *     Should take the element as first parameter an return the transformed element
      *     The transformer may have (if relevant) the key as second parameter
      *
      * @param bool $preserveKeys Preserve the sub-streams keys, or use integer increment index
      *
-     * @return StreamInterface
+     * @return StreamInterface<mixed, R>
      *
      * @see TransformerInterface
      * @see Streams::wrap() Used to transform each transformed elements to a Stream
@@ -264,7 +270,7 @@ interface StreamInterface extends Iterator
      *
      * @param int $count Number of elements to skip. Must be a positive number.
      *
-     * @return StreamInterface
+     * @return StreamInterface<T, K>
      *
      * @see StreamInterface::limit() For limit the number of stream's elements
      */
@@ -284,7 +290,7 @@ interface StreamInterface extends Iterator
      * @param int $count The maximum number elements
      * @param int $offset Number of elements to skip at start of the stream
      *
-     * @return StreamInterface
+     * @return StreamInterface<T, K>
      *
      * @see StreamInterface::skip() For skip firsts elements
      */
@@ -301,7 +307,7 @@ interface StreamInterface extends Iterator
      * });
      * </code>
      *
-     * @param callable $consumer
+     * @param callable(T, K=):void $consumer
      *
      * @return void
      *
@@ -327,7 +333,7 @@ interface StreamInterface extends Iterator
      * @param bool $preserveKeys True to preserve the keys of the stream, or false for reindex with increment integer.
      *     This parameter must be set to false when stream contains complex keys (not integer or string)
      *
-     * @return array
+     * @return T[]
      */
     public function toArray(bool $preserveKeys = true): array;
 
@@ -341,7 +347,7 @@ interface StreamInterface extends Iterator
      * $stream->filter(function () { return false; })->first(); // Empty Optional
      * </code>
      *
-     * @return OptionalInterface
+     * @return OptionalInterface<T>
      */
     public function first(): OptionalInterface;
 
@@ -355,12 +361,14 @@ interface StreamInterface extends Iterator
      * $stream->reduce(Accumulators::sum()); // Same as above, but with a functor
      * </code>
      *
-     * @param callable|AccumulatorInterface $accumulator The accumulator.
+     * @template R
+     *
+     * @param callable(R|null,T):R|AccumulatorInterface<T, R> $accumulator The accumulator.
      *     When a callback is given : takes the reduced value as first parameter and the item to accumulate as second parameter. The function must return the reduced value
      *     When an AccumulatorInterface is given as only parameter, the initial value will be $accumulator->initial()
-     * @param mixed $initial The initial value
+     * @param R|null $initial The initial value
      *
-     * @return mixed The reduced value, or $initial if the stream is empty
+     * @return R The reduced value, or $initial if the stream is empty
      *
      * @see AccumulatorInterface For functor implementation
      */
@@ -374,9 +382,10 @@ interface StreamInterface extends Iterator
      * - The collector is not stateless
      * - It has a finalisation method whereas reduce perform aggregation on each iterations
      *
-     * @param CollectorInterface $collector The collector
+     * @template R
+     * @param CollectorInterface<T, K, R> $collector The collector
      *
-     * @return mixed
+     * @return R
      */
     public function collect(CollectorInterface $collector);
 
@@ -395,7 +404,7 @@ interface StreamInterface extends Iterator
      * $stream->allMatch(function ($e) { return $e % 2 === 0; }); // false
      * </code>
      *
-     * @param callable $predicate The predicate function.
+     * @param callable(T, K=):bool $predicate The predicate function.
      *     Take the element as first parameter and should return a boolean (true if matching)
      *     May take the key as second parameter (if relevant)
      *
@@ -418,7 +427,7 @@ interface StreamInterface extends Iterator
      * $stream->allMatch(function ($e) { return $e > 5; }); // false
      * </code>
      *
-     * @param callable $predicate The predicate function.
+     * @param callable(T, K=):bool $predicate The predicate function.
      *     Take the element as first parameter and should return a boolean (true if matching)
      *     May take the key as second parameter (if relevant)
      *

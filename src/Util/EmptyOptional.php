@@ -14,7 +14,7 @@ use RuntimeException;
 final class EmptyOptional implements OptionalInterface
 {
     /**
-     * @var EmptyOptional
+     * @var EmptyOptional|null
      */
     private static $instance;
 

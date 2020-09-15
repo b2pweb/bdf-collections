@@ -6,6 +6,9 @@ use ArrayAccess;
 
 /**
  * An OrderedCollection keeps all its elements in order
+ *
+ * @template T
+ * @implements CollectionInterface<T>
  */
 interface OrderedCollectionInterface extends CollectionInterface, ArrayAccess
 {
@@ -24,7 +27,7 @@ interface OrderedCollectionInterface extends CollectionInterface, ArrayAccess
      *
      * @param integer $position The position to find
      *
-     * @return mixed
+     * @return T
      * @throws \OutOfBoundsException When position is less than zero, or do not exists
      */
     public function at(int $position);
@@ -35,4 +38,22 @@ interface OrderedCollectionInterface extends CollectionInterface, ArrayAccess
      * Cannot be called on an ordered collection
      */
     public function offsetSet($offset, $value);
+
+    /**
+     * {@inheritdoc}
+     *
+     * The consumer should have two parameters :
+     * - The element
+     * - The position
+     *
+     * Ex:
+     * <code>
+     * $collection->forEach(function ($element, $position) {
+     *     $element->doSomething();
+     * });
+     * </code>
+     *
+     * @param callable(T, int=):void $consumer
+     */
+    public function forEach(callable $consumer): void;
 }

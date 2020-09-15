@@ -18,11 +18,15 @@ use function iterator_to_array;
 
 /**
  * Collection implementation using native PHP arrays
+ *
+ * @template T
+ * @template K of array-key
+ * @implements TableInterface<K, T>
  */
 class ArrayCollection implements TableInterface
 {
     /**
-     * @var array
+     * @var array<K, T>
      */
     private $data;
 
@@ -30,7 +34,7 @@ class ArrayCollection implements TableInterface
     /**
      * ArrayCollection constructor.
      *
-     * @param array $data Initial data
+     * @param array<K, T> $data Initial data
      */
     public function __construct(array $data = [])
     {
@@ -111,10 +115,14 @@ class ArrayCollection implements TableInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param K|null $offset
+     * @param T $value
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if ($offset === null) {
+            /** @psalm-suppress InvalidPropertyAssignmentValue */
             $this->data[] = $value;
         } else {
             $this->data[$offset] = $value;
@@ -182,6 +190,8 @@ class ArrayCollection implements TableInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @psalm-suppress InvalidPropertyAssignmentValue
      */
     public function add($element): bool
     {
@@ -195,12 +205,14 @@ class ArrayCollection implements TableInterface
      */
     public function addAll(iterable $elements): bool
     {
+        /** @psalm-suppress TypeDoesNotContainType */
         if ($elements instanceof ArrayCollection) {
             $elements = $elements->data;
         } elseif (!is_array($elements)) {
             $elements = iterator_to_array($elements, false);
         }
 
+        /** @psalm-suppress InvalidPropertyAssignmentValue */
         $this->data = array_merge($this->data, $elements);
 
         return true;

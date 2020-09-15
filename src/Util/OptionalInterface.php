@@ -9,6 +9,8 @@ use Throwable;
 /**
  * Wrap an optional (nullable) value into an object
  * Optional is a way for handling null values, and create simple null objects
+ *
+ * @template T
  */
 interface OptionalInterface extends Streamable
 {
@@ -22,9 +24,9 @@ interface OptionalInterface extends Streamable
      * ;
      * </code>
      *
-     * @param callable $predicate A predicate function which contains the element as parameter, and return true or false
+     * @param callable(T):bool $predicate A predicate function which contains the element as parameter, and return true or false
      *
-     * @return OptionalInterface
+     * @return OptionalInterface<T>
      */
     public function filter(callable $predicate): OptionalInterface;
 
@@ -43,9 +45,10 @@ interface OptionalInterface extends Streamable
      * });
      * </code>
      *
-     * @param callable $transformer The transformer function. Take as parameter the element and return the transformed value
+     * @template R
+     * @param callable(T):R $transformer The transformer function. Take as parameter the element and return the transformed value
      *
-     * @return OptionalInterface The result wrap into an optional
+     * @return OptionalInterface<R> The result wrap into an optional
      */
     public function map(callable $transformer): OptionalInterface;
 
@@ -58,7 +61,7 @@ interface OptionalInterface extends Streamable
      * });
      * </code>
      *
-     * @param callable $consumer
+     * @param callable(T):void $consumer
      *
      * @return void
      */
@@ -72,18 +75,18 @@ interface OptionalInterface extends Streamable
      * Optional::of(456)->or(123); // Return 456
      * </code>
      *
-     * @param mixed $value The default value
+     * @param T $value The default value
      *
-     * @return mixed
+     * @return T
      */
     public function or($value);
 
     /**
      * Get the current value if present, or throws an exception
      *
-     * @param string|Throwable $exception The exception instance or class
+     * @param class-string<Throwable>|Throwable $exception The exception instance or class
      *
-     * @return mixed The stored value
+     * @return T The stored value
      *
      * @throws Throwable
      */
@@ -97,9 +100,9 @@ interface OptionalInterface extends Streamable
      * Optional::empty()->orSupply('rand'); // Return random number
      * </code>
      *
-     * @param callable $supplier Generate the default value
+     * @param callable():T $supplier Generate the default value
      *
-     * @return mixed
+     * @return T
      */
     public function orSupply(callable $supplier);
 
@@ -113,7 +116,7 @@ interface OptionalInterface extends Streamable
     /**
      * Get the current stored value
      *
-     * @return mixed
+     * @return T|null
      */
     public function get();
 

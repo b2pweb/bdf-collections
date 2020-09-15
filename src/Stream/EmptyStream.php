@@ -14,7 +14,7 @@ use EmptyIterator;
 final class EmptyStream extends EmptyIterator implements StreamInterface
 {
     /**
-     * @var EmptyStream
+     * @var EmptyStream|null
      */
     private static $instance;
 

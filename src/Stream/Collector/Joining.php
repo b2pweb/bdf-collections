@@ -11,6 +11,10 @@ namespace Bdf\Collection\Stream\Collector;
  * $stream->collect(new Joining(',')); // '1,2,3'
  * $stream->collect(new Joining(',', '[', ']')); // '[1,2,3]'
  * </code>
+ *
+ * @template V
+ * @template K
+ * @implements CollectorInterface<V, K, string>
  */
 final class Joining implements CollectorInterface
 {
@@ -30,7 +34,7 @@ final class Joining implements CollectorInterface
     private $suffix;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $aggregation = null;
 
@@ -64,8 +68,8 @@ final class Joining implements CollectorInterface
     /**
      * {@inheritdoc}
      */
-    public function finalize()
+    public function finalize(): string
     {
-        return $this->prefix.$this->aggregation.$this->suffix;
+        return $this->prefix.(string)$this->aggregation.$this->suffix;
     }
 }
