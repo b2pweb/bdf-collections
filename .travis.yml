@@ -6,6 +6,21 @@ php:
   - 7.3
   - 7.4
 
+jobs:
+  include:
+    - stage: analysis
+      php: 7.2
+      before_script:
+        - wget https://github.com/infection/infection/releases/download/0.15.3/infection.phar
+        - wget https://github.com/infection/infection/releases/download/0.15.3/infection.phar.asc
+        - gpg --recv-keys C6D76C329EBADE2FB9C458CFC5095986493B4AA0
+        - gpg --with-fingerprint --verify infection.phar.asc infection.phar
+        - chmod +x infection.phar
+      script:
+        - composer psalm
+        - composer bc-break
+        - ./infection.phar --min-msi=90
+
 install:
   - travis_retry composer --ignore-platform-reqs install
 
