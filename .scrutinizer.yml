@@ -1,9 +1,18 @@
 build:
+  environment:
+    php: 7.2.24
+
   nodes:
-    coverage:
+    tests:
+      dependencies:
+        override:
+          - command: composer global require infection/infection
       tests:
         override:
           - command: composer run tests-with-coverage
             coverage:
               file: coverage.xml
               format: clover
+          - command: composer run psalm
+          - command: composer run bc-break
+          - command: ~/.composer/vendor/bin/infection run --min-msi=90

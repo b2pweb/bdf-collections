@@ -7,11 +7,7 @@ php:
   - 7.4
 
 install:
-  - travis_retry composer global require infection/infection
   - travis_retry composer install
 
 script:
   - composer tests
-  - composer psalm
-  - composer bc-break
-  - ~/.composer/vendor/bin/infection run --min-msi=90
