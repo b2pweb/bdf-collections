@@ -6,7 +6,8 @@ build:
     tests:
       dependencies:
         override:
-          - command: composer global require infection/infection
+          - command: composer global require sebastian/diff:~3.0
+          - command: composer global require infection/infection:~0.15
       tests:
         override:
           - command: composer run tests-with-coverage
