@@ -45,6 +45,10 @@ class OrderedCollectionTest extends TestCase
 
         $this->assertTrue($collection->add(1));
 
+        $r = new \ReflectionProperty(OrderedCollection::class, 'sorted');
+        $r->setAccessible(true);
+
+        $this->assertTrue($r->getValue($collection));
         $this->assertEquals([1], $collection->toArray());
     }
 
@@ -107,6 +111,39 @@ class OrderedCollectionTest extends TestCase
     /**
      *
      */
+    public function test_addAll_one_element()
+    {
+        $collection = new OrderedCollection();
+
+        $this->assertTrue($collection->addAll([5]));
+
+        $r = new \ReflectionProperty(OrderedCollection::class, 'sorted');
+        $r->setAccessible(true);
+
+        $this->assertTrue($r->getValue($collection));
+
+        $this->assertSame([5], iterator_to_array($collection));
+    }
+
+    /**
+     *
+     */
+    public function test_addAll_empty()
+    {
+        $collection = new OrderedCollection();
+
+        $this->assertTrue($collection->addAll([]));
+
+        $r = new \ReflectionProperty(OrderedCollection::class, 'sorted');
+        $r->setAccessible(true);
+
+        $this->assertTrue($r->getValue($collection));
+        $this->assertSame([], iterator_to_array($collection));
+    }
+
+    /**
+     *
+     */
     public function test_replace_array()
     {
         $collection = new OrderedCollection();
@@ -130,6 +167,54 @@ class OrderedCollectionTest extends TestCase
         $this->assertTrue($collection->replace(new ArrayCollection([5, 9, 2])));
 
         $this->assertSame([2, 5, 9], iterator_to_array($collection));
+    }
+
+    /**
+     *
+     */
+    public function test_replace_should_ignore_key()
+    {
+        $collection = new OrderedCollection();
+
+        $this->assertTrue($collection->replace(new ArrayCollection(['foo' => 'bar'])));
+        $this->assertSame(['bar'], iterator_to_array($collection));
+
+        $this->assertTrue($collection->replace(['oof' => 'rab']));
+        $this->assertSame(['rab'], iterator_to_array($collection));
+    }
+
+    /**
+     *
+     */
+    public function test_replace_1_element()
+    {
+        $collection = new OrderedCollection();
+
+        $collection->addAll([3, 2]);
+        $collection->replace([5]);
+
+        $r = new \ReflectionProperty(OrderedCollection::class, 'sorted');
+        $r->setAccessible(true);
+
+        $this->assertTrue($r->getValue($collection));
+        $this->assertSame([5], iterator_to_array($collection));
+    }
+
+    /**
+     *
+     */
+    public function test_replace_empty()
+    {
+        $collection = new OrderedCollection();
+
+        $collection->addAll([3, 2]);
+        $collection->replace([]);
+
+        $r = new \ReflectionProperty(OrderedCollection::class, 'sorted');
+        $r->setAccessible(true);
+
+        $this->assertTrue($r->getValue($collection));
+        $this->assertSame([], iterator_to_array($collection));
     }
 
     /**
@@ -161,6 +246,9 @@ class OrderedCollectionTest extends TestCase
         $this->assertFalse($collection->remove('9', true));
 
         $this->assertSame([2, 9], $collection->toArray());
+
+        $this->assertTrue($collection->remove('9'));
+        $this->assertSame([2], $collection->toArray());
     }
 
     /**
@@ -172,7 +260,10 @@ class OrderedCollectionTest extends TestCase
         $collection->replace([5, 9, 2]);
 
         $collection->clear();
+        $r = new \ReflectionProperty(OrderedCollection::class, 'sorted');
+        $r->setAccessible(true);
 
+        $this->assertTrue($r->getValue($collection));
         $this->assertSame([], $collection->toArray());
     }
 
@@ -307,7 +398,9 @@ class OrderedCollectionTest extends TestCase
         $collection = new OrderedCollection();
         $collection->replace(range(0, 10000));
 
+        $this->assertEquals(0, $collection->search(0));
         $this->assertEquals(5, $collection->search(5));
+        $this->assertEquals(10000, $collection->search(10000));
 
         $this->assertFalse($collection->search(-10));
 

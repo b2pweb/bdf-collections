@@ -88,6 +88,23 @@ class HashSetTest extends TestCase
     /**
      *
      */
+    public function test_contains_strict()
+    {
+        $set = new HashSet();
+        $o = new CustomHash('John', 'Doe');
+
+        $this->assertFalse($set->contains($o, true));
+        $set->add($o);
+
+        $this->assertTrue($set->contains(new CustomHash('John', 'Doe')));
+
+        $this->assertTrue($set->contains($o, true));
+        $this->assertFalse($set->contains(new CustomHash('John', 'Doe'), true));
+    }
+
+    /**
+     *
+     */
     public function test_custom_hash_function()
     {
         $set = new HashSet(function ($element) {
@@ -111,12 +128,30 @@ class HashSetTest extends TestCase
      */
     public function test_remove_no_set()
     {
-        $set = new HashSet();
+        $set = new HashSet(function ($e) { return $e; });
 
         $this->assertFalse($set->remove(3));
 
         $set->add(3);
         $this->assertTrue($set->remove(3));
+
+        $set->add(5);
+        $this->assertTrue($set->remove('5'));
+    }
+
+    /**
+     *
+     */
+    public function test_remove_strict()
+    {
+        $set = new HashSet();
+        $set->add(3);
+
+        $this->assertFalse($set->remove('3', true));
+        $this->assertTrue($set->contains(3));
+
+        $this->assertTrue($set->remove(3, true));
+        $this->assertFalse($set->contains(3));
     }
 
     /**

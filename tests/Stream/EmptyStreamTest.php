@@ -52,7 +52,7 @@ class EmptyStreamTest extends TestCase
      */
     public function test_concat_no_preserve_keys()
     {
-        $stream = new ArrayStream([]);
+        $stream = new ArrayStream([1, 2, 3]);
 
         $this->assertEquals(new ConcatStream([$stream], false), (new EmptyStream())->concat($stream, false));
     }

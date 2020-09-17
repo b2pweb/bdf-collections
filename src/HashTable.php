@@ -300,8 +300,10 @@ class HashTable implements TableInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return void
      */
-    public function offsetSet($offset, $value): void
+    public function offsetSet($offset, $value)
     {
         if ($offset === null) {
             $this->add($offset);

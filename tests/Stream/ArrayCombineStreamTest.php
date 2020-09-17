@@ -72,7 +72,7 @@ class ArrayCombineStreamTest extends TestCase
      */
     public function test_toArray()
     {
-        $stream = new ArrayCombineStream(['foo', 'bar'], [123, 456]);
+        $stream = new ArrayCombineStream(['foo', 'bar'], ['a' => 123, 'b' => 456]);
 
         $this->assertEquals([
             'foo' => 123,
@@ -87,7 +87,7 @@ class ArrayCombineStreamTest extends TestCase
     {
         $stream = new ArrayCombineStream(
             [['a' => 'b'], ['b' => 'c']],
-            [123, 456]
+            ['a' => 123, 'b' => 456]
         );
 
         $this->assertEquals([123, 456], $stream->toArray(false));

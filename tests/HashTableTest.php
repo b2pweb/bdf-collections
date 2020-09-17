@@ -130,6 +130,10 @@ class HashTableTest extends TestCase
 
         $this->assertTrue($table->remove(42, true));
         $this->assertFalse($table->hasKey('value'));
+
+        $table->set('bar', 12);
+        $this->assertTrue($table->remove('12'));
+        $this->assertFalse($table->hasKey('bar'));
     }
 
     /**

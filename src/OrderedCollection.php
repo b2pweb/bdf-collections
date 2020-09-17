@@ -80,7 +80,7 @@ class OrderedCollection implements OrderedCollectionInterface
             $this->elements[] = $element;
         }
 
-        $this->sorted = count($this->elements) === 1;
+        $this->sorted = count($this->elements) <= 1;
 
         return true;
     }
@@ -90,8 +90,8 @@ class OrderedCollection implements OrderedCollectionInterface
      */
     public function replace(iterable $elements): bool
     {
-        $this->elements = is_array($elements) ? $elements : iterator_to_array($elements, false);
-        $this->sorted = false;
+        $this->elements = is_array($elements) ? array_values($elements) : iterator_to_array($elements, false);
+        $this->sorted = count($this->elements) <= 1;
 
         return true;
     }

@@ -184,6 +184,7 @@ class SingletonStreamTest extends TestCase
         $stream = new SingletonStream(15);
 
         $this->assertEquals([15, 2, 1], $stream->concat(new ArrayStream([2, 1]), false)->toArray());
+        $this->assertEquals([15, 'foo' => 'bar'], $stream->concat(new ArrayStream(['foo' => 'bar']))->toArray());
     }
 
     /**
@@ -205,6 +206,7 @@ class SingletonStreamTest extends TestCase
         $stream = new SingletonStream(15);
 
         $this->assertSame($stream, $stream->limit(10));
+        $this->assertSame($stream, $stream->limit(1));
         $this->assertInstanceOf(EmptyStream::class, $stream->limit(10, 1));
     }
 

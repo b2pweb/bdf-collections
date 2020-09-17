@@ -113,6 +113,12 @@ class MutableArrayStreamTest extends TestCase
             'firstName' => 'John',
             'lastName'  => 'Doe'
         ], iterator_to_array($stream));
+
+        // Iterate twice should reset iterator
+        $this->assertSame([
+            'firstName' => 'John',
+            'lastName'  => 'Doe'
+        ], iterator_to_array($stream));
     }
 
     /**
@@ -287,9 +293,9 @@ class MutableArrayStreamTest extends TestCase
      */
     public function test_concat_no_preserve_keys_with_mutableStream()
     {
-        $stream = new MutableArrayStream([7, 4, 2]);
+        $stream = new MutableArrayStream(['a' => 7, 'b' => 4, 'c' => 2]);
 
-        $this->assertSame($stream, $stream->concat(new MutableArrayStream([3, 8, 1]), false));
+        $this->assertSame($stream, $stream->concat(new MutableArrayStream(['d' => 3, 'e' => 8, 'f' => 1]), false));
 
         $this->assertSame([7, 4, 2, 3, 8, 1], $stream->toArray());
     }

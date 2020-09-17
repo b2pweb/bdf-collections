@@ -118,8 +118,10 @@ class ArrayCollection implements TableInterface
      *
      * @param K|null $offset
      * @param T $value
+     *
+     * @return void
      */
-    public function offsetSet($offset, $value): void
+    public function offsetSet($offset, $value)
     {
         if ($offset === null) {
             /** @psalm-suppress InvalidPropertyAssignmentValue */
@@ -223,8 +225,6 @@ class ArrayCollection implements TableInterface
      */
     public function replace(iterable $elements): bool
     {
-        $this->clear();
-
         if (is_array($elements)) {
             $this->data = $elements;
         } elseif ($elements instanceof ArrayCollection) {

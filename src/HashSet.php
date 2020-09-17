@@ -104,7 +104,13 @@ class HashSet implements SetInterface
      */
     public function contains($element, bool $strict = false): bool
     {
-        return isset($this->data[($this->hashFunction)($element)]);
+        $key = ($this->hashFunction)($element);
+
+        if (!isset($this->data[$key])) {
+            return false;
+        }
+
+        return !$strict || $this->data[$key] === $element;
     }
 
     /**
@@ -132,8 +138,12 @@ class HashSet implements SetInterface
             return false;
         }
 
-        unset($this->data[$index]);
-        return true;
+        if (!$strict || $this->data[$index] === $element) {
+            unset($this->data[$index]);
+            return true;
+        }
+
+        return false;
     }
 
     /**

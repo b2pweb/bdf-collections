@@ -46,6 +46,9 @@ class ArrayCollectionTest extends TestCase
         $this->assertFalse($collection->remove('not_found'));
         $this->assertFalse($collection->remove('1', true));
         $this->assertTrue($collection->contains(1));
+
+        $this->assertTrue($collection->remove('1'));
+        $this->assertFalse($collection->contains(1));
     }
 
     /**
@@ -294,7 +297,7 @@ class ArrayCollectionTest extends TestCase
     {
         $table = new ArrayCollection([1, 2, 3]);
 
-        $this->assertTrue($table->addAll(new \ArrayIterator([7, 8 ,9])));
+        $this->assertTrue($table->addAll(new \ArrayIterator([7, 8, 'foo' => 9])));
 
         $this->assertEquals([1, 2, 3, 7, 8, 9], $table->toArray());
     }

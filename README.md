@@ -4,6 +4,7 @@ Implementation of commons collections, with java-like stream to apply transforma
 
 [![Build Status](https://travis-ci.org/b2pweb/bdf-collections.svg?branch=master)](https://travis-ci.org/b2pweb/bdf-collections)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/b2pweb/bdf-collections/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/b2pweb/bdf-collections/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/b2pweb/bdf-collections/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/b2pweb/bdf-collections/?branch=master)
 [![Packagist Version](https://img.shields.io/packagist/v/b2pweb/bdf-collections.svg)](https://packagist.org/packages/b2pweb/bdf-collections)
 [![Total Downloads](https://img.shields.io/packagist/dt/b2pweb/bdf-collections.svg)](https://packagist.org/packages/b2pweb/bdf-collections)
 [![Type Coverage](https://shepherd.dev/github/b2pweb/bdf-collections/coverage.svg)](https://shepherd.dev/github/b2pweb/bdf-collections)

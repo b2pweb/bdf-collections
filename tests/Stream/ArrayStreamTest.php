@@ -373,6 +373,7 @@ class ArrayStreamTest extends TestCase
         $this->assertInstanceOf(LimitStream::class, $skip);
         $this->assertEquals([2], $skip->toArray(false));
         $this->assertInstanceOf(EmptyStream::class, $stream->skip(100));
+        $this->assertInstanceOf(EmptyStream::class, $stream->skip(3));
     }
 
     /**
@@ -389,6 +390,7 @@ class ArrayStreamTest extends TestCase
         $this->assertEquals([8, 2], $stream->limit(2, 1)->toArray(false));
 
         $this->assertInstanceOf(EmptyStream::class, $stream->limit(1, 100));
+        $this->assertInstanceOf(EmptyStream::class, $stream->limit(1, 3));
         $this->assertInstanceOf(EmptyStream::class, $stream->limit(0));
     }
 }
