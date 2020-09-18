@@ -11,13 +11,11 @@ jobs:
     - stage: analysis
       php: 7.2
       before_script:
-        - wget https://github.com/infection/infection/releases/download/0.15.3/infection.phar
-        - wget https://github.com/infection/infection/releases/download/0.15.3/infection.phar.asc
-        - chmod +x infection.phar
+        - composer global require infection/infection
       script:
         - composer psalm
         - composer bc-break
-        - ./infection.phar --min-msi=90
+        - ~/.config/composer/vendor/bin/infection --min-msi=90
 
 install:
   - travis_retry composer --ignore-platform-reqs install

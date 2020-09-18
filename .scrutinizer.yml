@@ -10,5 +10,3 @@ build:
             coverage:
               file: coverage.xml
               format: clover
-          - command: composer run psalm
-          - command: composer run bc-break
