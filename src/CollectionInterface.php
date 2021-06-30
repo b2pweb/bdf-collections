@@ -13,7 +13,7 @@ use IteratorAggregate;
  * The elements can be added, removed, iterated, and check if its contained
  *
  * @template T
- * @implements Streamable<T, mixed>
+ * @extends Streamable<T, mixed>
  */
 interface CollectionInterface extends IteratorAggregate, Countable, Streamable
 {

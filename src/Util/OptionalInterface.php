@@ -11,6 +11,7 @@ use Throwable;
  * Optional is a way for handling null values, and create simple null objects
  *
  * @template T
+ * @extends Streamable<T, int>
  */
 interface OptionalInterface extends Streamable
 {

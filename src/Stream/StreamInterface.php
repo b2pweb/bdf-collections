@@ -31,6 +31,8 @@ use Iterator;
  *
  * @template T
  * @template K
+ *
+ * @extends Iterator<K, T>
  */
 interface StreamInterface extends Iterator
 {

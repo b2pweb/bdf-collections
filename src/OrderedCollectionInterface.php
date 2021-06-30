@@ -8,7 +8,7 @@ use ArrayAccess;
  * An OrderedCollection keeps all its elements in order
  *
  * @template T
- * @implements CollectionInterface<T>
+ * @extends CollectionInterface<T>
  */
 interface OrderedCollectionInterface extends CollectionInterface, ArrayAccess
 {

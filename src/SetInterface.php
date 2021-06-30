@@ -8,7 +8,7 @@ use Bdf\Collection\Util\OptionalInterface;
  * A set is a collection with ensuring that contains no duplicate elements
  *
  * @template T
- * @implements CollectionInterface<T>
+ * @extends CollectionInterface<T>
  */
 interface SetInterface extends CollectionInterface
 {

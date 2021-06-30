@@ -11,7 +11,7 @@ use ArrayAccess;
  *
  * @template K
  * @template T
- * @implements CollectionInterface<T>
+ * @extends CollectionInterface<T>
  */
 interface TableInterface extends CollectionInterface, ArrayAccess
 {
