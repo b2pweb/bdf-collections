@@ -10,7 +10,7 @@ php:
 jobs:
   include:
     - stage: analysis
-      php: 7.4
+      php: 8.0
       before_script:
         - composer global require infection/infection
         - composer require --dev roave/backward-compatibility-check:*
