@@ -17,6 +17,11 @@ use function usort;
 /**
  * Implementation of StreamInterface::sort() return value
  *
+ * @template T
+ *
+ * @implements StreamInterface<T, array-key>
+ * @implements Iterator<array-key, T>
+ *
  * @internal
  */
 final class SortStream implements Iterator, StreamInterface
@@ -24,12 +29,12 @@ final class SortStream implements Iterator, StreamInterface
     use StreamTrait;
 
     /**
-     * @var StreamInterface
+     * @var StreamInterface<T, mixed>
      */
     private $stream;
 
     /**
-     * @var callable|null
+     * @var callable(T,T):int|null
      */
     private $comparator;
 
@@ -39,7 +44,7 @@ final class SortStream implements Iterator, StreamInterface
     private $preserveKeys;
 
     /**
-     * @var array|null
+     * @var T[]|null
      */
     private $data = null;
 
@@ -47,8 +52,8 @@ final class SortStream implements Iterator, StreamInterface
     /**
      * SortStream constructor.
      *
-     * @param StreamInterface $stream
-     * @param callable|null $comparator
+     * @param StreamInterface<T, mixed> $stream
+     * @param callable(T,T):int|null $comparator
      * @param bool $preserveKeys
      */
     public function __construct(StreamInterface $stream, ?callable $comparator = null, bool $preserveKeys = true)
@@ -60,11 +65,20 @@ final class SortStream implements Iterator, StreamInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @psalm-assert !null $this->data
+     * @psalm-suppress InvalidReturnType
      */
     public function toArray(bool $preserveKeys = true): array
     {
         if ($this->data === null) {
-            $this->buildData($preserveKeys && $this->preserveKeys);
+            $this->buildData();
+        }
+
+        // Built data keep keys, but toArray() request without keys
+        // So call array_values to remove keys
+        if (!$preserveKeys && $this->preserveKeys) {
+            return array_values($this->data);
         }
 
         return $this->data;
@@ -169,22 +183,24 @@ final class SortStream implements Iterator, StreamInterface
     /**
      * Build the inner sorted data array
      *
-     * @param bool $preserveKeys
+     * @psalm-assert !null $this->data
      */
-    private function buildData(bool $preserveKeys = true): void
+    private function buildData(): void
     {
-        $this->data = $this->stream->toArray($preserveKeys);
+        $data = $this->stream->toArray($this->preserveKeys);
 
         if ($this->comparator) {
-            if ($preserveKeys) {
-                uasort($this->data, $this->comparator);
+            if ($this->preserveKeys) {
+                uasort($data, $this->comparator);
             } else {
-                usort($this->data, $this->comparator);
+                usort($data, $this->comparator);
             }
-        } elseif($preserveKeys) {
-            asort($this->data);
+        } elseif($this->preserveKeys) {
+            asort($data);
         } else {
-            sort($this->data);
+            sort($data);
         }
+
+        $this->data = $data;
     }
 }

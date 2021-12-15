@@ -111,13 +111,13 @@ final class IndexingBy implements CollectorInterface
      * @template hRK
      *
      * @param callable(hV):hRK $getter The key getter
-     * @param callable(hV):array-key|null $hashFunction The hash function, which will be applied to the key value. By default use Hash::compute
+     * @param callable(hRK):array-key|null $hashFunction The hash function, which will be applied to the key value. By default use Hash::compute
      *
      * @return IndexingBy<hV, hRK, TableInterface<hRK, hV>>
      *
      * @see Hash::compute()
      */
-    public static function hash(callable $getter, callable $hashFunction = null): self
+    public static function hash(callable $getter, ?callable $hashFunction = null): self
     {
         return new IndexingBy($getter, new HashTable($hashFunction));
     }

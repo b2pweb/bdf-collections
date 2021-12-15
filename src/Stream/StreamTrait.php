@@ -11,6 +11,8 @@ use function iterator_to_array;
 
 /**
  * Implementation of base stream methods
+ *
+ * @psalm-suppress LessSpecificImplementedReturnType
  */
 trait StreamTrait
 {
@@ -33,9 +35,9 @@ trait StreamTrait
     /**
      * @see StreamInterface::mapKey()
      */
-    public function mapKey(callable $transformer): StreamInterface
+    public function mapKey(callable $function): StreamInterface
     {
-        return new MapKeyStream($this, $transformer);
+        return new MapKeyStream($this, $function);
     }
 
     /**

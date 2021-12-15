@@ -9,6 +9,9 @@ use AppendIterator;
  *
  * The streams will be iterated consecutively (The first iterator is the first iterated)
  *
+ * @template T
+ * @implements StreamInterface<T, mixed>
+ *
  * @see StreamInterface::concat()
  */
 final class ConcatStream extends AppendIterator implements StreamInterface
@@ -29,7 +32,7 @@ final class ConcatStream extends AppendIterator implements StreamInterface
     /**
      * ConcatStream constructor.
      *
-     * @param StreamInterface[] $streams
+     * @param array<StreamInterface<T, mixed>> $streams
      * @param bool $preserveKeys Preserve the base stream keys
      */
     public function __construct(array $streams, bool $preserveKeys = true)
@@ -67,10 +70,6 @@ final class ConcatStream extends AppendIterator implements StreamInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @psalm-suppress LessSpecificImplementedReturnType
-     *
-     * @return mixed
      */
     public function key()
     {

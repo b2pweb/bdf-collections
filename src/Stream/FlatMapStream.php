@@ -4,18 +4,25 @@ namespace Bdf\Collection\Stream;
 
 /**
  * Class FlatMapStream
+ *
+ * @template T
+ *
+ * @template ST
+ * @template SK
+ *
+ * @implements StreamInterface<T, mixed>
  */
 final class FlatMapStream implements StreamInterface
 {
     use StreamTrait;
 
     /**
-     * @var StreamInterface
+     * @var StreamInterface<ST, SK>
      */
     private $stream;
 
     /**
-     * @var callable
+     * @var callable(ST, SK):(T|T[]|StreamInterface<T, mixed>)
      */
     private $transformer;
 
@@ -25,12 +32,12 @@ final class FlatMapStream implements StreamInterface
     private $preserveKeys;
 
     /**
-     * @var StreamInterface|null
+     * @var StreamInterface<T, mixed>|null
      */
     private $currentStream;
 
     /**
-     * @var mixed
+     * @var T|null
      */
     private $currentValue;
 
@@ -43,11 +50,11 @@ final class FlatMapStream implements StreamInterface
     /**
      * FlatMapStream constructor.
      *
-     * @param StreamInterface $stream
-     * @param callable $transformer
+     * @param StreamInterface<ST, SK> $stream
+     * @param callable(ST, SK):(StreamInterface<T, mixed>|T[]|T) $transformer
      * @param bool $preserveKeys
      */
-    public function __construct(StreamInterface $stream, callable $transformer, $preserveKeys = false)
+    public function __construct(StreamInterface $stream, callable $transformer, bool $preserveKeys = false)
     {
         $this->stream = $stream;
         $this->transformer = $transformer;

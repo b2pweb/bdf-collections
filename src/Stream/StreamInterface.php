@@ -188,9 +188,9 @@ interface StreamInterface extends Iterator
      *                             - $comparator($a, $b) == 0 => $a == $b
      *                             - $comparator($a, $b) > 0 => $a > $b
      *
-     * @param boolean $preserveKeys If true, the keys will be kept, else an the values will be indexed by an increment integer
+     * @param boolean $preserveKeys If true, the keys will be kept, else the values will be indexed by an increment integer
      *
-     * @return StreamInterface<T, mixed>
+     * @return StreamInterface<T, array-key>
      */
     public function sort(callable $comparator = null, bool $preserveKeys = false): StreamInterface;
 
@@ -247,8 +247,8 @@ interface StreamInterface extends Iterator
      * </code>
      *
      * @template R
-     * @param callable(T, K):R|callable(T, K):R[]|callable(T, K):StreamInterface<R, mixed> $transformer The element transformer
-     *     Should take the element as first parameter an return the transformed element
+     * @param callable(T, K):(StreamInterface<R, mixed>|R[]|R) $transformer The element transformer
+     *     Should take the element as first parameter and return the transformed element
      *     The transformer may have (if relevant) the key as second parameter
      *
      * @param bool $preserveKeys Preserve the sub-streams keys, or use integer increment index
@@ -329,13 +329,16 @@ interface StreamInterface extends Iterator
      *
      * $stream->toArray() === ['foo' => 'bar', 'value' => 42];
      * $stream->toArray(false) === ['bar', 42];
-     * ];
      * </code>
      *
      * @param bool $preserveKeys True to preserve the keys of the stream, or false for reindex with increment integer.
      *     This parameter must be set to false when stream contains complex keys (not integer or string)
      *
      * @return T[]
+     *
+     * @template PK as bool
+     * @psalm-param PK $preserveKeys
+     * @psalm-return (PK is true ? array<K, T> : list<T>)
      */
     public function toArray(bool $preserveKeys = true): array;
 

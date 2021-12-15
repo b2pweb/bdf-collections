@@ -33,11 +33,17 @@ use function usort;
  * - distinct() : The hash functor or custom class hash are not used for comparison
  * - first()    : Not optimized in sort() context (all the array will be sorted, instead of find the min value)
  * - mapKey()   : May failed if the function return an invalid key
+ *
+ * @template T
+ * @template K as array-key
+ *
+ * @implements StreamInterface<T, K>
+ * @implements Iterator<K, T>
  */
 final class MutableArrayStream implements Iterator, StreamInterface
 {
     /**
-     * @var array
+     * @var array<K, T>
      */
     private $data;
 
@@ -45,7 +51,7 @@ final class MutableArrayStream implements Iterator, StreamInterface
     /**
      * MutableArrayStream constructor.
      *
-     * @param array $data
+     * @param array<K, T> $data
      */
     public function __construct(array $data)
     {
@@ -54,6 +60,11 @@ final class MutableArrayStream implements Iterator, StreamInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @psalm-param callable(T,K=):R $transformer
+     * @psalm-return MutableArrayStream<R, K>
+     *
+     * @template R
      */
     public function map(callable $transformer): StreamInterface
     {
@@ -63,6 +74,7 @@ final class MutableArrayStream implements Iterator, StreamInterface
             $newData[$k] = $transformer($v, $k);
         }
 
+        /** @var MutableArrayStream<R, K> $this */
         $this->data = $newData;
 
         return $this;
@@ -70,6 +82,11 @@ final class MutableArrayStream implements Iterator, StreamInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @psalm-param callable(T,K):R $function
+     * @psalm-return MutableArrayStream<T, R>
+     *
+     * @template R as array-key
      */
     public function mapKey(callable $function): StreamInterface
     {
@@ -79,6 +96,7 @@ final class MutableArrayStream implements Iterator, StreamInterface
             $newData[$function($v, $k)] = $v;
         }
 
+        /** @var MutableArrayStream<T, R> $this */
         $this->data = $newData;
 
         return $this;
@@ -113,11 +131,13 @@ final class MutableArrayStream implements Iterator, StreamInterface
             if ($preserveKeys) {
                 uasort($this->data, $comparator);
             } else {
+                /** @var MutableArrayStream<T, int> $this */
                 usort($this->data, $comparator);
             }
         } elseif ($preserveKeys) {
             asort($this->data);
         } else {
+            /** @var MutableArrayStream<T, int> $this */
             sort($this->data);
         }
 
@@ -143,6 +163,8 @@ final class MutableArrayStream implements Iterator, StreamInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @psalm-suppress InvalidArgument
      */
     public function flatMap(callable $transformer, bool $preserveKeys = false): StreamInterface
     {
@@ -181,6 +203,10 @@ final class MutableArrayStream implements Iterator, StreamInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @template PK as bool
+     * @psalm-param PK $preserveKeys
+     * @psalm-return (PK is true ? array<K, T> : list<T>)
      */
     public function toArray(bool $preserveKeys = true): array
     {

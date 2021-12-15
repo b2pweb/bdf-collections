@@ -11,16 +11,21 @@ use Bdf\Collection\Util\OptionalInterface;
  * Wrap single value into a stream
  *
  * Unlike other streams, for optimisation reasons, the transformation methods will be called directly, before the terminal call
+ *
+ * @template T
+ * @template K
+ *
+ * @implements StreamInterface<T, K>
  */
 final class SingletonStream implements StreamInterface
 {
     /**
-     * @var mixed
+     * @var T
      */
     private $value;
 
     /**
-     * @var mixed
+     * @var K
      */
     private $key;
 
@@ -33,8 +38,8 @@ final class SingletonStream implements StreamInterface
     /**
      * SingletonStream constructor.
      *
-     * @param mixed $value
-     * @param mixed $key
+     * @param T $value
+     * @param K $key
      */
     public function __construct($value, $key = 0)
     {
@@ -95,6 +100,8 @@ final class SingletonStream implements StreamInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @psalm-suppress InvalidArgument
      */
     public function flatMap(callable $transformer, bool $preserveKeys = false): StreamInterface
     {
@@ -140,6 +147,10 @@ final class SingletonStream implements StreamInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @template PK as bool
+     * @psalm-param PK $preserveKeys
+     * @psalm-return (PK is true ? array<K, T> : array{0:T})
      */
     public function toArray(bool $preserveKeys = true): array
     {

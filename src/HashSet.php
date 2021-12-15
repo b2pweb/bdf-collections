@@ -58,6 +58,9 @@ use function count;
  *         - With objects with custom hash, HashSet has same performances
  *
  * @see Hash::compute() The default hash function
+ *
+ * @template T
+ * @implements SetInterface<T>
  */
 class HashSet implements SetInterface
 {

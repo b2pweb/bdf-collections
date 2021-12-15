@@ -5,13 +5,15 @@ php:
   - 7.2
   - 7.3
   - 7.4
+  - 8.0
 
 jobs:
   include:
     - stage: analysis
-      php: 7.2
+      php: 7.4
       before_script:
         - composer global require infection/infection
+        - composer require --dev roave/backward-compatibility-check
       script:
         - composer psalm
         - composer bc-break

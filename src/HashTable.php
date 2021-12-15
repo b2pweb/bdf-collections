@@ -76,7 +76,7 @@ class HashTable implements TableInterface
      *
      * @param callable(K):array-key|null $hashFunction The the hash function. Takes as parameter the element to hash, and should return a string
      */
-    public function __construct(callable $hashFunction = null)
+    public function __construct(?callable $hashFunction = null)
     {
         $this->hashFunction = $hashFunction ?: [Hash::class, 'compute'];
     }
@@ -306,7 +306,7 @@ class HashTable implements TableInterface
     public function offsetSet($offset, $value)
     {
         if ($offset === null) {
-            $this->add($offset);
+            $this->add($value);
         } else {
             $this->set($offset, $value);
         }

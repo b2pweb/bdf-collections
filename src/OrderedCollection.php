@@ -29,6 +29,9 @@ use function usort;
  * - forEach()  : O(n)      Sort elements if not sorted
  * - at()       : O(1)      Sort elements if not sorted
  * - search()   : O(log(n)) Sort elements if not sorted
+ *
+ * @template T
+ * @implements OrderedCollectionInterface<T>
  */
 class OrderedCollection implements OrderedCollectionInterface
 {

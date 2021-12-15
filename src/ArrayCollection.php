@@ -204,17 +204,17 @@ class ArrayCollection implements TableInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @param iterable<mixed, T>|ArrayCollection<T, K> $elements
      */
     public function addAll(iterable $elements): bool
     {
-        /** @psalm-suppress TypeDoesNotContainType */
         if ($elements instanceof ArrayCollection) {
             $elements = $elements->data;
         } elseif (!is_array($elements)) {
             $elements = iterator_to_array($elements, false);
         }
 
-        /** @psalm-suppress InvalidPropertyAssignmentValue */
         $this->data = array_merge($this->data, $elements);
 
         return true;

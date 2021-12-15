@@ -16,18 +16,21 @@ use TypeError;
  *     ->or($defaultValue)
  * ;
  * </code>
+ *
+ * @template T
+ * @implements OptionalInterface<T>
  */
 final class Optional implements OptionalInterface
 {
     /**
-     * @var mixed
+     * @var T
      */
     private $value;
 
     /**
      * Optional constructor.
      *
-     * @param mixed $value
+     * @param T $value
      */
     private function __construct($value)
     {
@@ -173,10 +176,12 @@ final class Optional implements OptionalInterface
      * Wrap value into an optional
      * The value MUST not be null
      *
-     * @param mixed $value
+     * @param R $value
      *
-     * @return Optional
+     * @return Optional<R>
      * @throws TypeError If null value is given
+     *
+     * @template R
      */
     public static function of($value): Optional
     {
