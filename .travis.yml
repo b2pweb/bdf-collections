@@ -13,10 +13,10 @@ jobs:
       php: 8.0
       before_script:
         - composer global require infection/infection
-        - composer require --dev "roave/backward-compatibility-check:~6.0@dev"
+#        - composer require --dev "roave/backward-compatibility-check:~6.0@dev"
       script:
         - composer psalm
-        - composer bc-break
+#        - composer bc-break
         - ~/.config/composer/vendor/bin/infection --min-msi=90
 
 install:
