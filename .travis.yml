@@ -17,7 +17,7 @@ jobs:
       script:
         - composer psalm
 #        - composer bc-break
-        - ~/.config/composer/vendor/bin/infection --min-msi=90
+        - XDEBUG_MODE=coverage ~/.config/composer/vendor/bin/infection --min-msi=90
 
 install:
   - travis_retry composer install
