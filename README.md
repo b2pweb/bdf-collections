@@ -2,7 +2,7 @@
 
 Implementation of commons collections, with java-like stream to apply transformations.
 
-[![Build Status](https://travis-ci.org/b2pweb/bdf-collections.svg?branch=master)](https://travis-ci.org/b2pweb/bdf-collections)
+[![build](https://github.com/b2pweb/bdf-collections/actions/workflows/php.yml/badge.svg)](https://github.com/b2pweb/bdf-collections/actions/workflows/php.yml)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/b2pweb/bdf-collections/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/b2pweb/bdf-collections/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/b2pweb/bdf-collections/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/b2pweb/bdf-collections/?branch=master)
 [![Packagist Version](https://img.shields.io/packagist/v/b2pweb/bdf-collections.svg)](https://packagist.org/packages/b2pweb/bdf-collections)

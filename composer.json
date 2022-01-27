@@ -27,7 +27,7 @@
     "scripts": {
         "tests": "phpunit",
         "tests-with-coverage": "phpunit --coverage-clover coverage.xml",
-        "psalm": "psalm --shepherd",
-        "bc-break": "roave-backward-compatibility-check --from=v1.1.0"
+        "psalm": "psalm --shepherd --output-format=github",
+        "bc-break": "roave-backward-compatibility-check"
     }
 }
