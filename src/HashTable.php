@@ -277,7 +277,7 @@ class HashTable implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return $this->stream();
     }
@@ -285,7 +285,7 @@ class HashTable implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return $this->hasKey($offset);
     }
@@ -293,6 +293,7 @@ class HashTable implements TableInterface
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function &offsetGet($offset)
     {
         return $this->get($offset);
@@ -303,7 +304,7 @@ class HashTable implements TableInterface
      *
      * @return void
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if ($offset === null) {
             $this->add($value);
@@ -315,7 +316,7 @@ class HashTable implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         $this->unset($offset);
     }

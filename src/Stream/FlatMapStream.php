@@ -64,6 +64,7 @@ final class FlatMapStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return $this->currentValue;
@@ -74,7 +75,7 @@ final class FlatMapStream implements StreamInterface
      *
      * @psalm-suppress PossiblyNullReference
      */
-    public function next()
+    public function next(): void
     {
         ++$this->index;
         $this->currentStream->next();
@@ -93,6 +94,7 @@ final class FlatMapStream implements StreamInterface
      *
      * @psalm-suppress PossiblyNullReference
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return $this->preserveKeys ? $this->currentStream->key() : $this->index;
@@ -101,7 +103,7 @@ final class FlatMapStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         return $this->currentStream !== null;
     }
@@ -109,7 +111,7 @@ final class FlatMapStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->stream->rewind();
 

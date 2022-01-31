@@ -94,6 +94,7 @@ trait TableDelegationTrait
     /**
      * @see TableInterface::&offsetGet($offset)
      */
+    #[\ReturnTypeWillChange]
     public function &offsetGet($offset)
     {
         return $this->collection[$offset];
@@ -102,7 +103,7 @@ trait TableDelegationTrait
     /**
      * @see TableInterface::offsetExists()
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->collection[$offset]);
     }
@@ -110,7 +111,7 @@ trait TableDelegationTrait
     /**
      * @see TableInterface::offsetSet()
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->collection[$offset] = $value;
     }
@@ -118,7 +119,7 @@ trait TableDelegationTrait
     /**
      * @see TableInterface::offsetUnset()
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->collection[$offset]);
     }

@@ -37,7 +37,7 @@ interface OrderedCollectionInterface extends CollectionInterface, ArrayAccess
      *
      * Cannot be called on an ordered collection
      */
-    public function offsetSet($offset, $value);
+    public function offsetSet($offset, $value): void;
 
     /**
      * {@inheritdoc}

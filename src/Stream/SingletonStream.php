@@ -206,6 +206,7 @@ final class SingletonStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return $this->value;
@@ -214,7 +215,7 @@ final class SingletonStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         $this->closed = true;
     }
@@ -222,6 +223,7 @@ final class SingletonStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return $this->key;
@@ -230,7 +232,7 @@ final class SingletonStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         return !$this->closed;
     }
@@ -238,7 +240,7 @@ final class SingletonStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->closed = false;
     }

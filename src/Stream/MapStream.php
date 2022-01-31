@@ -35,6 +35,7 @@ final class MapStream extends IteratorIterator implements StreamInterface
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return ($this->transformer)(parent::current(), $this->key());
