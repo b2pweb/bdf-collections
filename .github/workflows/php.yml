@@ -60,7 +60,7 @@ jobs:
     - name: Install PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: 8.0
+        php-version: 7.4
         extensions: json
         ini-values: date.timezone=Europe/Paris
 
@@ -81,7 +81,15 @@ jobs:
         git fetch --depth=1 origin $GITHUB_BASE_REF
         XDEBUG_MODE=coverage ~/.composer/vendor/bin/infection --logger-github --git-diff-filter=AM --min-msi=90
 
-    - name: "Check for BC breaks"
-      uses: docker://nyholm/roave-bc-check-ga
+  roave_bc_check:
+    name: Roave BC Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Roave BC Check
+        uses: docker://nyholm/roave-bc-check-ga
       with:
         args: --format=github-actions
