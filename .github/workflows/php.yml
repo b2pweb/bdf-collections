@@ -49,6 +49,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
     - name: Set Timezone
       uses: szenius/set-timezone@v1.0
@@ -58,7 +60,7 @@ jobs:
     - name: Install PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: 7.4
+        php-version: 8.0
         extensions: json
         ini-values: date.timezone=Europe/Paris
 
@@ -78,3 +80,8 @@ jobs:
       run: |
         git fetch --depth=1 origin $GITHUB_BASE_REF
         XDEBUG_MODE=coverage ~/.composer/vendor/bin/infection --logger-github --git-diff-filter=AM --min-msi=90
+
+    - name: "Check for BC breaks"
+      uses: docker://nyholm/roave-bc-check-ga
+      with:
+        args: --format=github-actions
