@@ -403,6 +403,7 @@ class OrderedCollectionTest extends TestCase
         $this->assertEquals(10000, $collection->search(10000));
 
         $this->assertFalse($collection->search(-10));
+        $this->assertFalse($collection->search(10001));
 
         $this->assertEquals(5, $collection->search('5'));
         $this->assertFalse($collection->search('5', true));
