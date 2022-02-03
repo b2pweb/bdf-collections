@@ -66,7 +66,6 @@ final class SortStream implements Iterator, StreamInterface
     /**
      * {@inheritdoc}
      *
-     * @psalm-assert !null $this->data
      * @psalm-suppress InvalidReturnType
      */
     public function toArray(bool $preserveKeys = true): array
@@ -77,6 +76,7 @@ final class SortStream implements Iterator, StreamInterface
 
         // Built data keep keys, but toArray() request without keys
         // So call array_values to remove keys
+        /** @psalm-suppress RedundantConditionGivenDocblockType */
         if (!$preserveKeys && $this->preserveKeys) {
             return array_values($this->data);
         }

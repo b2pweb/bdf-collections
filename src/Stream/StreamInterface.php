@@ -289,8 +289,8 @@ interface StreamInterface extends Iterator
      * $stream->limit(2, 1)->toArray(); // [2, 3]
      * </code>
      *
-     * @param int $count The maximum number elements
-     * @param int $offset Number of elements to skip at start of the stream
+     * @param positive-int|0 $count The maximum number elements
+     * @param positive-int|0 $offset Number of elements to skip at start of the stream
      *
      * @return StreamInterface<T, K>
      *

@@ -360,6 +360,23 @@ class OrderedCollectionTest extends TestCase
         $this->assertEquals([1, 3, 7], $collection->toArray());
     }
 
+    public function test_offsetExists_should_order_elements_before_call()
+    {
+        $collection = new OrderedCollection();
+        $collection->replace([7, 1, 5]);
+
+        $this->assertTrue(isset($collection[2]));
+    }
+
+    public function test_offsetUnset_should_order_elements_before_call()
+    {
+        $collection = new OrderedCollection();
+        $collection->replace([7, 1, 5]);
+
+        unset($collection[1]);
+        $this->assertEquals([1, 7], $collection->toArray());
+    }
+
     /**
      *
      */
@@ -399,6 +416,7 @@ class OrderedCollectionTest extends TestCase
         $collection->replace(range(0, 10000));
 
         $this->assertEquals(0, $collection->search(0));
+        $this->assertEquals(1, $collection->search(1));
         $this->assertEquals(5, $collection->search(5));
         $this->assertEquals(10000, $collection->search(10000));
 

@@ -302,6 +302,9 @@ class HashTable implements TableInterface
     /**
      * {@inheritdoc}
      *
+     * @param K $offset
+     * @param T $value
+     *
      * @return void
      */
     public function offsetSet($offset, $value): void

@@ -61,6 +61,8 @@ use function count;
  *
  * @template T
  * @implements SetInterface<T>
+ *
+ * @psalm-consistent-constructor
  */
 class HashSet implements SetInterface
 {
