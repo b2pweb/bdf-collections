@@ -120,6 +120,7 @@ trait StreamTrait
 
     /**
      * @see StreamInterface::reduce()
+     * @psalm-suppress MissingParamType
      */
     public function reduce(callable $accumulator, $initial = null)
     {

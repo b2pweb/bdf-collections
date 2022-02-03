@@ -282,6 +282,7 @@ final class MutableArrayStream implements Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return current($this->data);
@@ -290,7 +291,7 @@ final class MutableArrayStream implements Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         next($this->data);
     }
@@ -298,6 +299,7 @@ final class MutableArrayStream implements Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return key($this->data);
@@ -306,7 +308,7 @@ final class MutableArrayStream implements Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         return key($this->data) !== null;
     }
@@ -314,7 +316,7 @@ final class MutableArrayStream implements Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         reset($this->data);
     }

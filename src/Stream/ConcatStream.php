@@ -71,6 +71,7 @@ final class ConcatStream extends AppendIterator implements StreamInterface
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         if ($this->preserveKeys) {
@@ -83,7 +84,7 @@ final class ConcatStream extends AppendIterator implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         parent::next();
 
@@ -93,7 +94,7 @@ final class ConcatStream extends AppendIterator implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         parent::rewind();
 

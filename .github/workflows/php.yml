@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: ['7.1', '7.2', '7.3', '7.4', '8.0']
+        php-versions: ['7.1', '7.2', '7.3', '7.4', '8.0', '8.1']
     name: PHP ${{ matrix.php-versions }}
 
     steps:
@@ -49,6 +49,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
     - name: Set Timezone
       uses: szenius/set-timezone@v1.0
@@ -78,3 +80,22 @@ jobs:
       run: |
         git fetch --depth=1 origin $GITHUB_BASE_REF
         XDEBUG_MODE=coverage ~/.composer/vendor/bin/infection --logger-github --git-diff-filter=AM --min-msi=90
+
+  roave_bc_check:
+    name: Roave BC Check
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: "Install PHP"
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: "8.0"
+
+    - name: "Install dependencies"
+      run: "composer install"
+
+    - name: Roave BC Check
+      run: docker run --rm -v `pwd`:/app nyholm/roave-bc-check --format=github-actions || true

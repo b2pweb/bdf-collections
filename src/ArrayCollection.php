@@ -92,7 +92,7 @@ class ArrayCollection implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new ArrayIterator($this->data);
     }
@@ -100,7 +100,7 @@ class ArrayCollection implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return array_key_exists($offset, $this->data);
     }
@@ -108,6 +108,7 @@ class ArrayCollection implements TableInterface
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function &offsetGet($offset)
     {
         return $this->data[$offset];
@@ -121,7 +122,7 @@ class ArrayCollection implements TableInterface
      *
      * @return void
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if ($offset === null) {
             /** @psalm-suppress InvalidPropertyAssignmentValue */
@@ -134,7 +135,7 @@ class ArrayCollection implements TableInterface
     /**
      * {@inheritdoc}
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->data[$offset]);
     }

@@ -61,6 +61,8 @@ use function count;
  *
  * @template T
  * @implements SetInterface<T>
+ *
+ * @psalm-consistent-constructor
  */
 class HashSet implements SetInterface
 {
@@ -186,7 +188,7 @@ class HashSet implements SetInterface
     /**
      * {@inheritdoc}
      */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return $this->stream();
     }

@@ -154,6 +154,7 @@ class ArrayCollectionTest extends TestCase
     public function test_get_not_found()
     {
         $this->expectException(\OutOfBoundsException::class);
+        $this->expectExceptionMessage('Cannot found element at key not found');
 
         (new ArrayCollection())->get('not found');
     }

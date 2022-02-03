@@ -165,7 +165,7 @@ class OrderedCollection implements OrderedCollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new ArrayIterator($this->toArray());
     }
@@ -173,7 +173,7 @@ class OrderedCollection implements OrderedCollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
         return count($this->elements);
     }
@@ -237,7 +237,7 @@ class OrderedCollection implements OrderedCollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         $this->sortElements();
 
@@ -247,6 +247,7 @@ class OrderedCollection implements OrderedCollectionInterface
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         $this->sortElements();
@@ -257,7 +258,7 @@ class OrderedCollection implements OrderedCollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         $this->sortElements();
 
@@ -270,7 +271,7 @@ class OrderedCollection implements OrderedCollectionInterface
     /**
      * {@inheritdoc}
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if ($offset !== null) {
             throw new BadMethodCallException('Cannot set a value into an OrderedCollection');

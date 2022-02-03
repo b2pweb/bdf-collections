@@ -98,6 +98,7 @@ final class ArrayCombineStream implements Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return $this->values[key($this->keys)];
@@ -106,7 +107,7 @@ final class ArrayCombineStream implements Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         next($this->keys);
     }
@@ -114,6 +115,7 @@ final class ArrayCombineStream implements Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return current($this->keys);
@@ -122,7 +124,7 @@ final class ArrayCombineStream implements Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         return key($this->keys) !== null;
     }
@@ -130,7 +132,7 @@ final class ArrayCombineStream implements Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         reset($this->keys);
     }

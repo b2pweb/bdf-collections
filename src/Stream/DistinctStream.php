@@ -36,7 +36,7 @@ final class DistinctStream extends FilterIterator implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function accept()
+    public function accept(): bool
     {
         return $this->set->add($this->current());
     }
@@ -44,7 +44,7 @@ final class DistinctStream extends FilterIterator implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->set->clear();
 

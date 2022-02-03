@@ -118,7 +118,7 @@ interface TableInterface extends CollectionInterface, ArrayAccess
      *
      * @return void
      */
-    public function offsetSet($offset, $value);
+    public function offsetSet($offset, $value): void;
 
     /**
      * {@inheritdoc}
@@ -126,5 +126,6 @@ interface TableInterface extends CollectionInterface, ArrayAccess
      * @param K $offset
      * @return T
      */
+    #[\ReturnTypeWillChange]
     public function &offsetGet($offset);
 }

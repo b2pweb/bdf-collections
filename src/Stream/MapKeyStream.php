@@ -35,6 +35,7 @@ final class MapKeyStream extends IteratorIterator implements StreamInterface
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         $key = parent::key();

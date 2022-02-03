@@ -66,7 +66,6 @@ final class SortStream implements Iterator, StreamInterface
     /**
      * {@inheritdoc}
      *
-     * @psalm-assert !null $this->data
      * @psalm-suppress InvalidReturnType
      */
     public function toArray(bool $preserveKeys = true): array
@@ -77,6 +76,7 @@ final class SortStream implements Iterator, StreamInterface
 
         // Built data keep keys, but toArray() request without keys
         // So call array_values to remove keys
+        /** @psalm-suppress RedundantConditionGivenDocblockType */
         if (!$preserveKeys && $this->preserveKeys) {
             return array_values($this->data);
         }
@@ -123,6 +123,7 @@ final class SortStream implements Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         if ($this->data === null) {
@@ -135,7 +136,7 @@ final class SortStream implements Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         if ($this->data === null) {
             $this->buildData();
@@ -147,6 +148,7 @@ final class SortStream implements Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         if ($this->data === null) {
@@ -159,7 +161,7 @@ final class SortStream implements Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): bool
     {
         if ($this->data === null) {
             $this->buildData();
@@ -171,7 +173,7 @@ final class SortStream implements Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         if ($this->data === null) {
             $this->buildData();
