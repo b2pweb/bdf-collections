@@ -20,6 +20,6 @@ class GetterTest extends TestCase
             new \ReflectionClass(\Exception::class),
         ]);
 
-        $this->assertEquals([get_class(), \Exception::class], $stream->map(new Getter('getName'))->toArray());
+        $this->assertEquals([self::class, \Exception::class], $stream->map(new Getter('getName'))->toArray());
     }
 }
