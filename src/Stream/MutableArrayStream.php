@@ -115,7 +115,7 @@ final class MutableArrayStream implements Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function distinct(callable $hashFunction = null): StreamInterface
+    public function distinct(?callable $hashFunction = null): StreamInterface
     {
         $this->data = array_unique($this->data, SORT_REGULAR);
 
@@ -125,7 +125,7 @@ final class MutableArrayStream implements Iterator, StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function sort(callable $comparator = null, bool $preserveKeys = false): StreamInterface
+    public function sort(?callable $comparator = null, bool $preserveKeys = false): StreamInterface
     {
         if ($comparator) {
             if ($preserveKeys) {

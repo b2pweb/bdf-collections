@@ -192,7 +192,7 @@ interface StreamInterface extends Iterator
      *
      * @return StreamInterface<T, array-key>
      */
-    public function sort(callable $comparator = null, bool $preserveKeys = false): StreamInterface;
+    public function sort(?callable $comparator = null, bool $preserveKeys = false): StreamInterface;
 
     /**
      * Concatenate a new stream after the current stream

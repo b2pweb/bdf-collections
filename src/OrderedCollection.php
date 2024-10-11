@@ -58,7 +58,7 @@ class OrderedCollection implements OrderedCollectionInterface
      *     The comparator must takes the two elements (A, B) to compare as parameters
      *     And must return an integer as : <= -1 for A < B, = 0 for A = B and >= 1 for A > B
      */
-    public function __construct(callable $comparator = null)
+    public function __construct(?callable $comparator = null)
     {
         $this->comparator = $comparator;
     }

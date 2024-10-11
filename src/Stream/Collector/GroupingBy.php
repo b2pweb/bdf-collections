@@ -137,7 +137,7 @@ final class GroupingBy implements CollectorInterface
      *
      * @see Hash::compute()
      */
-    public static function hash(callable $getter, bool $preserveKeys = false, callable $hashFunction = null): self
+    public static function hash(callable $getter, bool $preserveKeys = false, ?callable $hashFunction = null): self
     {
         return new GroupingBy($getter, $preserveKeys, new HashTable($hashFunction));
     }

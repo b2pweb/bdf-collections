@@ -43,7 +43,7 @@ trait StreamTrait
     /**
      * @see StreamInterface::distinct()
      */
-    public function distinct(callable $hashFunction = null): StreamInterface
+    public function distinct(?callable $hashFunction = null): StreamInterface
     {
         return new DistinctStream($this, new HashSet($hashFunction));
     }
@@ -51,7 +51,7 @@ trait StreamTrait
     /**
      * @see StreamInterface::sort()
      */
-    public function sort(callable $comparator = null, bool $preserveKeys = false): StreamInterface
+    public function sort(?callable $comparator = null, bool $preserveKeys = false): StreamInterface
     {
         return new SortStream($this, $comparator, $preserveKeys);
     }

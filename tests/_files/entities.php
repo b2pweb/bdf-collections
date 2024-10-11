@@ -8,7 +8,7 @@ class Person
     public $lastName;
     public $type;
 
-    public function __construct($firstName, $lastName, PersonType $type = null)
+    public function __construct($firstName, $lastName, ?PersonType $type = null)
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;

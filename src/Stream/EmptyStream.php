@@ -46,7 +46,7 @@ final class EmptyStream extends EmptyIterator implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function distinct(callable $hashFunction = null): StreamInterface
+    public function distinct(?callable $hashFunction = null): StreamInterface
     {
         return $this;
     }
@@ -54,7 +54,7 @@ final class EmptyStream extends EmptyIterator implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function sort(callable $comparator = null, bool $preserveKeys = false): StreamInterface
+    public function sort(?callable $comparator = null, bool $preserveKeys = false): StreamInterface
     {
         return $this;
     }

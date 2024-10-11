@@ -77,7 +77,7 @@ final class SingletonStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function distinct(callable $hashFunction = null): StreamInterface
+    public function distinct(?callable $hashFunction = null): StreamInterface
     {
         return $this;
     }
@@ -85,7 +85,7 @@ final class SingletonStream implements StreamInterface
     /**
      * {@inheritdoc}
      */
-    public function sort(callable $comparator = null, bool $preserveKeys = false): StreamInterface
+    public function sort(?callable $comparator = null, bool $preserveKeys = false): StreamInterface
     {
         return $preserveKeys || $this->key === 0 ? $this : new self($this->value);
     }

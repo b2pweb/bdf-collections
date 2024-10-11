@@ -82,9 +82,9 @@ class HashSet implements SetInterface
     /**
      * HashSet constructor.
      *
-     * @param callable $hashFunction The the hash function. Takes as parameter the element to hash, and should return a string
+     * @param callable|null $hashFunction The the hash function. Takes as parameter the element to hash, and should return a string
      */
-    public function __construct(callable $hashFunction = null)
+    public function __construct(?callable $hashFunction = null)
     {
         $this->hashFunction = $hashFunction ?: [Hash::class, 'compute'];
     }
