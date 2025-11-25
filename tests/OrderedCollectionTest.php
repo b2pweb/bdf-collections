@@ -46,7 +46,7 @@ class OrderedCollectionTest extends TestCase
         $this->assertTrue($collection->add(1));
 
         $r = new \ReflectionProperty(OrderedCollection::class, 'sorted');
-        $r->setAccessible(true);
+        PHP_VERSION_ID >= 80100 or $r->setAccessible(true);
 
         $this->assertTrue($r->getValue($collection));
         $this->assertEquals([1], $collection->toArray());
@@ -118,7 +118,7 @@ class OrderedCollectionTest extends TestCase
         $this->assertTrue($collection->addAll([5]));
 
         $r = new \ReflectionProperty(OrderedCollection::class, 'sorted');
-        $r->setAccessible(true);
+        PHP_VERSION_ID >= 80100 or $r->setAccessible(true);
 
         $this->assertTrue($r->getValue($collection));
 
@@ -135,7 +135,7 @@ class OrderedCollectionTest extends TestCase
         $this->assertTrue($collection->addAll([]));
 
         $r = new \ReflectionProperty(OrderedCollection::class, 'sorted');
-        $r->setAccessible(true);
+        PHP_VERSION_ID >= 80100 or $r->setAccessible(true);
 
         $this->assertTrue($r->getValue($collection));
         $this->assertSame([], iterator_to_array($collection));
@@ -194,7 +194,7 @@ class OrderedCollectionTest extends TestCase
         $collection->replace([5]);
 
         $r = new \ReflectionProperty(OrderedCollection::class, 'sorted');
-        $r->setAccessible(true);
+        PHP_VERSION_ID >= 80100 or $r->setAccessible(true);
 
         $this->assertTrue($r->getValue($collection));
         $this->assertSame([5], iterator_to_array($collection));
@@ -211,7 +211,7 @@ class OrderedCollectionTest extends TestCase
         $collection->replace([]);
 
         $r = new \ReflectionProperty(OrderedCollection::class, 'sorted');
-        $r->setAccessible(true);
+        PHP_VERSION_ID >= 80100 or $r->setAccessible(true);
 
         $this->assertTrue($r->getValue($collection));
         $this->assertSame([], iterator_to_array($collection));
@@ -261,7 +261,7 @@ class OrderedCollectionTest extends TestCase
 
         $collection->clear();
         $r = new \ReflectionProperty(OrderedCollection::class, 'sorted');
-        $r->setAccessible(true);
+        PHP_VERSION_ID >= 80100 or $r->setAccessible(true);
 
         $this->assertTrue($r->getValue($collection));
         $this->assertSame([], $collection->toArray());
